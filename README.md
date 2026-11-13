@@ -1,6 +1,6 @@
 # Precision Zone Crypto — Scanner (Web App Gratis)
 
-Scanner untuk Binance Spot (pair USDT) dengan kerangka **Precision Zone System**: filter trend EMA 50/200, zona Supply & Demand, candle konfirmasi, konteks SMC (BOS/CHoCH/liquidity sweep), serta trading plan otomatis (Entry, SL, TP1, TP2, RR) dan kalkulator ukuran posisi.
+Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Precision Zone System**. Hanya sinyal BUY, supply zone dipakai sebagai target TP. Isinya: filter trend EMA 50/200, zona Supply & Demand, candle konfirmasi, konteks SMC (BOS/CHoCH/liquidity sweep), serta trading plan otomatis (Entry, SL, TP1, TP2, RR) dan kalkulator ukuran posisi.
 
 - **Biaya: Rp0.** Cukup satu file `index.html`, tanpa server, database, maupun API key.
 - **Data:** Binance Public API (`data-api.binance.vision`, cadangan `api.binance.com`).
@@ -48,13 +48,14 @@ Panduan lengkap (aturan sistem, arti sinyal, komponen skor, manajemen posisi, Te
 ## 3. Ringkasan aturan sistem
 | Komponen | Aturan |
 |---|---|
-| Trend | UP: EMA50 > EMA200 dan harga > EMA200 · DOWN: kebalikannya · selain itu SIDEWAYS |
+| Trend | UP: EMA50 > EMA200 dan harga > EMA200 (cari BUY) · DOWN: hindari beli · selain itu SIDEWAYS (tunggu) |
 | Zona | Base 1–3 candle kecil, diikuti impulse dengan body ≥ 1,2×ATR. Proximal = body base, distal = ekstrem base |
 | Status zona | Fresh → Tested 1× → Lemah (≥ 2×). Zona Broken (close melewati distal) dihapus |
 | BUY CONFIRMED | Trend UP, HTF tidak DOWN, demand disentuh ≤ 3 candle terakhir, pin bar/engulfing bullish, harga ≤ 1 ATR dari zona |
 | BUY SETUP | Trend UP, demand Fresh/Tested 1× dalam jarak ≤ 1,5 ATR |
 | SL | Distal − 0,2×ATR |
-| TP1 / TP2 | Zona lawan terdekat (kalau ≥ 1R), atau 2R · TP2 ≥ 3R |
+| TP1 / TP2 | Supply zone terdekat di atas entry (kalau ≥ 1R), atau 2R · TP2 ≥ 3R |
+| Eksekusi | Limit buy + OCO (TP & SL) di Binance Spot |
 
 Semua angka bisa diubah di tab **Pengaturan**.
 

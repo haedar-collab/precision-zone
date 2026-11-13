@@ -104,7 +104,7 @@ h3{font-size:14px;margin:0 0 10px}
 </head>
 <body>
 <header>
-  <h1>Precision Zone <span>Crypto</span></h1>
+  <h1>Precision Zone <span>Crypto</span> <small class="badge b-buy" style="vertical-align:middle">SPOT LONG</small></h1>
   <div id="status">Siap</div>
 </header>
 <nav class="tabs" id="tabs">
@@ -159,7 +159,7 @@ h3{font-size:14px;margin:0 0 10px}
         <button class="chip on" data-f="all">Semua</button>
         <button class="chip" data-f="buyc">BUY Confirmed</button>
         <button class="chip" data-f="buys">BUY Setup</button>
-        <button class="chip" data-f="sell">SELL</button>
+        <button class="chip" data-f="up">Trend UP</button>
         <button class="chip" data-f="fresh">Zona Fresh</button>
         <button class="chip" data-f="ab">Grade A/B</button>
       </div>
@@ -186,13 +186,13 @@ h3{font-size:14px;margin:0 0 10px}
   <div class="callout blue"><b>Cara pakai panduan ini:</b> bagian 1–3 untuk memasang dan menjalankan aplikasi, bagian 4–7 untuk memahami sinyal dan membuat trading plan, bagian 8–11 untuk fitur tambahan, pengaturan, dan troubleshooting.</div>
 
   <details open><summary>1. Apa yang dilakukan aplikasi ini</summary>
-    <p>Aplikasi ini memindai pasar Spot Binance (pair USDT) dengan kerangka <b>Precision Zone System</b>. Prosesnya:</p>
+    <p>Aplikasi ini memindai pasar Spot Binance (pair USDT) dengan kerangka <b>Precision Zone System</b>, <b>khusus untuk Spot Long</b> (beli lalu jual lebih tinggi). Tidak ada sinyal short atau sell. Prosesnya:</p>
     <ol>
       <li>Menentukan <b>arah trend</b> dengan EMA 50 dan EMA 200.</li>
       <li>Mencari <b>zona Supply & Demand</b> (base + impulse) yang masih valid.</li>
-      <li>Memeriksa apakah harga sedang <b>mendekati atau menyentuh zona</b> yang searah trend.</li>
+      <li>Memeriksa apakah harga sedang <b>mendekati atau menyentuh demand zone</b> saat trend UP.</li>
       <li>Mencari <b>konfirmasi candle</b> (pin bar atau engulfing) di zona, ditambah konteks SMC/price action (BOS, CHoCH, liquidity sweep).</li>
-      <li>Menyusun <b>trading plan</b>: Entry, Stop Loss, TP1, TP2, Risk:Reward, dan ukuran posisi.</li>
+      <li>Menyusun <b>trading plan BUY</b>: Entry, Stop Loss, TP1, TP2 (supply zone di atas dijadikan target), Risk:Reward, dan ukuran posisi.</li>
     </ol>
     <div class="callout">Datanya dari API publik Binance, jadi <b>tidak perlu login atau API key, dan aplikasi tidak bisa menaruh order</b>. Semua perhitungan dilakukan di browser Anda. Aturan di sini adalah terjemahan algoritmik dari konsep Precision Zone (EMA 50/200 + S&D). Angka-angkanya bisa disesuaikan dengan cheat sheet Anda di tab Pengaturan.</div>
   </details>
@@ -240,8 +240,8 @@ h3{font-size:14px;margin:0 0 10px}
     <h3>4.1 Trend (filter utama)</h3>
     <table>
       <tr><th>Kondisi</th><th>Trend</th><th>Yang dicari</th></tr>
-      <tr><td>EMA50 &gt; EMA200 dan harga &gt; EMA200</td><td class="b-up">UP</td><td>Hanya BUY di Demand zone</td></tr>
-      <tr><td>EMA50 &lt; EMA200 dan harga &lt; EMA200</td><td class="b-down">DOWN</td><td>Hanya SELL di Supply zone</td></tr>
+      <tr><td>EMA50 &gt; EMA200 dan harga &gt; EMA200</td><td class="b-up">UP</td><td>Cari BUY di Demand zone</td></tr>
+      <tr><td>EMA50 &lt; EMA200 dan harga &lt; EMA200</td><td class="b-down">DOWN</td><td>Hindari beli. Kalau sedang memegang koinnya, pertimbangkan ambil profit atau keluar.</td></tr>
       <tr><td>Selain itu</td><td class="b-side">SIDEWAYS</td><td>Tunggu (tidak ada sinyal)</td></tr>
     </table>
     <p>Pullback ke area di antara EMA50 dan EMA200 saat trend UP sering menjadi lokasi demand zone dengan probabilitas terbaik.</p>
@@ -251,7 +251,8 @@ h3{font-size:14px;margin:0 0 10px}
       <li><b>Impulse (leg-out):</b> candle besar setelah base, dengan body ≥ 1,2×ATR (bisa diatur) dan body ≥ 55% range. Penutupannya harus keluar jauh dari base.</li>
       <li><b>Proximal line:</b> batas zona yang dekat dengan harga (body tertinggi base untuk demand). Ini level entry limit.</li>
       <li><b>Distal line:</b> batas zona yang jauh (low terendah base untuk demand). Stop loss diletakkan di bawahnya.</li>
-      <li><b>Pola:</b> <code>DBR</code> (Drop-Base-Rally) dan <code>RBD</code> (Rally-Base-Drop) adalah zona reversal, biasanya lebih kuat. <code>RBR</code> dan <code>DBD</code> adalah zona continuation.</li>
+      <li><b>Pola demand:</b> <code>DBR</code> (Drop-Base-Rally) adalah zona reversal, biasanya lebih kuat. <code>RBR</code> (Rally-Base-Rally) adalah zona continuation.</li>
+      <li><b>Supply zone</b> (<code>RBD</code>/<code>DBD</code>) tetap digambar di chart. Untuk Spot Long, fungsinya sebagai <b>target TP</b> dan peringatan: kalau supply terlalu dekat di atas harga, ruang naiknya sempit.</li>
     </ul>
     <h3>4.3 Status zona</h3>
     <table>
@@ -280,8 +281,7 @@ h3{font-size:14px;margin:0 0 10px}
       <tr><th>Sinyal</th><th>Artinya</th><th>Tindakan</th></tr>
       <tr><td><span class="badge b-buy">BUY CONFIRMED</span></td><td>Trend UP, harga menyentuh demand zone yang valid dalam 3 candle terakhir, ada candle konfirmasi bullish, dan harga masih ≤ 1 ATR dari zona (belum lari jauh)</td><td>Kandidat entry. Validasi chart, lalu entry market atau pada retest.</td></tr>
       <tr><td><span class="badge b-setup">BUY SETUP</span></td><td>Trend UP dan harga dekat demand zone (≤ 1,5 ATR), tetapi belum ada konfirmasi</td><td>Pasang alert atau limit order di proximal, atau tunggu konfirmasi.</td></tr>
-      <tr><td><span class="badge b-sell">SELL CONFIRMED / SETUP</span></td><td>Kebalikan dari BUY, di supply zone saat trend DOWN</td><td>Di Spot: jangan beli, atau ambil profit kalau memegang koin tersebut. Short hanya bisa di Futures.</td></tr>
-      <tr><td><span class="badge b-wait">WAIT</span></td><td>Trend sideways, atau harga jauh dari zona</td><td>Lewati.</td></tr>
+      <tr><td><span class="badge b-wait">WAIT</span></td><td>Syarat belum terpenuhi. Alasannya tertulis di bawah badge, misalnya "Trend DOWN, hindari beli", "Harga jauh dari demand", atau "Menunggu candle konfirmasi".</td><td>Lewati, atau masukkan watchlist kalau alasannya hanya jarak atau konfirmasi.</td></tr>
     </table>
     <h3>Komponen skor (0–100)</h3>
     <table>
@@ -302,29 +302,37 @@ h3{font-size:14px;margin:0 0 10px}
 
   <details><summary>6. Trading plan & manajemen posisi</summary>
     <table>
-      <tr><th>Level</th><th>BUY</th><th>SELL</th></tr>
-      <tr><td>Entry</td><td>Confirmed: harga close terakhir. Setup: limit di proximal demand.</td><td>Confirmed: close terakhir. Setup: limit di proximal supply.</td></tr>
-      <tr><td>Stop Loss</td><td>Distal demand − 0,2×ATR</td><td>Distal supply + 0,2×ATR</td></tr>
-      <tr><td>TP1</td><td colspan="2">Proximal zona lawan terdekat kalau jaraknya ≥ 1R. Kalau tidak ada, Entry ± (Min RR × risiko).</td></tr>
-      <tr><td>TP2</td><td colspan="2">Entry ± (Min RR + 1) × risiko, minimal 3R</td></tr>
+      <tr><th>Level</th><th>Aturan (Spot Long)</th></tr>
+      <tr><td>Entry</td><td>Confirmed: harga close terakhir (market). Setup: limit buy di proximal demand.</td></tr>
+      <tr><td>Stop Loss</td><td>Distal demand − 0,2×ATR. Di Spot, pasang sebagai stop-limit atau OCO.</td></tr>
+      <tr><td>TP1</td><td>Proximal supply zone terdekat di atas entry, kalau jaraknya ≥ 1R. Kalau tidak ada, Entry + (Min RR × risiko).</td></tr>
+      <tr><td>TP2</td><td>Entry + (Min RR + 1) × risiko, minimal 3R</td></tr>
     </table>
     <h3>Aturan eksekusi yang disarankan</h3>
     <ol>
       <li>Risiko per trade maksimal <b>1–2% modal</b>. Pakai kalkulator di halaman detail.</li>
+      <li>Kalkulator punya 2 metode ukuran posisi:
+        <ul>
+          <li><b>Berdasarkan risiko %</b>: Anda menentukan berapa % modal yang siap hilang kalau kena SL, lalu aplikasi menghitung jumlah koin. Nilai posisi bisa besar kalau SL-nya dekat.</li>
+          <li><b>Berdasarkan % modal</b>: Anda memilih nilai posisi (5%–100% modal atau custom), lalu aplikasi menghitung berapa kerugiannya kalau kena SL. Muncul peringatan kalau risikonya di atas 2% modal.</li>
+        </ul>
+        Default metode dan persentasenya diatur di tab Pengaturan.</li>
       <li>Di TP1, tutup sekitar <b>50%</b> posisi lalu pindahkan SL ke <b>break-even</b>.</li>
       <li>Biarkan sisanya berjalan ke TP2, atau trailing di bawah swing low terbaru.</li>
-      <li>Kalau candle menutup di bawah distal (BUY), keluar. Zona sudah gagal.</li>
+      <li>Kalau candle menutup di bawah distal, keluar. Zona sudah gagal.</li>
+      <li>Di Binance Spot, gunakan order <b>OCO</b> (One-Cancels-the-Other) supaya TP dan SL terpasang bersamaan.</li>
       <li>Hindari entry kalau RR TP1 di bawah 1,5, atau SL lebih dari 3×ATR.</li>
     </ol>
   </details>
 
   <details><summary>7. Checklist sebelum entry</summary>
     <ol>
-      <li>Trend timeframe utama dan HTF searah.</li>
-      <li>Zona Fresh atau Tested 1×, bukan Lemah.</li>
+      <li>Trend timeframe utama UP dan HTF tidak DOWN.</li>
+      <li>Demand zone Fresh atau Tested 1×, bukan Lemah.</li>
+      <li>Tidak ada supply zone yang terlalu dekat di atas harga.</li>
       <li>Impulse yang keluar dari zona kuat (≥ 1,5×ATR lebih baik).</li>
       <li>Ada candle konfirmasi di zona (pin bar atau engulfing).</li>
-      <li>Ada konteks SMC pendukung: BOS/CHoCH searah atau liquidity sweep.</li>
+      <li>Ada konteks SMC pendukung: BOS/CHoCH ke atas atau sweep swing low.</li>
       <li>RR ke TP1 ≥ Min RR (default 2).</li>
       <li>Tidak ada berita besar (FOMC, CPI, unlock token) dalam beberapa jam ke depan.</li>
       <li>Ukuran posisi sudah dihitung sesuai risiko %.</li>
@@ -356,7 +364,6 @@ h3{font-size:14px;margin:0 0 10px}
       <tr><td>Jarak setup (×ATR)</td><td>1,5</td><td>Seberapa dekat harga ke zona agar dianggap SETUP</td></tr>
       <tr><td>Buffer SL (×ATR)</td><td>0,2</td><td>Jarak SL di luar distal line untuk menghindari stop hunt</td></tr>
       <tr><td>Min RR</td><td>2</td><td>Target RR minimum, juga dipakai untuk TP default</td></tr>
-      <tr><td>Tampilkan sinyal SELL</td><td>Ya</td><td>Matikan kalau hanya trading Spot dan tidak perlu info SELL</td></tr>
       <tr><td>Kecualikan token saham &amp; emas</td><td>Ya</td><td>Binance Spot juga memperdagangkan token saham (NVDAB, TSLAB, dll.) dan emas (XAUT, PAXG). Filter ini memakai daftar nama, jadi bisa saja ada yang terlewat. Tambahkan sendiri di kolom "Kecualikan pair". Di mode Pair Pilihan filter ini tidak berlaku.</td></tr>
       <tr><td>Kecualikan pair tertentu</td><td>—</td><td>Pair yang tidak ingin ikut di-scan pada mode Semua Crypto</td></tr>
     </table>
@@ -389,7 +396,6 @@ h3{font-size:14px;margin:0 0 10px}
       <label class="f">Buffer SL (×ATR)<input type="number" step="0.05" min="0" id="s_slBuf"></label>
       <label class="f">Min RR<input type="number" step="0.1" min="1" id="s_minRR"></label>
     </div>
-    <div class="row" style="margin-top:10px"><label class="chk"><input type="checkbox" id="s_showSell"> Tampilkan sinyal SELL</label></div>
     <div class="row" style="margin-top:6px"><label class="chk"><input type="checkbox" id="s_exclNonCrypto"> Kecualikan token saham (mis. NVDAB, TSLAB) &amp; emas (XAUT, PAXG) dari mode Semua Crypto</label></div>
     <label class="f" style="margin-top:10px">Kecualikan pair tertentu (pisahkan koma)<input id="s_exclude" placeholder="contoh: TRX, FDUSD"></label>
   </div>
@@ -397,7 +403,11 @@ h3{font-size:14px;margin:0 0 10px}
     <h3>Manajemen risiko (kalkulator)</h3>
     <div class="grid">
       <label class="f">Modal (USDT)<input type="number" step="10" min="0" id="s_capital"></label>
+      <label class="f">Metode ukuran posisi
+        <select id="s_sizeMode"><option value="risk">Berdasarkan risiko %</option><option value="pct">Berdasarkan % modal</option></select>
+      </label>
       <label class="f">Risiko per trade (%)<input type="number" step="0.1" min="0.1" id="s_riskPct"></label>
+      <label class="f">Nilai posisi default (% modal)<input type="number" step="1" min="1" max="100" id="s_posPct"></label>
     </div>
   </div>
   <div class="card">
@@ -456,7 +466,14 @@ h3{font-size:14px;margin:0 0 10px}
         <h3>Kalkulator posisi</h3>
         <div class="grid">
           <label class="f">Modal (USDT)<input type="number" id="cCap"></label>
-          <label class="f">Risiko %<input type="number" step="0.1" id="cRisk"></label>
+          <label class="f">Metode ukuran posisi
+            <select id="cMode"><option value="risk">Berdasarkan risiko %</option><option value="pct">Berdasarkan % modal</option></select>
+          </label>
+          <label class="f" id="cRiskWrap">Risiko per trade (%)<input type="number" step="0.1" min="0.1" id="cRisk"></label>
+          <label class="f" id="cPctWrap">Nilai posisi (% modal)
+            <select id="cPct"><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option><option value="25">25%</option><option value="33">33%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option><option value="custom">Custom…</option></select>
+          </label>
+          <label class="f" id="cPctCustomWrap">Custom % modal<input type="number" step="1" min="1" max="100" id="cPctCustom"></label>
         </div>
         <div id="cOut" class="kv" style="margin-top:10px"></div>
       </div>
@@ -491,8 +508,8 @@ const isNonCrypto = base => NONCRYPTO.has(base) || (base.length >= 3 && base.end
 const DEFAULTS = {
   scope: 'all', pairs: 'BTC, ETH, SOL, BNB, XRP, DOGE, ADA, LINK, AVAX, SUI',
   topN: '80', minVol: '5000000', tf: '4h', htf: true, auto: '0',
-  impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2, showSell: true,
-  capital: 1000, riskPct: 1, notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: ''
+  impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2,
+  capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: ''
 };
 const store = {
   get(k, d) { try { const v = localStorage.getItem('pzc_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -697,6 +714,13 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
     const htfOk = !P.htf || htfTrend === 'N/A' || (isBuy ? htfTrend !== 'DOWN' : htfTrend !== 'UP');
     const htfAligned = P.htf && (isBuy ? htfTrend === 'UP' : htfTrend === 'DOWN');
     let state = '';
+    const reasons = [];
+    if (!trendOk) reasons.push(trend === 'DOWN' ? 'Trend DOWN, hindari beli' : 'Trend belum UP');
+    if (!htfOk) reasons.push('HTF DOWN');
+    if (priorTests > 1) reasons.push('Demand sudah lemah');
+    if (dist > P.proxATR) reasons.push(`Harga jauh dari demand (${dist.toFixed(1)} ATR)`);
+    if (trendOk && htfOk && priorTests <= 1 && touchedNow && !conf) reasons.push('Menunggu candle konfirmasi');
+    if (touchedNow && conf && dist > 1 && dist <= P.proxATR) reasons.push('Harga sudah lari dari zona, tunggu retest');
     if (trendOk && htfOk && touchedNow && conf && holds && priorTests <= 1 && dist <= 1) state = 'CONFIRMED';
     else if (trendOk && htfOk && priorTests <= 1 && dist <= P.proxATR) state = 'SETUP';
 
@@ -736,19 +760,19 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
       ['Liquidity sweep', isBuy ? st.sweep.bull : st.sweep.bear],
       [`RR TP1 ≥ ${P.minRR} (${rr.toFixed(2)})`, rr >= P.minRR]
     ];
-    return { side, state, zone: z, dist, inside, touchedNow, priorTests, conf, entry, sl, tp1, tp2, tp1Src, rr, risk, score, sc, checks };
+    const supAbove = zones.filter(o => o.type === 'supply' && o.proximal > price).sort((a, b) => a.proximal - b.proximal)[0];
+    const nearSupply = supAbove ? (supAbove.proximal - price) / A : Infinity;
+    return { side, state, reasons, nearSupply, zone: z, dist, inside, touchedNow, priorTests, conf, entry, sl, tp1, tp2, tp1Src, rr, risk, score, sc, checks };
   };
 
-  const buy = evalSide('BUY'), sell = evalSide('SELL');
-  let best = null;
-  const rank = x => !x ? -1 : (x.state === 'CONFIRMED' ? 2000 : x.state === 'SETUP' ? 1000 : 0) + x.score;
-  if (rank(buy) >= rank(sell)) best = buy; else best = sell;
-  if (!P.showSell && best && best.side === 'SELL' && best.state) best = buy && buy.state ? buy : (buy || best);
+  // Aplikasi khusus SPOT LONG: hanya sisi BUY yang dievaluasi. Supply zone dipakai sebagai target TP.
+  const best = evalSide('BUY');
 
   const signal = best && best.state ? best.side : 'WAIT';
   const score = best ? best.score : 0;
   const grade = !best || !best.state ? '–' : score >= 75 ? 'A' : score >= 60 ? 'B' : score >= 45 ? 'C' : 'D';
-  return { price, trend, htfTrend, e50: e50[n - 1], e200: e200[n - 1], atr: A, zones, st, signal, state: best ? best.state : '', best, buy, sell, score, grade, raw, n };
+  const reason = !best ? 'Tidak ada demand zone valid di bawah harga' : (best.state ? '' : (best.reasons[0] || 'Belum memenuhi syarat'));
+  return { price, trend, htfTrend, e50: e50[n - 1], e200: e200[n - 1], atr: A, zones, st, signal, state: best ? best.state : '', best, score, grade, reason, raw, n };
 }
 
 /* =========================================================
@@ -811,7 +835,7 @@ function fp(p) {
 const pct = x => (x >= 0 ? '+' : '') + x.toFixed(2) + '%';
 function sigBadge(r) {
   if (r.signal === 'WAIT') return '<span class="badge b-wait">WAIT</span>';
-  const cls = r.state === 'SETUP' ? 'b-setup' : r.signal === 'BUY' ? 'b-buy' : 'b-sell';
+  const cls = r.state === 'SETUP' ? 'b-setup' : 'b-buy';
   return `<span class="badge ${cls}">${r.signal} ${r.state}</span>`;
 }
 const trendCls = t => t === 'UP' ? 'b-up' : t === 'DOWN' ? 'b-down' : t === 'SIDEWAYS' ? 'b-side' : 'mut';
@@ -876,13 +900,12 @@ async function runScan() {
    RENDER TABEL
    ========================================================= */
 function passFilter(r) {
-  if (!S.showSell && r.signal === 'SELL') return false;
   const q = $('#search').value.trim().toUpperCase();
   if (q && !r.sym.includes(q)) return false;
   switch (FILTER) {
     case 'buyc': return r.signal === 'BUY' && r.state === 'CONFIRMED';
     case 'buys': return r.signal === 'BUY' && r.state === 'SETUP';
-    case 'sell': return r.signal === 'SELL';
+    case 'up': return r.trend === 'UP';
     case 'fresh': return r.best && r.best.priorTests === 0 && r.signal !== 'WAIT';
     case 'ab': return r.grade === 'A' || r.grade === 'B';
   }
@@ -909,8 +932,8 @@ function renderStats() {
     ['Di-scan', RESULTS.length],
     ['BUY Confirmed', cnt(r => r.signal === 'BUY' && r.state === 'CONFIRMED')],
     ['BUY Setup', cnt(r => r.signal === 'BUY' && r.state === 'SETUP')],
-    ['SELL', cnt(r => r.signal === 'SELL')],
     ['Trend UP', cnt(r => r.trend === 'UP')],
+    ['Trend DOWN (hindari)', cnt(r => r.trend === 'DOWN')],
     ['Grade A/B', cnt(r => r.grade === 'A' || r.grade === 'B')]
   ];
   $('#stats').innerHTML = items.map(([l, v]) => `<div class="stat"><small>${l}</small><b>${v}</b></div>`).join('');
@@ -931,7 +954,7 @@ function renderTable() {
       <td data-l="24j" class="num ${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</td>
       <td data-l="Trend" class="${trendCls(r.trend)}"><b>${r.trend}</b></td>
       <td data-l="HTF" class="${trendCls(r.htfTrend)}">${r.htfTrend}</td>
-      <td data-l="Sinyal">${sigBadge(r)}</td>
+      <td data-l="Sinyal">${sigBadge(r)}${r.reason ? `<div class="mut" style="font-size:11px;margin-top:2px">${r.reason}</div>` : ''}</td>
       <td data-l="Skor"><span class="grade g${r.grade === '–' ? 'D' : r.grade}">${r.grade}</span> <span class="num ${r.state ? '' : 'mut'}">${r.score}</span></td>
       <td data-l="Zona">${zone}</td>
       <td data-l="Jarak" class="num">${b ? (b.inside ? 'di zona' : b.dist.toFixed(2) + ' ATR') : '—'}</td>
@@ -974,17 +997,18 @@ function renderDetail() {
     const dir = b.side;
     const active = r.signal !== 'WAIT';
     $('#dPlan').innerHTML = `
-      <span>Arah</span><span><b class="${dir === 'BUY' ? 'pos' : 'neg'}">${dir}</b> ${active ? '' : '<span class="mut">(rencana bersyarat, sinyal belum aktif)</span>'}</span>
+      <span>Arah</span><span><b class="pos">BUY (Spot Long)</b> ${active ? '' : '<span class="mut">(rencana bersyarat, sinyal belum aktif)</span>'}</span>
+      ${active ? '' : `<span>Status</span><span class="b-side">${r.reason}</span>`}
       <span>Tipe entry</span><span>${b.state === 'CONFIRMED' ? 'Market / close terakhir' : 'Limit di proximal zona'}</span>
       <span>Entry</span><span class="num"><b>${fp(b.entry)}</b></span>
       <span>Stop Loss</span><span class="num neg">${fp(b.sl)} <span class="mut">(${(b.risk / b.entry * 100).toFixed(2)}%)</span></span>
       <span>TP1</span><span class="num pos">${fp(b.tp1)} <span class="mut">(${b.tp1Src} · RR ${b.rr.toFixed(2)})</span></span>
       <span>TP2</span><span class="num pos">${fp(b.tp2)} <span class="mut">(RR ${(Math.abs(b.tp2 - b.entry) / b.risk).toFixed(2)})</span></span>
       <span>Zona</span><span>${b.zone.type === 'demand' ? 'Demand' : 'Supply'} ${b.zone.pattern} · ${fp(Math.min(b.zone.proximal, b.zone.distal))} – ${fp(Math.max(b.zone.proximal, b.zone.distal))}</span>
-      <span>Catatan</span><span>${b.risk > 3 * r.atr ? '⚠ SL lebar (&gt;3 ATR). ' : ''}${b.rr < S.minRR ? '⚠ RR di bawah minimum. ' : ''}${dir === 'SELL' ? 'Spot: hindari beli / ambil profit. Short hanya di Futures.' : 'TP1: tutup 50%, pindah SL ke BE.'}</span>`;
+      <span>Catatan</span><span>${b.risk > 3 * r.atr ? '⚠ SL lebar (&gt;3 ATR). ' : ''}${b.rr < S.minRR ? '⚠ RR di bawah minimum. ' : ''}${b.nearSupply < 1 ? '⚠ Supply zone dekat di atas harga (&lt;1 ATR), ruang naik sempit. ' : ''}TP1: tutup 50%, pindah SL ke BE.</span>`;
     $('#dCheck').innerHTML = b.checks.map(([t, ok]) => `<li><span class="${ok === null ? 'mut' : ok ? 'ok' : 'no'}">${ok === null ? '–' : ok ? '✓' : '✗'}</span>${t}</li>`).join('');
   } else {
-    $('#dPlan').innerHTML = '<span>Status</span><span>Tidak ada zona valid di sekitar harga.</span>';
+    $('#dPlan').innerHTML = '<span>Status</span><span>Tidak ada demand zone valid di bawah harga. Tunggu struktur baru terbentuk.</span>';
     $('#dCheck').innerHTML = '';
   }
   // konteks
@@ -1009,16 +1033,32 @@ function renderDetail() {
 function calc() {
   if (!DET || !DET.best) { $('#cOut').innerHTML = ''; return; }
   const b = DET.best;
-  const cap = +$('#cCap').value || 0, rp = +$('#cRisk').value || 0;
-  const riskUsd = cap * rp / 100, perUnit = Math.abs(b.entry - b.sl);
-  const qty = perUnit > 0 ? riskUsd / perUnit : 0, notional = qty * b.entry;
+  const mode = $('#cMode').value, sel = $('#cPct').value;
+  $('#cRiskWrap').style.display = mode === 'risk' ? '' : 'none';
+  $('#cPctWrap').style.display = mode === 'pct' ? '' : 'none';
+  $('#cPctCustomWrap').style.display = mode === 'pct' && sel === 'custom' ? '' : 'none';
+  const cap = +$('#cCap').value || 0, perUnit = Math.abs(b.entry - b.sl);
+  let qty, notional, riskUsd;
+  if (mode === 'pct') {
+    const pp = Math.min(100, Math.max(0, sel === 'custom' ? (+$('#cPctCustom').value || 0) : +sel));
+    notional = cap * pp / 100;
+    qty = b.entry > 0 ? notional / b.entry : 0;
+    riskUsd = qty * perUnit;
+  } else {
+    const rp = +$('#cRisk').value || 0;
+    riskUsd = cap * rp / 100;
+    qty = perUnit > 0 ? riskUsd / perUnit : 0;
+    notional = qty * b.entry;
+  }
+  const riskPctCap = cap ? riskUsd / cap * 100 : 0;
   $('#cOut').innerHTML = `
-    <span>Risiko</span><span class="num">${riskUsd.toFixed(2)} USDT</span>
+    <span>Risiko (kena SL)</span><span class="num ${mode === 'pct' && riskPctCap > 2 ? 'neg' : ''}">${riskUsd.toFixed(2)} USDT <span class="mut">(${riskPctCap.toFixed(2)}% modal)</span></span>
     <span>Jumlah koin</span><span class="num"><b>${qty.toLocaleString('en-US', { maximumFractionDigits: 6 })}</b> ${DET.sym.replace('USDT', '')}</span>
     <span>Nilai posisi</span><span class="num">${notional.toFixed(2)} USDT <span class="mut">(${cap ? (notional / cap * 100).toFixed(1) : 0}% modal)</span></span>
     <span>Profit TP1</span><span class="num pos">+${(qty * Math.abs(b.tp1 - b.entry)).toFixed(2)} USDT</span>
     <span>Profit TP2</span><span class="num pos">+${(qty * Math.abs(b.tp2 - b.entry)).toFixed(2)} USDT</span>
-    ${cap && notional > cap ? '<span>⚠</span><span class="neg">Nilai posisi melebihi modal. Di Spot, maksimal sebesar modal (risiko nyata jadi lebih kecil).</span>' : ''}`;
+    ${mode === 'pct' && riskPctCap > 2 ? '<span>⚠</span><span class="neg">Risiko di atas 2% modal. Pertimbangkan memperkecil % posisi.</span>' : ''}
+    ${mode === 'risk' && cap && notional > cap ? '<span>⚠</span><span class="neg">Nilai posisi melebihi modal. Di Spot, maksimal sebesar modal (risiko nyata jadi lebih kecil).</span>' : ''}`;
 }
 
 /* =========================================================
@@ -1112,7 +1152,7 @@ function planText(r) {
   return `<b>${r.signal} ${r.state}</b> · ${r.sym} ${r.tf.toUpperCase()}\nSkor ${r.score} (${r.grade}) · Trend ${r.trend} · HTF ${r.htfTrend}\nZona: ${b.zone.type} ${b.zone.pattern} ${zoneStatus(Math.max(0, b.priorTests))}\nEntry: ${fp(b.entry)}\nSL: ${fp(b.sl)}\nTP1: ${fp(b.tp1)} (RR ${b.rr.toFixed(2)})\nTP2: ${fp(b.tp2)}${b.conf ? '\nKonfirmasi: ' + b.conf : ''}`;
 }
 function notifyNew(list) {
-  const hits = list.filter(r => r.state === 'CONFIRMED' && (S.showSell || r.signal === 'BUY'));
+  const hits = list.filter(r => r.state === 'CONFIRMED' && r.signal === 'BUY');
   const fresh = [];
   for (const r of hits) {
     const key = `${r.sym}|${r.tf}|${r.signal}|${r.best.zone.t}`;
@@ -1132,17 +1172,26 @@ function notifyNew(list) {
 const SET_KEYS = ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'tgToken', 'tgChat', 'exclude'];
 function loadSettingsUI() {
   SET_KEYS.forEach(k => $('#s_' + k).value = S[k]);
-  $('#s_showSell').checked = S.showSell; $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto;
+  $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto;
+  $('#s_sizeMode').value = S.sizeMode; $('#s_posPct').value = S.posPct;
   $('#tf').value = S.tf; $('#topN').value = S.topN; $('#minVol').value = S.minVol; $('#auto').value = S.auto;
   $('#pairs').value = S.pairs; $('#htf').checked = S.htf;
   setScope(S.scope);
 }
 function saveSettingsUI() {
-  ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct'].forEach(k => { const v = parseFloat($('#s_' + k).value); if (isFinite(v)) S[k] = v; });
+  ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'posPct'].forEach(k => { const v = parseFloat($('#s_' + k).value); if (isFinite(v)) S[k] = v; });
   S.maxBase = Math.max(1, Math.min(6, Math.round(S.maxBase)));
+  S.posPct = Math.max(1, Math.min(100, S.posPct)); S.sizeMode = $('#s_sizeMode').value;
+  syncCalcDefaults();
   S.tgToken = $('#s_tgToken').value.trim(); S.tgChat = $('#s_tgChat').value.trim();
-  S.showSell = $('#s_showSell').checked; S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked; S.exclude = $('#s_exclude').value.trim();
+  S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked; S.exclude = $('#s_exclude').value.trim();
   persist();
+}
+function syncCalcDefaults() {
+  $('#cCap').value = S.capital; $('#cRisk').value = S.riskPct; $('#cMode').value = S.sizeMode;
+  const opt = [...$('#cPct').options].find(o => +o.value === +S.posPct);
+  $('#cPct').value = opt ? opt.value : 'custom'; $('#cPctCustom').value = S.posPct;
+  calc();
 }
 function persist() { store.set('settings', S); }
 function setScope(v) {
@@ -1196,8 +1245,9 @@ function init() {
   $('#detail').onclick = e => { if (e.target.id === 'detail') $('#dClose').click(); };
   $$('#dTfSeg button').forEach(b => b.onclick = () => DET && openDetail(DET.sym, b.dataset.v));
   $$('#dZoom button').forEach(b => { b.classList.toggle('on', +b.dataset.v === ZOOM); b.onclick = () => { ZOOM = +b.dataset.v; $$('#dZoom button').forEach(x => x.classList.toggle('on', x === b)); drawChart(); }; });
-  $('#cCap').value = S.capital; $('#cRisk').value = S.riskPct;
-  $('#cCap').oninput = calc; $('#cRisk').oninput = calc;
+  syncCalcDefaults();
+  ['#cCap', '#cRisk', '#cPctCustom'].forEach(id => $(id).oninput = calc);
+  ['#cMode', '#cPct'].forEach(id => $(id).onchange = calc);
   $('#dCopy').onclick = () => {
     if (!DET || !DET.best) return;
     const txt = planText(DET).replace(/<\/?b>/g, '');
