@@ -3,188 +3,376 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0f17">
+<meta name="theme-color" content="#0a0e15">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>Precision Zone Crypto — Scanner</title>
+<title>Precision Zone · Spot Long Scanner</title>
 <style>
 :root{
-  --bg:#0b0f17;--panel:#121826;--panel2:#182033;--line:#243049;--text:#e6ebf5;--muted:#8b97b0;
-  --green:#22c55e;--green-bg:rgba(34,197,94,.14);--red:#ef4444;--red-bg:rgba(239,68,68,.14);
-  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.14);--blue:#60a5fa;--orange:#fb923c;--accent:#7c9cff;
+  --bg:#0a0e15;--s1:#111723;--s2:#161e2d;--s3:#1c2638;--line:#222c3f;--line2:#2c3850;
+  --text:#e8edf6;--muted:#8a96ad;--dim:#5d6880;
+  --brand:#6d8cff;--brand2:#8fa6ff;
+  --green:#16c784;--green-bg:rgba(22,199,132,.12);--red:#ea3943;--red-bg:rgba(234,57,67,.12);
+  --amber:#f5a524;--amber-bg:rgba(245,165,36,.12);--blue:#60a5fa;--orange:#fb923c;
+  --r:14px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-a{color:var(--accent)}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,15,23,.95);backdrop-filter:blur(6px);z-index:20}
-header h1{font-size:16px;margin:0;letter-spacing:.3px}
-header h1 span{color:var(--accent)}
-#status{font-size:12px;color:var(--muted);text-align:right}
-nav.tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line);overflow-x:auto}
-nav.tabs button{background:none;border:0;color:var(--muted);padding:8px 14px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
-nav.tabs button.active{background:var(--panel2);color:var(--text)}
-main{max-width:1280px;margin:0 auto;padding:14px 12px 60px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
-.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
-label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
-input,select,textarea{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font:inherit;width:100%}
-textarea{min-height:56px;resize:vertical}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:8px;font-weight:600;cursor:pointer}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#0b0f17}
-.btn.danger{border-color:var(--red);color:var(--red)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{background:none;border:0;color:var(--muted);padding:8px 12px;cursor:pointer;font-weight:600}
-.seg button.on{background:var(--panel2);color:var(--text)}
-.chk{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--text)}
-.chk input{width:auto}
-.progress{height:4px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:10px}
-.progress>div{height:100%;width:0;background:var(--accent);transition:width .2s}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-.stat b{display:block;font-size:20px}
-.stat small{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer}
-.chip.on{background:var(--panel2);color:var(--text);border-color:var(--accent)}
-table{width:100%;border-collapse:collapse}
-th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:13px}
-th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none;white-space:nowrap}
-tbody tr{cursor:pointer}
-tbody tr:hover{background:var(--panel2)}
+html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Inter",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand2)}
+button{font:inherit}
 .num{font-variant-numeric:tabular-nums}
-.pos{color:var(--green)}.neg{color:var(--red)}.mut{color:var(--muted)}
-.badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
-.b-buy{background:var(--green-bg);color:var(--green)}
-.b-wait{background:var(--panel2);color:var(--muted)}
-.b-setup{background:var(--amber-bg);color:var(--amber)}
+.pos{color:var(--green)}.neg{color:var(--red)}.mut{color:var(--muted)}.dim{color:var(--dim)}.amb{color:var(--amber)}
 .b-up{color:var(--green)}.b-down{color:var(--red)}.b-side{color:var(--amber)}
-.grade{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;font-weight:800;font-size:12px}
-.gA{background:var(--green);color:#04210f}.gB{background:#84cc16;color:#1a2405}.gC{background:var(--amber);color:#2a1a02}.gD{background:var(--panel2);color:var(--muted)}
-.empty{text-align:center;color:var(--muted);padding:30px 10px}
+
+/* ---------- app bar & nav ---------- */
+.appbar{position:sticky;top:0;z-index:30;background:rgba(10,14,21,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.appbar .in{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo svg{flex:none}
+.logo b{font-size:15px;letter-spacing:.2px;display:block;line-height:1.2}
+.logo small{color:var(--muted);font-size:11px;display:block}
+.nav{display:flex;gap:2px;margin-left:18px}
+.nav button{display:flex;align-items:center;gap:7px;background:none;border:0;color:var(--muted);padding:8px 12px;border-radius:9px;font-weight:600;cursor:pointer;font-size:13px}
+.nav button svg{width:17px;height:17px}
+.nav button.active{background:var(--s2);color:var(--text)}
+.nav button .cnt{background:var(--brand);color:#0a0e15;border-radius:99px;font-size:10px;padding:0 6px;font-weight:800}
+.appbar .right{margin-left:auto;display:flex;align-items:center;gap:10px}
+#status{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+main{max-width:1320px;margin:0 auto;padding:16px 14px 90px}
+@media (max-width:820px){
+  .appbar{backdrop-filter:none;background:#0a0e15}
+  .nav{position:fixed;bottom:0;left:0;right:0;margin:0;background:rgba(13,18,28,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40}
+  .nav button{flex-direction:column;gap:2px;font-size:10.5px;padding:6px 4px;flex:1}
+  .nav button svg{width:21px;height:21px}
+  .nav button.active{background:none;color:var(--brand2)}
+  .nav button .cnt{position:absolute;margin:-4px 0 0 18px;font-size:9px}
+  #status{display:none}
+}
+
+/* ---------- generic ---------- */
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 12px;font-size:14px;display:flex;align-items:center;gap:8px}
+.card h3 .sub{color:var(--muted);font-weight:500;font-size:12px;margin-left:auto}
+.sec-title{display:flex;align-items:center;gap:10px;margin:22px 2px 10px}
+.sec-title h2{font-size:15px;margin:0}
+.sec-title .pill{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px}
+.sec-title p{margin:0 0 0 auto;color:var(--muted);font-size:12px;text-align:right}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+label.f{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--muted);font-weight:600}
+input,select,textarea{background:var(--s2);border:1px solid var(--line2);color:var(--text);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--brand)}
+textarea{min-height:52px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--s2);border:1px solid var(--line2);color:var(--text);padding:9px 14px;border-radius:9px;font-weight:650;cursor:pointer;font-size:13px;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#0a0e15}
+.btn.green{background:var(--green);border-color:var(--green);color:#03170f}
+.btn.ghost{background:none}
+.btn.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn.danger{color:var(--red);border-color:rgba(234,57,67,.4)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn svg{width:15px;height:15px}
+.seg{display:inline-flex;background:var(--s2);border:1px solid var(--line2);border-radius:9px;padding:2px}
+.seg button{background:none;border:0;color:var(--muted);padding:6px 11px;cursor:pointer;font-weight:650;border-radius:7px;font-size:12.5px}
+.seg button.on{background:var(--s3);color:var(--text)}
+.switch{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;user-select:none}
+.switch input{appearance:none;width:34px;height:20px;border-radius:99px;background:var(--line2);position:relative;cursor:pointer;padding:0;border:0;flex:none}
+.switch input::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.15s}
+.switch input:checked{background:var(--brand)}
+.switch input:checked::after{left:16px}
+.progress{height:3px;background:var(--s2);border-radius:3px;overflow:hidden;margin-top:12px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--green));transition:width .2s}
 .err{color:var(--red);font-size:12px;margin-top:8px}
-/* detail sheet */
-.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding:20px 10px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:800;letter-spacing:.4px;white-space:nowrap}
+.b-buy{background:var(--green-bg);color:var(--green)}
+.b-setup{background:var(--amber-bg);color:var(--amber)}
+.b-wait{background:var(--s3);color:var(--muted)}
+.b-info{background:rgba(109,140,255,.14);color:var(--brand2)}
+.grade{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;font-weight:900;font-size:14px;flex:none}
+.gA{background:var(--green);color:#03170f}.gB{background:#84cc16;color:#162003}.gC{background:var(--amber);color:#231602}.gD,.g-{background:var(--s3);color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:36px 12px}
+.empty svg{width:40px;height:40px;opacity:.5;margin-bottom:6px}
+.hint{font-size:12px;color:var(--muted)}
+.tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--line2);color:var(--muted);font-size:10px;cursor:help;font-weight:700}
+
+/* ---------- scan controls ---------- */
+.ctrl{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) auto;gap:10px;align-items:end}
+.ctrl .scanbtn{height:40px;padding:0 22px;font-size:14px}
+@media (max-width:1000px){.ctrl{grid-template-columns:repeat(2,minmax(0,1fr))}.ctrl .scanwrap{grid-column:1/-1}.ctrl .scanbtn{width:100%}}
+
+/* ---------- regime ---------- */
+.regime{display:flex;gap:16px;align-items:center;flex-wrap:wrap;border-radius:var(--r);padding:14px 16px;margin-bottom:14px;border:1px solid var(--line);background:var(--s1);border-left:4px solid var(--dim)}
+.regime.bull{border-left-color:var(--green)}.regime.bear{border-left-color:var(--red)}.regime.neut{border-left-color:var(--amber)}
+.regime .lbl{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.regime .val{font-size:17px;font-weight:800}
+.regime .adv{flex:1;min-width:220px;font-size:13px;color:#cdd5e5}
+.regime .m{display:flex;flex-direction:column}
+.breadth{width:110px;height:6px;background:var(--red-bg);border-radius:6px;overflow:hidden;margin-top:6px}
+.breadth>div{height:100%;background:var(--green)}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:6px}
+.kpi{background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.kpi:hover{border-color:var(--line2)}
+.kpi small{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.kpi b{font-size:24px;display:block;margin-top:2px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(3,1fr)}.kpis .kpi:nth-child(n+4){display:none}.kpi b{font-size:20px}}
+
+/* ---------- opportunity cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.oc{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;position:relative;transition:border-color .15s,transform .15s}
+.oc:hover{border-color:var(--line2);transform:translateY(-1px)}
+.oc.conf{border-color:rgba(22,199,132,.45);box-shadow:0 0 0 1px rgba(22,199,132,.15) inset}
+.oc.setup{border-color:rgba(245,165,36,.35)}
+.oc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.oc-sym{font-size:16px;font-weight:800}
+.oc-sym span{color:var(--muted);font-weight:500;font-size:13px}
+.oc-px{font-size:13px;margin-top:2px}
+.tfchip{font-size:10px;font-weight:800;background:var(--s3);color:var(--muted);padding:2px 6px;border-radius:5px;margin-left:6px;vertical-align:middle}
+.oc-sum{font-size:12.5px;color:#c4cddf;margin:0;line-height:1.45}
+.lv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--s2);border-radius:10px;padding:8px 10px}
+.lv div{display:flex;flex-direction:column;min-width:0}
+.lv small{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.lv b{font-size:12.5px;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.lv.faded{opacity:.55}
+.pbar{position:relative;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--red) 0,var(--red) var(--e),var(--green) var(--e),var(--green) 100%);opacity:.85}
+.pbar i{position:absolute;top:-4px;width:3px;height:14px;background:#fff;border-radius:2px;transform:translateX(-1px);box-shadow:0 0 0 2px var(--bg)}
+.pbar-l{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-top:-4px}
+.oc-act{display:flex;gap:8px}
+.oc-act .btn{flex:1}
+.star{background:none;border:1px solid var(--line2);border-radius:9px;color:var(--muted);cursor:pointer;width:38px;flex:none!important;font-size:16px;display:flex;align-items:center;justify-content:center}
+.star.on{color:#facc15;border-color:rgba(250,204,21,.4)}
+
+/* ---------- table ---------- */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:13px}
+th{color:var(--muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;user-select:none;white-space:nowrap}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover{background:var(--s2)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:none;color:var(--muted);border-radius:99px;padding:5px 11px;font-size:12px;font-weight:650;cursor:pointer}
+.chip.on{background:var(--s3);color:var(--text);border-color:var(--brand)}
+@media (max-width:760px){
+  table.resp thead{display:none}
+  table.resp tr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 10px;padding:10px 4px;border-bottom:1px solid var(--line)}
+  table.resp td{border:0;padding:2px}
+  table.resp td::before{content:attr(data-l);display:block;font-size:9.5px;color:var(--muted);text-transform:uppercase;font-weight:700}
+  table.resp td.full{grid-column:1/-1}
+}
+
+/* ---------- detail sheet ---------- */
+.sheet{position:fixed;inset:0;background:rgba(3,6,12,.72);z-index:60;display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding:18px 10px;backdrop-filter:blur(3px)}
 .sheet[hidden]{display:none}
-.sheet .inner{background:var(--bg);border:1px solid var(--line);border-radius:14px;width:100%;max-width:1100px;padding:14px}
-.dhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
-.dhead h2{margin:0;font-size:20px}
-canvas{width:100%;display:block;background:#0d1320;border:1px solid var(--line);border-radius:10px}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
-.kv span:nth-child(odd){color:var(--muted)}
+.sheet .inner{background:var(--bg);border:1px solid var(--line);border-radius:18px;width:100%;max-width:1180px;overflow:hidden}
+.dh{position:sticky;top:0;z-index:5;background:rgba(10,14,21,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.dh h2{margin:0;font-size:20px;display:flex;align-items:center;gap:10px}
+.dh .meta{color:var(--muted);font-size:12.5px}
+.dh .acts{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.db{padding:16px}
+.verdict{border-radius:var(--r);padding:14px 16px;margin-bottom:14px;border:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+.verdict.conf{background:linear-gradient(135deg,rgba(22,199,132,.14),rgba(22,199,132,.03));border-color:rgba(22,199,132,.4)}
+.verdict.setup{background:linear-gradient(135deg,rgba(245,165,36,.13),rgba(245,165,36,.02));border-color:rgba(245,165,36,.35)}
+.verdict.wait{background:var(--s1)}
+.verdict .vi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;font-size:20px}
+.verdict.conf .vi{background:var(--green);color:#03170f}.verdict.setup .vi{background:var(--amber);color:#231602}.verdict.wait .vi{background:var(--s3);color:var(--muted)}
+.verdict h4{margin:0 0 4px;font-size:15px;letter-spacing:.2px}
+.verdict p{margin:0;color:#cdd5e5;font-size:13.5px}
+canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);border-radius:12px}
+.chart-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:3px;margin-right:4px;vertical-align:middle;border-radius:2px}
+.dcols{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;margin-top:14px}
+.dcols>div{min-width:0}
+.card h3{flex-wrap:wrap}
+@media (max-width:900px){.dcols{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.sheet{padding:0}.sheet .inner{border-radius:0;border:0;min-height:100%}.db{padding:12px}.dh{padding:10px 12px}.dh h2{font-size:17px}.card{padding:13px}.fields{grid-template-columns:1fr 1fr}.regime{gap:12px}.verdict{padding:12px}.verdict .vi{width:34px;height:34px;font-size:17px}}
+.step{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--s2)}
+.step-h{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.step-n{width:24px;height:24px;border-radius:50%;background:var(--brand);color:#0a0e15;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.step-h b{font-size:13.5px}
+.step-h .badge{margin-left:auto}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.fld{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:7px 9px;display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
+.fld div{min-width:0}
+.fld small{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.fld b{font-size:13px;font-variant-numeric:tabular-nums;word-break:break-all}
+.cp{background:none;border:0;color:var(--muted);cursor:pointer;padding:3px;border-radius:6px;flex:none}
+.cp:hover{color:var(--text);background:var(--s3)}
+.cp svg{width:14px;height:14px;display:block}
+.warn{background:var(--amber-bg);color:#f8c76a;border-radius:9px;padding:8px 10px;font-size:12px;margin-top:8px}
+.warn.red{background:var(--red-bg);color:#f59ca2}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:13px}
+.kv>span:nth-child(odd){color:var(--muted)}
+.sbar{display:grid;grid-template-columns:130px 1fr 44px;gap:8px;align-items:center;font-size:12px;margin:6px 0}
+.sbar .t{height:7px;background:var(--s3);border-radius:6px;overflow:hidden}
+.sbar .t>div{height:100%;background:var(--brand);border-radius:6px}
+.sbar .t>div.full{background:var(--green)}
+.sbar .t>div.zero{background:transparent}
 .check{list-style:none;padding:0;margin:0}
-.check li{padding:5px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px;font-size:13px}
+.check li{padding:6px 0;border-bottom:1px dashed var(--line);display:flex;gap:9px;font-size:13px;align-items:flex-start}
 .check li:last-child{border:0}
-.ok{color:var(--green);font-weight:800}.no{color:var(--red);font-weight:800}
-.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:6px 0}
-.legend i{display:inline-block;width:12px;height:3px;margin-right:4px;vertical-align:middle}
-h3{font-size:14px;margin:0 0 10px}
-/* guide */
-.guide details{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:0 14px}
-.guide summary{padding:13px 0;font-weight:700;cursor:pointer;font-size:15px}
+.ic{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex:none;margin-top:1px}
+.ic.ok{background:var(--green-bg);color:var(--green)}.ic.no{background:var(--red-bg);color:var(--red)}.ic.na{background:var(--s3);color:var(--muted)}
+.mtf td,.mtf th{font-size:12.5px;padding:7px 6px;cursor:default}
+
+/* ---------- journal ---------- */
+.jstats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+@media (max-width:820px){.jstats{grid-template-columns:repeat(3,1fr)}}
+.jc{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.jc-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.jc-top .r{margin-left:auto;text-align:right}
+.jc .lv{margin-top:10px}
+.jc-act{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.jc-act input{width:130px;padding:6px 8px;font-size:12.5px}
+.st-PLAN{background:rgba(109,140,255,.14);color:var(--brand2)}
+.st-OPEN{background:var(--amber-bg);color:var(--amber)}
+.st-WIN{background:var(--green-bg);color:var(--green)}
+.st-LOSS{background:var(--red-bg);color:var(--red)}
+.st-CANCEL{background:var(--s3);color:var(--muted)}
+
+/* ---------- watchlist ---------- */
+.wl-chips{display:flex;gap:8px;flex-wrap:wrap}
+.wl-chip{display:inline-flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--line2);border-radius:99px;padding:5px 6px 5px 12px;font-weight:700;font-size:12.5px}
+.wl-chip button{background:var(--s3);border:0;color:var(--muted);border-radius:50%;width:20px;height:20px;cursor:pointer;line-height:1}
+
+/* ---------- guide ---------- */
+.guide details{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;padding:0 16px}
+.guide summary{padding:14px 0;font-weight:750;cursor:pointer;font-size:14.5px}
 .guide details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
 .guide p,.guide li{color:#cfd6e6}
 .guide ol,.guide ul{padding-left:20px}
 .guide li{margin:4px 0}
-.guide code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:12px}
-.guide table td,.guide table th{font-size:12.5px;cursor:default}
-.callout{border-left:3px solid var(--amber);background:var(--amber-bg);padding:9px 12px;border-radius:6px;margin:10px 0;font-size:13px}
-.callout.blue{border-color:var(--accent);background:rgba(124,156,255,.12)}
-.foot{color:var(--muted);font-size:11px;text-align:center;margin-top:20px}
-@media (max-width:760px){
-  .cols{grid-template-columns:1fr}
-  table.resp thead{display:none}
-  table.resp tr{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;padding:10px 4px;border-bottom:1px solid var(--line)}
-  table.resp td{border:0;padding:2px 4px}
-  table.resp td::before{content:attr(data-l);display:block;font-size:10px;color:var(--muted);text-transform:uppercase}
-  table.resp td.full{grid-column:1/-1}
-}
+.guide code{background:var(--s2);padding:1px 6px;border-radius:5px;font-size:12px}
+.guide table td,.guide table th{font-size:12.5px;cursor:default;vertical-align:top}
+.guide h3{font-size:13.5px;margin:14px 0 8px}
+.callout{border-left:3px solid var(--amber);background:var(--amber-bg);padding:9px 12px;border-radius:8px;margin:10px 0;font-size:13px}
+.callout.blue{border-color:var(--brand);background:rgba(109,140,255,.1)}
+.foot{color:var(--dim);font-size:11px;text-align:center;margin-top:24px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--s3);border:1px solid var(--line2);color:var(--text);padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:90;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-<header>
-  <h1>Precision Zone <span>Crypto</span> <small class="badge b-buy" style="vertical-align:middle">SPOT LONG · v1.3</small></h1>
-  <div id="status">Siap</div>
-</header>
-<nav class="tabs" id="tabs">
-  <button data-tab="scan" class="active">Scanner</button>
-  <button data-tab="guide">Panduan</button>
-  <button data-tab="settings">Pengaturan</button>
-</nav>
+<header class="appbar"><div class="in">
+  <div class="logo">
+    <svg width="34" height="34" viewBox="0 0 34 34"><rect width="34" height="34" rx="9" fill="#151d2c"/><rect x="6" y="19" width="22" height="6" rx="1.5" fill="#16c784" opacity=".35"/><path d="M7 22 L13 15 L17 18 L27 8" stroke="#6d8cff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27" cy="8" r="2.4" fill="#16c784"/></svg>
+    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.0</small></div>
+  </div>
+  <nav class="nav" id="nav">
+    <button data-tab="scan" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Scanner</button>
+    <button data-tab="watch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>Watchlist<span class="cnt" id="wlCnt" hidden></span></button>
+    <button data-tab="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6M9 18h3"/></svg>Jurnal<span class="cnt" id="jCnt" hidden></span></button>
+    <button data-tab="guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>Panduan</button>
+    <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Pengaturan</button>
+  </nav>
+  <div class="right"><div id="status">Siap</div></div>
+</div></header>
 
 <main>
 <!-- ================= SCANNER ================= -->
 <section id="tab-scan">
   <div class="card">
-    <div class="row" style="justify-content:space-between;margin-bottom:10px">
-      <div class="seg" id="scopeSeg">
-        <button data-v="all">Semua Crypto</button>
-        <button data-v="pairs">Pair Pilihan</button>
-      </div>
-      <div class="row">
-        <button class="btn primary" id="btnScan">▶ Scan</button>
-        <button class="btn danger" id="btnStop" disabled>■ Stop</button>
-      </div>
-    </div>
-    <div class="grid">
-      <label class="f">Timeframe
-        <select id="tf"><option value="15m">15m</option><option value="1h">1H</option><option value="4h">4H</option><option value="1d">1D</option></select>
+    <div class="ctrl">
+      <label class="f">Cakupan
+        <select id="scope"><option value="all">Semua crypto (top volume)</option><option value="pairs">Pair pilihan</option><option value="watch">Watchlist saya</option></select>
       </label>
-      <label class="f" data-scope="all">Top pair (volume)
+      <label class="f">Timeframe
+        <select id="tf"><option value="15m">15m · scalping</option><option value="1h">1H · intraday</option><option value="4h">4H · swing</option><option value="1d">1D · posisi</option></select>
+      </label>
+      <label class="f" data-scope="all">Jumlah pair
         <select id="topN"><option>30</option><option>50</option><option>80</option><option>120</option><option>200</option></select>
       </label>
-      <label class="f" data-scope="all">Min. volume 24j (USDT)
-        <select id="minVol"><option value="1000000">1 jt</option><option value="5000000">5 jt</option><option value="20000000">20 jt</option><option value="50000000">50 jt</option></select>
+      <label class="f" data-scope="all">Min. volume 24j
+        <select id="minVol"><option value="1000000">≥ 1 jt USDT</option><option value="5000000">≥ 5 jt USDT</option><option value="20000000">≥ 20 jt USDT</option><option value="50000000">≥ 50 jt USDT</option></select>
       </label>
       <label class="f">Auto-scan
-        <select id="auto"><option value="0">Mati</option><option value="5">5 menit</option><option value="15">15 menit</option><option value="30">30 menit</option><option value="60">60 menit</option></select>
+        <select id="auto"><option value="0">Mati</option><option value="5">Tiap 5 menit</option><option value="15">Tiap 15 menit</option><option value="30">Tiap 30 menit</option><option value="60">Tiap 60 menit</option></select>
       </label>
+      <label class="f">Filter HTF
+        <span class="switch" style="height:38px"><input type="checkbox" id="htf"><span id="htfLbl">Aktif</span></span>
+      </label>
+      <div class="scanwrap"><button class="btn primary scanbtn" id="btnScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Scan</button></div>
     </div>
-    <label class="f" data-scope="pairs" style="margin-top:10px">Pair pilihan (pisahkan dengan koma, contoh: BTC, ETH, SOLUSDT)
+    <label class="f" data-scope="pairs" style="margin-top:12px">Pair pilihan (pisahkan koma, contoh: BTC, ETH, SOL)
       <textarea id="pairs"></textarea>
     </label>
-    <div class="row" style="margin-top:10px">
-      <label class="chk"><input type="checkbox" id="htf"> Filter trend Higher Timeframe (HTF)</label>
-    </div>
+    <div class="hint" data-scope="watch" style="margin-top:10px">Scan hanya pair di Watchlist. Tambahkan pair lewat tombol ☆ di kartu, atau di tab Watchlist.</div>
     <div class="progress"><div id="prog"></div></div>
     <div class="err" id="scanErr"></div>
   </div>
 
-  <div class="stats" id="stats"></div>
+  <div id="regimeBox"></div>
+  <div class="kpis" id="kpis"></div>
 
-  <div class="card">
-    <div class="row" style="justify-content:space-between;margin-bottom:10px">
-      <div class="chips" id="filterChips">
-        <button class="chip on" data-f="all">Semua</button>
-        <button class="chip" data-f="buyc">BUY Confirmed</button>
-        <button class="chip" data-f="buys">BUY Setup</button>
-        <button class="chip" data-f="up">Trend UP</button>
-        <button class="chip" data-f="fresh">Zona Fresh</button>
-        <button class="chip" data-f="ab">Grade A/B</button>
-      </div>
-      <div class="row">
-        <input id="search" placeholder="Cari pair…" style="width:140px">
-        <button class="btn" id="btnCsv">CSV</button>
-      </div>
+  <div class="row" style="justify-content:space-between;margin:16px 2px 4px">
+    <div class="seg" id="viewSeg"><button data-v="cards" class="on">Kartu peluang</button><button data-v="table">Tabel semua</button></div>
+    <div class="row">
+      <input id="search" placeholder="Cari pair…" style="width:150px">
+      <button class="btn sm" id="btnCsv">Export CSV</button>
     </div>
-    <div style="overflow-x:auto">
-      <table class="resp" id="tbl">
-        <thead><tr>
-          <th data-s="sym">Pair</th><th data-s="price">Harga</th><th data-s="ch24">24j</th>
-          <th data-s="trend">Trend</th><th data-s="htf">HTF</th><th data-s="sig">Sinyal</th>
-          <th data-s="score">Skor</th><th data-s="zone">Zona</th><th data-s="dist">Jarak</th><th data-s="rr">RR</th>
-        </tr></thead>
-        <tbody id="tbody"><tr><td colspan="10" class="empty full">Belum ada hasil. Tekan <b>▶ Scan</b> untuk mulai.</td></tr></tbody>
-      </table>
+  </div>
+
+  <div id="viewCards"></div>
+  <div id="viewTable" hidden>
+    <div class="card">
+      <div class="chips" id="filterChips" style="margin-bottom:10px">
+        <button class="chip on" data-f="all">Semua</button>
+        <button class="chip" data-f="buyc">Siap eksekusi</button>
+        <button class="chip" data-f="buys">Siapkan limit</button>
+        <button class="chip" data-f="watchc">Pantau</button>
+        <button class="chip" data-f="up">Trend UP</button>
+        <button class="chip" data-f="fresh">Demand fresh</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="resp" id="tbl">
+          <thead><tr>
+            <th data-s="sym">Pair</th><th data-s="price">Harga</th><th data-s="ch24">24j</th>
+            <th data-s="trend">Trend</th><th data-s="htf">HTF</th><th data-s="sig">Status</th>
+            <th data-s="score">Skor</th><th data-s="zone">Demand</th><th data-s="dist">Jarak</th><th data-s="rr">RR</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ================= WATCHLIST ================= -->
+<section id="tab-watch" hidden>
+  <div class="card">
+    <h3>Watchlist saya <span class="sub" id="wlInfo"></span></h3>
+    <div class="row" style="margin-bottom:12px">
+      <input id="wlAdd" placeholder="Tambah pair, mis. BTC, SOL" style="flex:1;min-width:160px">
+      <button class="btn" id="btnWlAdd">+ Tambah</button>
+      <button class="btn primary" id="btnWlScan">Scan watchlist</button>
+    </div>
+    <div class="wl-chips" id="wlChips"></div>
+  </div>
+  <div id="wlCards"></div>
+</section>
+
+<!-- ================= JOURNAL ================= -->
+<section id="tab-journal" hidden>
+  <div class="jstats" id="jStats"></div>
+  <div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <div class="chips" id="jFilter">
+      <button class="chip on" data-f="active">Aktif</button>
+      <button class="chip" data-f="closed">Selesai</button>
+      <button class="chip" data-f="all">Semua</button>
+    </div>
+    <div class="row">
+      <button class="btn sm" id="btnJRefresh">↻ Update harga</button>
+      <button class="btn sm" id="btnJCsv">Export CSV</button>
+    </div>
+  </div>
+  <div id="jList"></div>
+</section>
+
 <!-- ================= GUIDE ================= -->
 <section id="tab-guide" class="guide" hidden>
-  <div class="callout blue"><b>Cara pakai panduan ini:</b> bagian 1–3 untuk memasang dan menjalankan aplikasi, bagian 4–7 untuk memahami sinyal dan membuat trading plan, bagian 8–11 untuk fitur tambahan, pengaturan, dan troubleshooting.</div>
+  <div class="callout blue"><b>Mulai di sini:</b> baca bagian 1–3 untuk memasang dan memakai aplikasi, bagian 4–7 untuk memahami dan mengeksekusi sinyal, lalu bagian 8–10 untuk manajemen risiko, checklist, dan jurnal. Bagian terakhir berisi glosarium istilah.</div>
 
   <details open><summary>1. Apa yang dilakukan aplikasi ini</summary>
     <p>Aplikasi ini memindai pasar Spot Binance (pair USDT) dengan kerangka <b>Precision Zone System</b>, <b>khusus untuk Spot Long</b> (beli lalu jual lebih tinggi). Tidak ada sinyal short atau sell. Prosesnya:</p>
@@ -193,7 +381,8 @@ h3{font-size:14px;margin:0 0 10px}
       <li>Mencari <b>zona Supply & Demand</b> (base + impulse) yang masih valid.</li>
       <li>Memeriksa apakah harga sedang <b>mendekati atau menyentuh demand zone</b> saat trend UP.</li>
       <li>Mencari <b>konfirmasi candle</b> (pin bar atau engulfing) di zona, ditambah konteks SMC/price action (BOS, CHoCH, liquidity sweep).</li>
-      <li>Menyusun <b>trading plan BUY</b>: Entry, Stop Loss, TP1, TP2 (supply zone di atas dijadikan target), Risk:Reward, dan ukuran posisi.</li>
+      <li>Menyusun <b>tiket eksekusi Binance Spot</b>: Limit/Market Buy lalu OCO Sell (TP + SL). Harga dan jumlah koin sudah dibulatkan sesuai aturan pair di Binance.</li>
+      <li>Menyimpan rencana ke <b>Jurnal</b> untuk melacak hasil (R, win rate, P&amp;L).</li>
     </ol>
     <div class="callout">Datanya dari API publik Binance, jadi <b>tidak perlu login atau API key, dan aplikasi tidak bisa menaruh order</b>. Semua perhitungan dilakukan di browser Anda. Aturan di sini adalah terjemahan algoritmik dari konsep Precision Zone (EMA 50/200 + S&D). Angka-angkanya bisa disesuaikan dengan cheat sheet Anda di tab Pengaturan.</div>
   </details>
@@ -227,14 +416,15 @@ h3{font-size:14px;margin:0 0 10px}
     <div class="callout">Anda juga bisa langsung membuka file <code>index.html</code> di browser laptop tanpa deploy. Deploy diperlukan supaya aplikasi bisa dibuka dari HP atau perangkat mana pun.</div>
   </details>
 
-  <details><summary>3. Alur pakai cepat (5 langkah)</summary>
+  <details open><summary>3. Alur pakai cepat (5 langkah)</summary>
     <ol>
-      <li><b>Pilih cakupan:</b> <i>Semua Crypto</i> (top N pair USDT berdasarkan volume) atau <i>Pair Pilihan</i> (ketik misalnya <code>BTC, ETH, SOL</code>).</li>
-      <li><b>Pilih timeframe:</b> 4H disarankan untuk swing, 1H untuk intraday, 15m untuk scalping (lebih banyak noise).</li>
-      <li><b>Aktifkan Filter HTF</b> supaya sinyal searah trend timeframe di atasnya: 15m→1H, 1H→4H, 4H→1D, 1D→1W.</li>
-      <li>Tekan <b>▶ Scan</b>. Kalau perlu, saring dengan chip <i>BUY Confirmed</i>, <i>Zona Fresh</i>, atau <i>Grade A/B</i>.</li>
-      <li><b>Ketuk sebuah pair</b> untuk membuka detail: chart dengan zona, trading plan, checklist, dan kalkulator ukuran posisi. Selalu cek ulang chart di TradingView sebelum eksekusi.</li>
+      <li><b>Atur sekali di Pengaturan:</b> isi modal, metode ukuran posisi (risiko % atau % modal), dan pembagian TP.</li>
+      <li><b>Scan:</b> pilih cakupan (Semua crypto, Pair pilihan, atau Watchlist) dan timeframe (4H untuk swing, 1H untuk intraday), lalu tekan <b>Scan</b>.</li>
+      <li><b>Baca kondisi pasar</b> di banner atas. Kalau <span class="neg">BEARISH</span>, kurangi ukuran posisi atau tunggu.</li>
+      <li><b>Lihat kartu peluang</b> dari atas ke bawah: <span class="pos">Siap eksekusi</span>, lalu <span class="amb">Siapkan limit</span>, lalu Pantau. Tap kartu untuk membuka detail.</li>
+      <li>Di detail, <b>ikuti Tiket Eksekusi</b> langkah demi langkah (tombol salin ada di setiap angka), lalu tekan <b>Simpan ke jurnal</b>.</li>
     </ol>
+    <div class="callout">Pair yang menarik tapi belum waktunya: tekan ☆ untuk memasukkannya ke Watchlist, lalu scan watchlist secara berkala.</div>
   </details>
 
   <details><summary>4. Aturan sistem (logika di balik sinyal)</summary>
@@ -279,11 +469,13 @@ h3{font-size:14px;margin:0 0 10px}
 
   <details><summary>5. Membaca hasil scan & status sinyal</summary>
     <table>
-      <tr><th>Sinyal</th><th>Artinya</th><th>Tindakan</th></tr>
-      <tr><td><span class="badge b-buy">BUY CONFIRMED</span></td><td>Trend UP, harga menyentuh demand zone yang valid dalam 3 candle terakhir, ada candle konfirmasi bullish, dan harga masih ≤ 1 ATR dari zona (belum lari jauh)</td><td>Kandidat entry. Validasi chart, lalu entry market atau pada retest.</td></tr>
-      <tr><td><span class="badge b-setup">BUY SETUP</span></td><td>Trend UP dan harga dekat demand zone (≤ 1,5 ATR), tetapi belum ada konfirmasi</td><td>Pasang alert atau limit order di proximal, atau tunggu konfirmasi.</td></tr>
-      <tr><td><span class="badge b-wait">WAIT</span></td><td>Syarat belum terpenuhi. Alasannya tertulis di bawah badge, misalnya "Trend DOWN, hindari beli", "Harga jauh dari demand", atau "Menunggu candle konfirmasi".</td><td>Lewati, atau masukkan watchlist kalau alasannya hanya jarak atau konfirmasi.</td></tr>
+      <tr><th>Status</th><th>Artinya</th><th>Tindakan</th></tr>
+      <tr><td><span class="badge b-buy">SIAP EKSEKUSI</span></td><td>Trend UP, HTF tidak DOWN, harga menyentuh demand zone valid dalam 3 candle terakhir, muncul candle konfirmasi bullish, dan harga masih ≤ 1 ATR dari zona</td><td>Beli sekarang (market), lalu pasang OCO sesuai tiket.</td></tr>
+      <tr><td><span class="badge b-setup">SIAPKAN LIMIT</span></td><td>Trend UP dan harga ≤ 1,5 ATR dari demand zone Fresh/Tested 1×, tetapi konfirmasi belum muncul</td><td>Pasang limit buy di proximal, atau tunggu sampai jadi Siap eksekusi.</td></tr>
+      <tr><td><span class="badge b-info">PANTAU</span></td><td>Trend mendukung dan zona bagus, tetapi harga masih jauh (≤ 4 ATR)</td><td>Tekan ☆ untuk Watchlist, lalu scan ulang nanti.</td></tr>
+      <tr><td><span class="badge b-wait">TUNGGU</span></td><td>Syarat tidak terpenuhi, misalnya trend DOWN, demand lemah, atau tidak ada zona. Alasannya ditulis di kartu.</td><td>Jangan beli.</td></tr>
     </table>
+    <p>Setiap kartu menampilkan: ringkasan satu kalimat, level Entry/SL/TP1/RR, dan bar posisi harga (merah = jarak ke SL, hijau = jarak ke TP1, penanda putih = harga sekarang).</p>
     <h3>Komponen skor (0–100)</h3>
     <table>
       <tr><th>Komponen</th><th>Bobot</th></tr>
@@ -297,11 +489,42 @@ h3{font-size:14px;margin:0 0 10px}
       <tr><td>Penalti: RR TP1 di bawah minimum</td><td>−10</td></tr>
     </table>
     <p><b>Grade:</b> A ≥ 75 · B ≥ 60 · C ≥ 45 · D &lt; 45. Fokuskan perhatian ke grade A/B.</p>
-    <p>Pair berstatus <b>WAIT</b> tidak diberi grade (–). Skornya ditampilkan abu-abu sebagai gambaran kualitas zona terdekat. Skor WAIT yang tinggi berarti pair layak masuk watchlist sambil menunggu harga mendekati zona.</p>
+    <p>Pair berstatus <b>Pantau/Tunggu</b> tidak diberi grade (–). Skornya tetap ditampilkan sebagai gambaran kualitas zona terdekat. Di halaman detail, bagian <b>Kenapa skor ini?</b> merinci nilai setiap komponen.</p>
     <p><b>Kolom Jarak</b> menunjukkan jarak harga ke proximal line dalam satuan ATR. 0 berarti harga sudah di dalam zona.</p>
   </details>
 
-  <details><summary>6. Trading plan & manajemen posisi</summary>
+  <details><summary>6. Kondisi pasar & multi-timeframe</summary>
+    <p>Banner <b>Kondisi pasar</b> muncul setelah scan dan dihitung dari 2 hal: trend BTC di timeframe yang dipilih dan <b>% pair yang trend-nya UP</b> (market breadth).</p>
+    <table>
+      <tr><th>Kondisi</th><th>Syarat</th><th>Sikap</th></tr>
+      <tr><td class="pos"><b>BULLISH</b></td><td>BTC UP dan ≥ 45% pair UP</td><td>Risiko normal, prioritaskan grade A/B.</td></tr>
+      <tr><td class="amb"><b>NETRAL</b></td><td>Di antara keduanya</td><td>Selektif: trend dan HTF sama-sama UP, RR ≥ minimum.</td></tr>
+      <tr><td class="neg"><b>BEARISH</b></td><td>BTC DOWN atau &lt; 25% pair UP</td><td>Setengah risiko normal, hanya grade A, atau tunggu di stablecoin.</td></tr>
+    </table>
+    <p>Di halaman detail, tabel <b>Multi-timeframe</b> menampilkan trend dan status di 15m, 1H, 4H, dan 1D. Semakin banyak TF yang UP (idealnya ≥ 3 dari 4), semakin kuat setup-nya.</p>
+  </details>
+
+  <details><summary>7. Cara eksekusi di Binance Spot (Tiket Eksekusi)</summary>
+    <p>Tiket eksekusi mengubah sinyal menjadi order yang tinggal disalin ke Binance. Harga dibulatkan ke <i>tick size</i> dan jumlah koin ke <i>step size</i> pair tersebut, lalu dicek terhadap nilai order minimum Binance.</p>
+    <h3>Langkah 1 · Beli</h3>
+    <ul>
+      <li><b>Siap eksekusi</b>: Binance → Spot → pair → <b>Buy → Market</b>, isi Total USDT dari tiket (atau Limit di harga sekarang).</li>
+      <li><b>Siapkan limit</b>: <b>Buy → Limit</b>, isi Harga limit dan Jumlah dari tiket. Order menunggu sampai harga turun ke zona.</li>
+    </ul>
+    <h3>Langkah 2 (& 3) · Pasang OCO Sell setelah order beli terisi</h3>
+    <ol>
+      <li>Pilih tab <b>Sell → OCO</b>.</li>
+      <li><b>Take profit / Limit</b> = harga TP dari tiket.</li>
+      <li><b>Stop</b> = harga Stop (trigger), dan <b>Stop-limit</b> = harga Stop-limit (sedikit di bawah stop supaya order jual pasti tereksekusi saat harga jatuh cepat).</li>
+      <li><b>Jumlah</b> = qty di tiket. Jumlah ini sudah dikurangi fee 0,1% yang dipotong dalam koin.</li>
+      <li>Kalau memilih <b>50% TP1 · 50% TP2</b>, buat 2 OCO (A dan B) dengan stop yang sama.</li>
+    </ol>
+    <h3>Setelah TP1 tercapai</h3>
+    <p>OCO A selesai. Batalkan OCO B lalu pasang ulang dengan stop di <b>harga entry</b> (break-even), supaya sisa posisi bebas risiko.</p>
+    <div class="callout">Kalau ada peringatan merah (di bawah nilai minimum order), perbesar modal atau % posisi, atau pilih <b>100% di TP1</b>. Kalau bayar fee pakai BNB, jumlah koin yang bisa dijual sedikit lebih besar dari tiket, dan itu tidak masalah.</div>
+  </details>
+
+  <details><summary>8. Trading plan & manajemen posisi</summary>
     <table>
       <tr><th>Level</th><th>Aturan (Spot Long)</th></tr>
       <tr><td>Entry</td><td>Confirmed: harga close terakhir (market). Setup: limit buy di proximal demand.</td></tr>
@@ -326,7 +549,7 @@ h3{font-size:14px;margin:0 0 10px}
     </ol>
   </details>
 
-  <details><summary>7. Checklist sebelum entry</summary>
+  <details><summary>9. Checklist sebelum entry</summary>
     <ol>
       <li>Trend timeframe utama UP dan HTF tidak DOWN.</li>
       <li>Demand zone Fresh atau Tested 1×, bukan Lemah.</li>
@@ -341,10 +564,27 @@ h3{font-size:14px;margin:0 0 10px}
     <p>Halaman detail menampilkan checklist otomatis untuk poin 1–6. Poin 7–8 Anda cek sendiri.</p>
   </details>
 
-  <details><summary>8. Notifikasi browser & Telegram</summary>
+  <details><summary>10. Watchlist & Jurnal trading</summary>
+    <h3>Watchlist</h3>
+    <ul>
+      <li>Tekan ☆ di kartu atau detail untuk menyimpan pair. Bisa juga ditambahkan manual di tab Watchlist.</li>
+      <li><b>Scan watchlist</b> hanya menganalisis pair favorit, jadi lebih cepat. Cocok untuk dipantau tiap beberapa jam.</li>
+    </ul>
+    <h3>Jurnal</h3>
+    <ol>
+      <li>Di Tiket Eksekusi tekan <b>＋ Simpan ke jurnal</b>. Status awalnya <i>Menunggu entry</i> (limit) atau <i>Posisi terbuka</i> (market).</li>
+      <li>Kalau limit sudah terisi, tekan <b>✓ Order terisi</b>.</li>
+      <li>Tutup posisi dengan <b>Kena TP1</b>, <b>Kena SL</b>, atau isi harga exit lalu <b>Tutup posisi</b>.</li>
+      <li>Tekan <b>↻ Update harga</b> untuk melihat R berjalan dan peringatan (harga di entry, TP1 tercapai, harga ≤ SL).</li>
+    </ol>
+    <p>Statistik menghitung win rate, rata-rata R, total R, dan total P&amp;L dari trade yang sudah ditutup. <b>R</b> = hasil dibagi risiko awal: +2R artinya profit 2× dari risiko, −1R artinya kena SL penuh.</p>
+    <div class="callout">Data jurnal dan watchlist tersimpan di browser ini. Gunakan <b>Pengaturan → Backup data</b> secara berkala, lalu <b>Restore</b> di browser atau HP lain.</div>
+  </details>
+
+  <details><summary>11. Notifikasi browser & Telegram</summary>
     <ul>
       <li><b>Auto-scan</b> menjalankan scan ulang tiap N menit <b>selama tab aplikasi terbuka</b>. Browser HP biasanya menghentikan tab di background.</li>
-      <li><b>Notifikasi browser:</b> aktifkan di tab Pengaturan, lalu izinkan saat diminta. Notifikasi muncul untuk sinyal <i>CONFIRMED</i> yang baru.</li>
+      <li><b>Notifikasi browser:</b> aktifkan di tab Pengaturan, lalu izinkan saat diminta. Notifikasi muncul untuk sinyal <i>Siap eksekusi</i> yang baru, berikut tiket ordernya (di Telegram).</li>
       <li><b>Telegram (gratis):</b>
         <ol>
           <li>Chat <code>@BotFather</code> di Telegram, kirim <code>/newbot</code>, lalu salin <b>token</b>.</li>
@@ -357,9 +597,13 @@ h3{font-size:14px;margin:0 0 10px}
     <div class="callout">Token bot disimpan hanya di browser Anda (localStorage) dan tidak ikut ter-upload ke GitHub. Jangan menulis token di dalam file <code>index.html</code>.</div>
   </details>
 
-  <details><summary>9. Penjelasan parameter (tab Pengaturan)</summary>
+  <details><summary>12. Penjelasan parameter (tab Pengaturan)</summary>
     <table>
       <tr><th>Parameter</th><th>Default</th><th>Efek</th></tr>
+      <tr><td>Metode ukuran posisi</td><td>Risiko %</td><td>Risiko % = jumlah koin dihitung dari jarak ke SL. % modal = nilai posisi tetap.</td></tr>
+      <tr><td>Pembagian take profit</td><td>50/50</td><td>50% di TP1 dan 50% di TP2 (2 OCO), atau 100% di TP1 (1 OCO)</td></tr>
+      <tr><td>Fee trading</td><td>0,1%</td><td>Dipakai di perhitungan risiko, profit, jurnal, dan jumlah koin yang bisa dijual</td></tr>
+      <tr><td>Jarak stop-limit</td><td>0,3%</td><td>Seberapa jauh harga stop-limit di bawah stop (trigger)</td></tr>
       <tr><td>Impulse min (×ATR)</td><td>1,2</td><td>Makin besar, zona makin sedikit tetapi makin kuat</td></tr>
       <tr><td>Maks. candle base</td><td>3</td><td>Base yang panjang (konsolidasi lama) biasanya lebih lemah</td></tr>
       <tr><td>Jarak setup (×ATR)</td><td>1,5</td><td>Seberapa dekat harga ke zona agar dianggap SETUP</td></tr>
@@ -370,25 +614,60 @@ h3{font-size:14px;margin:0 0 10px}
     </table>
   </details>
 
-  <details><summary>10. Troubleshooting</summary>
+  <details><summary>13. Troubleshooting</summary>
     <table>
       <tr><th>Masalah</th><th>Solusi</th></tr>
       <tr><td>"Gagal memuat data"</td><td>Cek koneksi. Kalau jaringan atau ISP memblokir domain Binance, coba jaringan lain atau DNS 1.1.1.1. Aplikasi otomatis mencoba 2 endpoint.</td></tr>
       <tr><td>"Rate limit" (429)</td><td>Terlalu banyak request. Tunggu 1 menit, kurangi Top pair, atau perpanjang interval auto-scan.</td></tr>
       <tr><td>Pair tidak muncul di Pair Pilihan</td><td>Pastikan pair ada di Spot Binance dengan quote USDT. Pair dengan data &lt; 220 candle (koin baru) dilewati karena EMA200 belum valid.</td></tr>
       <tr><td>Notifikasi tidak muncul di HP</td><td>Gunakan Telegram. Notifikasi browser di HP terbatas, terutama di iOS (harus dipasang ke Home Screen).</td></tr>
-      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. Pastikan header bertuliskan <b>SPOT LONG · v1.3</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=13</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
+      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. Pastikan header bertuliskan <b>Spot Long Scanner · v2.0</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=20</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
+      <tr><td>Tiket menampilkan "aturan pair belum dimuat"</td><td>Koneksi ke exchangeInfo gagal. Tutup lalu buka lagi detail pair-nya. Tanpa aturan pair, angka tidak dibulatkan dan perlu disesuaikan manual di Binance.</td></tr>
       <tr><td>Pengaturan hilang</td><td>Pengaturan disimpan per browser. Mode incognito atau menghapus data browser akan meresetnya.</td></tr>
     </table>
   </details>
 
-  <details><summary>11. Disclaimer</summary>
+  <details><summary>14. Glosarium</summary>
+    <table>
+      <tr><td><b>ATR</b></td><td>Average True Range: rata-rata jarak gerak harga per candle. Dipakai untuk mengukur jarak secara relatif terhadap volatilitas.</td></tr>
+      <tr><td><b>Demand zone</b></td><td>Area harga tempat pembeli besar sebelumnya masuk (base sebelum harga naik kuat). Area beli.</td></tr>
+      <tr><td><b>Supply zone</b></td><td>Area tempat penjual besar masuk. Di aplikasi ini dipakai sebagai target TP.</td></tr>
+      <tr><td><b>Proximal / Distal</b></td><td>Batas zona yang dekat dengan harga (level entry) dan yang jauh (dasar SL).</td></tr>
+      <tr><td><b>Fresh</b></td><td>Zona yang belum pernah disentuh lagi, sehingga order di dalamnya masih utuh.</td></tr>
+      <tr><td><b>HTF</b></td><td>Higher Timeframe, yaitu timeframe di atasnya (mis. 1D untuk scan 4H).</td></tr>
+      <tr><td><b>BOS / CHoCH</b></td><td>Break of Structure (trend berlanjut) dan Change of Character (tanda awal pembalikan).</td></tr>
+      <tr><td><b>Liquidity sweep</b></td><td>Wick menembus swing low lalu close kembali di atasnya, tanda stop loss ritel tersapu.</td></tr>
+      <tr><td><b>RR</b></td><td>Risk:Reward, yaitu potensi profit dibagi potensi rugi. RR 2 artinya profit 2× dari risiko.</td></tr>
+      <tr><td><b>R</b></td><td>Satuan hasil trade relatif terhadap risiko awal (+1R = profit sebesar risiko).</td></tr>
+      <tr><td><b>OCO</b></td><td>One-Cancels-the-Other: 2 order jual (TP dan SL) sekaligus. Kalau salah satu tereksekusi, yang lain otomatis batal.</td></tr>
+      <tr><td><b>Tick / Step size</b></td><td>Kelipatan harga dan jumlah koin terkecil yang diizinkan Binance untuk pair tersebut.</td></tr>
+    </table>
+  </details>
+
+  <details><summary>15. Disclaimer</summary>
     <p>Aplikasi ini adalah alat bantu analisis, <b>bukan nasihat keuangan</b>. Sinyal dihasilkan oleh aturan otomatis yang bisa salah, terutama saat volatilitas ekstrem atau likuiditas rendah. Lakukan backtest atau paper trading dulu, gunakan manajemen risiko, dan tanggung sendiri setiap keputusan trading.</p>
   </details>
+
 </section>
 
 <!-- ================= SETTINGS ================= -->
 <section id="tab-settings" hidden>
+  <div class="card">
+    <h3>Modal & ukuran posisi</h3>
+    <div class="grid">
+      <label class="f">Modal (USDT)<input type="number" step="10" min="0" id="s_capital"></label>
+      <label class="f">Metode ukuran posisi
+        <select id="s_sizeMode"><option value="risk">Berdasarkan risiko %</option><option value="pct">Berdasarkan % modal</option></select>
+      </label>
+      <label class="f">Risiko per trade (%)<input type="number" step="0.1" min="0.1" id="s_riskPct"></label>
+      <label class="f">Nilai posisi default (% modal)<input type="number" step="1" min="1" max="100" id="s_posPct"></label>
+      <label class="f">Pembagian take profit
+        <select id="s_tpSplit"><option value="50">50% di TP1 · 50% di TP2</option><option value="100">100% di TP1</option></select>
+      </label>
+      <label class="f">Fee trading (%)<input type="number" step="0.01" min="0" id="s_fee"></label>
+      <label class="f">Jarak stop-limit dari stop (%)<input type="number" step="0.05" min="0.05" id="s_stopOff"></label>
+    </div>
+  </div>
   <div class="card">
     <h3>Parameter sistem</h3>
     <div class="grid">
@@ -398,108 +677,108 @@ h3{font-size:14px;margin:0 0 10px}
       <label class="f">Buffer SL (×ATR)<input type="number" step="0.05" min="0" id="s_slBuf"></label>
       <label class="f">Min RR<input type="number" step="0.1" min="1" id="s_minRR"></label>
     </div>
-    <div class="row" style="margin-top:6px"><label class="chk"><input type="checkbox" id="s_exclNonCrypto"> Kecualikan token saham (mis. NVDAB, TSLAB) &amp; emas (XAUT, PAXG) dari mode Semua Crypto</label></div>
-    <label class="f" style="margin-top:10px">Kecualikan pair tertentu (pisahkan koma)<input id="s_exclude" placeholder="contoh: TRX, FDUSD"></label>
-  </div>
-  <div class="card">
-    <h3>Manajemen risiko (kalkulator)</h3>
-    <div class="grid">
-      <label class="f">Modal (USDT)<input type="number" step="10" min="0" id="s_capital"></label>
-      <label class="f">Metode ukuran posisi
-        <select id="s_sizeMode"><option value="risk">Berdasarkan risiko %</option><option value="pct">Berdasarkan % modal</option></select>
-      </label>
-      <label class="f">Risiko per trade (%)<input type="number" step="0.1" min="0.1" id="s_riskPct"></label>
-      <label class="f">Nilai posisi default (% modal)<input type="number" step="1" min="1" max="100" id="s_posPct"></label>
-    </div>
+    <div style="margin-top:12px"><label class="switch"><input type="checkbox" id="s_exclNonCrypto"> Kecualikan token saham (NVDAB, TSLAB, …) &amp; emas (XAUT, PAXG)</label></div>
+    <label class="f" style="margin-top:12px">Kecualikan pair tertentu (pisahkan koma)<input id="s_exclude" placeholder="contoh: TRX, FDUSD"></label>
   </div>
   <div class="card">
     <h3>Notifikasi</h3>
-    <div class="row" style="margin-bottom:10px">
-      <label class="chk"><input type="checkbox" id="s_notify"> Notifikasi browser untuk sinyal CONFIRMED baru</label>
-    </div>
+    <div style="margin-bottom:12px"><label class="switch"><input type="checkbox" id="s_notify"> Notifikasi browser untuk sinyal "Siap eksekusi" baru</label></div>
     <div class="grid">
       <label class="f">Telegram Bot Token<input type="password" id="s_tgToken" placeholder="123456:ABC…" autocomplete="off"></label>
       <label class="f">Telegram Chat ID<input id="s_tgChat" placeholder="123456789"></label>
     </div>
     <div class="row" style="margin-top:10px"><button class="btn" id="btnTgTest">Tes Telegram</button><span class="mut" id="tgMsg"></span></div>
   </div>
+  <div class="card">
+    <h3>Data</h3>
+    <div class="row">
+      <button class="btn" id="btnBackup">Backup data (JSON)</button>
+      <label class="btn" style="cursor:pointer">Restore data<input type="file" id="fileRestore" accept="application/json" hidden></label>
+      <span class="hint">Backup berisi pengaturan, watchlist, dan jurnal. Berguna untuk pindah browser atau perangkat.</span>
+    </div>
+  </div>
   <div class="row">
-    <button class="btn primary" id="btnSave">Simpan</button>
-    <button class="btn" id="btnReset">Reset ke default</button>
+    <button class="btn primary" id="btnSave">Simpan pengaturan</button>
+    <button class="btn" id="btnReset">Reset parameter ke default</button>
     <span class="mut" id="saveMsg"></span>
   </div>
 </section>
 
-<p class="foot">Data: Binance Public API · Semua perhitungan berjalan di browser Anda · Bukan nasihat keuangan</p>
+<p class="foot">Data: Binance Public API · Perhitungan berjalan di browser Anda · Khusus Spot Long · Bukan nasihat keuangan</p>
 </main>
 
-<!-- ================= DETAIL SHEET ================= -->
+<!-- ================= DETAIL ================= -->
 <div id="detail" class="sheet" hidden>
   <div class="inner">
-    <div class="dhead">
+    <div class="dh">
       <div>
-        <h2 id="dTitle">—</h2>
-        <div id="dSub" class="mut"></div>
+        <h2><span id="dTitle">—</span> <span id="dGrade"></span></h2>
+        <div class="meta" id="dSub"></div>
       </div>
-      <div class="row">
-        <div class="seg" id="dTfSeg">
-          <button data-v="15m">15m</button><button data-v="1h">1H</button><button data-v="4h">4H</button><button data-v="1d">1D</button>
+      <div class="acts">
+        <button class="star" id="dStar" title="Watchlist">☆</button>
+        <a class="btn sm" id="dBinance" target="_blank" rel="noopener">Binance ↗</a>
+        <a class="btn sm" id="dTv" target="_blank" rel="noopener">TradingView ↗</a>
+        <button class="btn sm" id="dClose">✕ Tutup</button>
+      </div>
+    </div>
+    <div class="db">
+      <div id="dVerdict"></div>
+      <div class="chart-bar">
+        <div class="seg" id="dTfSeg"><button data-v="15m">15m</button><button data-v="1h">1H</button><button data-v="4h">4H</button><button data-v="1d">1D</button></div>
+        <div class="legend">
+          <span><i style="background:var(--orange)"></i>EMA50</span><span><i style="background:var(--blue)"></i>EMA200</span>
+          <span><i style="background:var(--green)"></i>Demand</span><span><i style="background:var(--red)"></i>Supply</span>
+          <span><i style="background:#fff"></i>Entry</span><span><i style="background:#f87171"></i>SL</span><span><i style="background:#4ade80"></i>TP</span>
         </div>
-        <a class="btn" id="dTv" target="_blank" rel="noopener">TradingView ↗</a>
-        <button class="btn" id="dClose">✕</button>
+        <div class="seg" id="dZoom"><button data-v="80">80</button><button data-v="150">150</button><button data-v="250">250</button></div>
       </div>
-    </div>
-    <div class="row" style="justify-content:space-between">
-      <div class="legend">
-        <span><i style="background:var(--orange)"></i>EMA50</span><span><i style="background:var(--blue)"></i>EMA200</span>
-        <span><i style="background:var(--green)"></i>Demand</span><span><i style="background:var(--red)"></i>Supply</span>
-        <span><i style="background:#fff"></i>Entry</span><span><i style="background:#f87171"></i>SL</span><span><i style="background:#4ade80"></i>TP</span>
-      </div>
-      <div class="seg" id="dZoom"><button data-v="80">80</button><button data-v="150">150</button><button data-v="250">250</button></div>
-    </div>
-    <canvas id="chart" height="380"></canvas>
-    <div class="cols">
-      <div class="card">
-        <h3>Trading plan</h3>
-        <div id="dPlan" class="kv"></div>
-        <div class="row" style="margin-top:10px"><button class="btn" id="dCopy">Salin plan</button><span class="mut" id="dCopyMsg"></span></div>
-      </div>
-      <div class="card">
-        <h3>Kalkulator posisi</h3>
-        <div class="grid">
-          <label class="f">Modal (USDT)<input type="number" id="cCap"></label>
-          <label class="f">Metode ukuran posisi
-            <select id="cMode"><option value="risk">Berdasarkan risiko %</option><option value="pct">Berdasarkan % modal</option></select>
-          </label>
-          <label class="f" id="cRiskWrap">Risiko per trade (%)<input type="number" step="0.1" min="0.1" id="cRisk"></label>
-          <label class="f" id="cPctWrap">Nilai posisi (% modal)
-            <select id="cPct"><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option><option value="25">25%</option><option value="33">33%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option><option value="custom">Custom…</option></select>
-          </label>
-          <label class="f" id="cPctCustomWrap">Custom % modal<input type="number" step="1" min="1" max="100" id="cPctCustom"></label>
+      <canvas id="chart" height="380"></canvas>
+      <div class="dcols">
+        <div>
+          <div class="card" id="ticketCard">
+            <h3>Tiket eksekusi · Binance Spot <span class="sub" id="tkFilters"></span></h3>
+            <div class="grid" style="margin-bottom:12px">
+              <label class="f">Modal (USDT)<input type="number" id="cCap"></label>
+              <label class="f">Metode
+                <select id="cMode"><option value="risk">Risiko %</option><option value="pct">% modal</option></select>
+              </label>
+              <label class="f" id="cRiskWrap">Risiko (%)<input type="number" step="0.1" min="0.1" id="cRisk"></label>
+              <label class="f" id="cPctWrap">Nilai posisi
+                <select id="cPct"><option value="5">5% modal</option><option value="10">10% modal</option><option value="20">20% modal</option><option value="25">25% modal</option><option value="33">33% modal</option><option value="50">50% modal</option><option value="75">75% modal</option><option value="100">100% modal</option><option value="custom">Custom…</option></select>
+              </label>
+              <label class="f" id="cPctCustomWrap">Custom (%)<input type="number" step="1" min="1" max="100" id="cPctCustom"></label>
+              <label class="f">Take profit
+                <select id="cSplit"><option value="50">50% TP1 · 50% TP2</option><option value="100">100% di TP1</option></select>
+              </label>
+            </div>
+            <div id="ticket"></div>
+            <div class="row" style="margin-top:6px">
+              <button class="btn green" id="btnJournal">＋ Simpan ke jurnal</button>
+              <button class="btn" id="btnCopyAll">Salin plan</button>
+              <a class="btn" id="btnOpenBinance" target="_blank" rel="noopener">Buka di Binance ↗</a>
+            </div>
+          </div>
         </div>
-        <div id="cOut" class="kv" style="margin-top:10px"></div>
+        <div>
+          <div class="card"><h3>Kenapa skor ini? <span class="sub" id="dScoreTxt"></span></h3><div id="dScore"></div></div>
+          <div class="card"><h3>Checklist Precision Zone</h3><ul class="check" id="dCheck"></ul></div>
+          <div class="card"><h3>Multi-timeframe <span class="sub">trend di semua TF</span></h3><div id="dMtf" class="hint">Memuat…</div></div>
+          <div class="card"><h3>Struktur pasar</h3><div id="dCtx" class="kv"></div></div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Checklist Precision Zone</h3>
-        <ul class="check" id="dCheck"></ul>
-      </div>
-      <div class="card">
-        <h3>Struktur & konteks</h3>
-        <div id="dCtx" class="kv"></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3>Zona aktif</h3>
-      <div style="overflow-x:auto"><table id="dZones"></table></div>
+      <div class="card"><h3>Zona aktif</h3><div class="tbl-wrap"><table id="dZones"></table></div></div>
     </div>
   </div>
 </div>
-
+<div class="toast" id="toast"></div>
 <script>
 'use strict';
 /* =========================================================
-   KONFIGURASI & STORAGE
+   PRECISION ZONE · SPOT LONG SCANNER v2.0
+   Konfigurasi & penyimpanan
    ========================================================= */
+const APP_VERSION = '2.0';
 const API_BASES = ['https://data-api.binance.vision', 'https://api.binance.com'];
 const HTF_MAP = { '15m': '1h', '1h': '4h', '4h': '1d', '1d': '1w' };
 const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR','EURI','AEUR','GBP','USDE','USD1','XUSD','BFUSD','RLUSD','PYUSD','UST','USTC','PAX','SUSD','FRAX','LUSD','GUSD','TRY','BRL','ZAR','IDRT','BIDR','U','USDEB','RWUSD','USDS','USDQ','EURC']);
@@ -507,17 +786,19 @@ const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR',
 const CRYPTO_B = new Set(['ARB','BB','BNB','CKB','DGB','PHB','SHIB','TRB','VIB','MOB','AMB','YB']);
 const NONCRYPTO = new Set(['XAUT','PAXG']);
 const isNonCrypto = base => NONCRYPTO.has(base) || (base.length >= 3 && base.endsWith('B') && !CRYPTO_B.has(base));
-const DEFAULTS = {
+const PARAM_DEFAULTS = { impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2 };
+const DEFAULTS = Object.assign({
   scope: 'all', pairs: 'BTC, ETH, SOL, BNB, XRP, DOGE, ADA, LINK, AVAX, SUI',
   topN: '80', minVol: '5000000', tf: '4h', htf: true, auto: '0',
-  impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2,
-  capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: ''
-};
+  capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, tpSplit: '50', fee: 0.1, stopOff: 0.3,
+  notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: '', view: 'cards'
+}, PARAM_DEFAULTS);
 const store = {
   get(k, d) { try { const v = localStorage.getItem('pzc_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('pzc_' + k, JSON.stringify(v)); } catch (e) {} }
 };
 let S = Object.assign({}, DEFAULTS, store.get('settings', {}));
+delete S.showSell;
 
 /* =========================================================
    INDIKATOR
@@ -774,6 +1055,7 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
   return { price, trend, htfTrend, e50: e50[n - 1], e200: e200[n - 1], atr: A, zones, st, signal, state: best ? best.state : '', best, score, grade, reason, raw, n };
 }
 
+
 /* =========================================================
    DATA BINANCE
    ========================================================= */
@@ -784,7 +1066,7 @@ async function api(path) {
     const idx = (ACTIVE_BASE + t) % API_BASES.length;
     try {
       const r = await fetch(API_BASES[idx] + path);
-      if (r.status === 429 || r.status === 418) throw Object.assign(new Error('Rate limit Binance — tunggu ±1 menit'), { fatal: true });
+      if (r.status === 429 || r.status === 418) throw Object.assign(new Error('Rate limit Binance, tunggu ±1 menit'), { fatal: true });
       if (!r.ok) { lastErr = new Error('HTTP ' + r.status); continue; }
       ACTIVE_BASE = idx;
       return await r.json();
@@ -797,14 +1079,14 @@ async function klines(sym, tf, limit = 500) {
   return d.map(r => ({ t: r[0], o: +r[1], h: +r[2], l: +r[3], c: +r[4], v: +r[5], ct: r[6] }));
 }
 function parsePairs(txt) {
-  return [...new Set(txt.toUpperCase().split(/[\s,;]+/).filter(Boolean).map(s => s.endsWith('USDT') ? s : s + 'USDT'))];
+  return [...new Set(String(txt || '').toUpperCase().split(/[\s,;/]+/).filter(Boolean).map(s => s.replace(/[^A-Z0-9]/g, '')).filter(Boolean).map(s => s.endsWith('USDT') ? s : s + 'USDT'))];
 }
-async function universe() {
+async function universe(scope) {
   const tick = await api('/api/v3/ticker/24hr');
   const map = new Map(tick.map(t => [t.symbol, t]));
   const fresh = t => t && +t.count > 0 && Date.now() - t.closeTime < 864e5;
-  if (S.scope === 'pairs') {
-    const list = parsePairs(S.pairs);
+  if (scope === 'pairs' || scope === 'watch') {
+    const list = scope === 'watch' ? WATCH.slice() : parsePairs(S.pairs);
     const missing = list.filter(s => !fresh(map.get(s)));
     return { list: list.filter(s => fresh(map.get(s))), map, missing };
   }
@@ -818,13 +1100,33 @@ async function universe() {
     .slice(0, +S.topN).map(t => t.symbol);
   return { list, map, missing: [] };
 }
+const FILTER_CACHE = {};
+async function getFilters(sym) {
+  if (FILTER_CACHE[sym]) return FILTER_CACHE[sym];
+  const d = await api(`/api/v3/exchangeInfo?symbol=${sym}`);
+  const f = Object.fromEntries(d.symbols[0].filters.map(x => [x.filterType, x]));
+  const dec = s => { const t = String(s).replace(/0+$/, ''); return t.includes('.') ? t.split('.')[1].length : 0; };
+  const tick = f.PRICE_FILTER.tickSize, step = f.LOT_SIZE.stepSize;
+  const out = {
+    tick: +tick, tickDec: dec(tick), step: +step, stepDec: dec(step), minQty: +f.LOT_SIZE.minQty,
+    minNotional: +((f.NOTIONAL && f.NOTIONAL.minNotional) || (f.MIN_NOTIONAL && f.MIN_NOTIONAL.minNotional) || 5)
+  };
+  FILTER_CACHE[sym] = out;
+  return out;
+}
+async function tickerPrices(syms) {
+  if (!syms.length) return {};
+  const d = await api('/api/v3/ticker/price?symbols=' + encodeURIComponent(JSON.stringify(syms)));
+  return Object.fromEntries(d.map(x => [x.symbol, +x.price]));
+}
 
 /* =========================================================
-   UI: helpers
+   HELPERS
    ========================================================= */
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function fp(p) {
   if (!isFinite(p)) return '—';
   const a = Math.abs(p);
@@ -832,34 +1134,104 @@ function fp(p) {
   return p.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 }
 const pct = x => (x >= 0 ? '+' : '') + x.toFixed(2) + '%';
-function sigBadge(r) {
-  if (r.signal === 'WAIT') return '<span class="badge b-wait">WAIT</span>';
-  const cls = r.state === 'SETUP' ? 'b-setup' : 'b-buy';
-  return `<span class="badge ${cls}">${r.signal} ${r.state}</span>`;
-}
+const usd = x => (x < 0 ? '-' : '') + Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const base = sym => sym.replace(/USDT$/, '');
 const trendCls = t => t === 'UP' ? 'b-up' : t === 'DOWN' ? 'b-down' : t === 'SIDEWAYS' ? 'b-side' : 'mut';
+const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
 function setStatus(t) { const el = $('#status'); if (el) el.textContent = t; }
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
+function copyText(txt) {
+  const ok = () => toast('Disalin: ' + (txt.length > 40 ? txt.slice(0, 40) + '…' : txt));
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt).then(ok, () => fallbackCopy(txt, ok));
+  fallbackCopy(txt, ok);
+}
+function fallbackCopy(txt, ok) {
+  const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); ok(); } catch (e) { toast('Gagal menyalin'); }
+  ta.remove();
+}
+function floorTo(v, step, dec) { if (!(step > 0)) return +v.toFixed(8); return +(Math.floor(v / step + 1e-9) * step).toFixed(dec); }
+function ceilTo(v, step, dec) { if (!(step > 0)) return +v.toFixed(8); return +(Math.ceil(v / step - 1e-9) * step).toFixed(dec); }
+const fx = (v, dec) => Number(v).toFixed(dec);
+
+/* =========================================================
+   STATUS, KATEGORI & BAHASA SEDERHANA
+   ========================================================= */
+// cat: 'exec' (siap eksekusi) | 'limit' (siapkan limit) | 'watch' (pantau) | 'other'
+function category(r) {
+  if (r.state === 'CONFIRMED') return 'exec';
+  if (r.state === 'SETUP') return 'limit';
+  const b = r.best;
+  if (b && b.priorTests <= 1 && r.score >= 45 && (r.trend === 'UP' || (r.trend === 'SIDEWAYS' && r.htfTrend === 'UP')) && b.dist <= 4) return 'watch';
+  return 'other';
+}
+const CAT = {
+  exec: { label: 'SIAP EKSEKUSI', cls: 'b-buy', dot: 'var(--green)' },
+  limit: { label: 'SIAPKAN LIMIT', cls: 'b-setup', dot: 'var(--amber)' },
+  watch: { label: 'PANTAU', cls: 'b-info', dot: 'var(--brand)' },
+  other: { label: 'TUNGGU', cls: 'b-wait', dot: 'var(--dim)' }
+};
+function statusBadge(r) { const c = CAT[category(r)]; return `<span class="badge ${c.cls}">${c.label}</span>`; }
+function oneLiner(r) {
+  const b = r.best;
+  if (!b) return 'Belum ada demand zone valid di bawah harga.';
+  const zs = zoneStatus(Math.max(0, b.priorTests)).toLowerCase();
+  if (r.state === 'CONFIRMED') return `${b.conf} muncul di demand ${zs}. Beli sekarang (market) dengan SL di bawah zona.`;
+  if (r.state === 'SETUP') return b.inside ? `Harga sudah di dalam demand ${zs}. Pasang limit buy, atau tunggu candle konfirmasi.` : `Harga ${b.dist.toFixed(1)} ATR di atas demand ${zs}. Pasang limit buy di proximal.`;
+  if (category(r) === 'watch') return `Trend mendukung. Tunggu harga turun ke demand ${zs} (${b.dist.toFixed(1)} ATR lagi).`;
+  return r.reason || 'Belum memenuhi syarat.';
+}
+function verdictHTML(r) {
+  const b = r.best, cat = category(r);
+  if (!b) return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>TUNGGU · tidak ada setup</h4><p>Tidak ada demand zone yang masih valid di bawah harga pada timeframe ${r.tf.toUpperCase()}. Tunggu struktur baru terbentuk, atau cek timeframe lain.</p></div></div>`;
+  const zs = zoneStatus(Math.max(0, b.priorTests)).toLowerCase();
+  const slp = (b.risk / b.entry * 100).toFixed(2), tpp = ((b.tp1 - b.entry) / b.entry * 100).toFixed(2);
+  const lv = `Entry <b>${fp(b.entry)}</b>, SL <b class="neg">${fp(b.sl)}</b> (−${slp}%), TP1 <b class="pos">${fp(b.tp1)}</b> (+${tpp}%), RR <b>${b.rr.toFixed(2)}</b>.`;
+  const warn = [];
+  if (b.nearSupply < 1) warn.push('supply zone dekat di atas harga, ruang naik sempit');
+  if (b.risk > 3 * r.atr) warn.push('SL lebar (> 3 ATR)');
+  if (b.rr < S.minRR) warn.push(`RR di bawah ${S.minRR}`);
+  if (REGIME && REGIME.key === 'bear') warn.push('kondisi pasar bearish, perkecil posisi');
+  const w = warn.length ? `<br><span class="amb">⚠ Perhatian: ${warn.join('; ')}.</span>` : '';
+  if (cat === 'exec') return `<div class="verdict conf"><div class="vi">✓</div><div><h4>SIAP EKSEKUSI · beli sekarang</h4><p>Trend ${r.tf.toUpperCase()} naik dan harga baru saja menyentuh demand ${zs} (${b.zone.pattern}), lalu muncul <b>${b.conf}</b>. ${lv} Ikuti langkah di Tiket Eksekusi.${w}</p></div></div>`;
+  if (cat === 'limit') return `<div class="verdict setup"><div class="vi">⏱</div><div><h4>SIAPKAN LIMIT ORDER · tunggu harga datang</h4><p>Trend ${r.tf.toUpperCase()} naik dan harga ${b.inside ? 'sudah berada di dalam' : `tinggal ${b.dist.toFixed(1)} ATR di atas`} demand ${zs} (${b.zone.pattern}). Pasang <b>limit buy</b> di proximal, atau tunggu candle konfirmasi bullish untuk entry yang lebih aman. ${lv}${w}</p></div></div>`;
+  if (cat === 'watch') return `<div class="verdict wait"><div class="vi">👁</div><div><h4>PANTAU · belum waktunya</h4><p>Trend mendukung, tetapi harga masih ${b.dist.toFixed(1)} ATR di atas demand ${zs} terdekat (${fp(b.zone.proximal)}). Tambahkan ke Watchlist dan scan ulang nanti. Rencana bersyarat: ${lv}</p></div></div>`;
+  return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>TUNGGU · jangan beli dulu</h4><p>Alasan: <b>${esc(r.reason)}</b>. ${r.trend === 'DOWN' ? 'Untuk spot long, hindari membeli saat trend turun. Kalau sudah memegang koin ini, pertimbangkan ambil profit atau perketat SL.' : 'Syarat Precision Zone belum terpenuhi.'}</p></div></div>`;
+}
 
 /* =========================================================
    STATE
    ========================================================= */
-let RESULTS = [], abort = false, scanning = false, autoTimer = null;
+let RESULTS = [], WRESULTS = [], REGIME = null;
+let abort = false, scanning = false, autoTimer = null;
 let FILTER = 'all', SORT = { k: 'sig', dir: -1 };
 let SEEN = new Set(store.get('seen', []));
+let WATCH = store.get('watch', []);
+let JOURNAL = store.get('journal', []);
+let JFILTER = 'active', JPRICES = {};
+let DET = null, ZOOM = 150, TK = null;
 
 /* =========================================================
    SCAN
    ========================================================= */
-async function runScan() {
+async function runScan(scope) {
   if (scanning) return;
+  scope = scope || S.scope;
+  if (scope === 'watch' && !WATCH.length) { toast('Watchlist masih kosong'); return; }
   scanning = true; abort = false;
-  $('#btnScan').disabled = true; $('#btnStop').disabled = false; $('#scanErr').textContent = '';
+  const btn = $('#btnScan'), wbtn = $('#btnWlScan');
+  btn.disabled = true; wbtn.disabled = true;
+  btn.lastChild.textContent = 'Stop';
+  btn.disabled = false; btn.onclick = () => { abort = true; };
+  $('#scanErr').textContent = '';
   const prog = $('#prog'); prog.style.width = '0%';
-  const P = Object.assign({}, S, { htf: S.htf, tf: S.tf });
+  const P = Object.assign({}, S, { tf: S.tf });
   try {
     setStatus('Memuat daftar pair…');
-    const { list, map, missing } = await universe();
-    if (missing.length) $('#scanErr').textContent = 'Tidak ditemukan / tidak aktif di Spot Binance: ' + missing.join(', ');
+    const { list, map, missing } = await universe(scope);
+    if (missing.length) $('#scanErr').textContent = 'Tidak ditemukan / tidak aktif di Spot Binance: ' + missing.map(base).join(', ');
     if (!list.length) throw new Error('Tidak ada pair untuk di-scan.');
     const out = []; let done = 0, idx = 0, errs = 0;
     const htf = HTF_MAP[S.tf];
@@ -879,34 +1251,142 @@ async function runScan() {
         done++;
         prog.style.width = (done / list.length * 100).toFixed(1) + '%';
         setStatus(`Scan ${done}/${list.length}…`);
-        await sleep(60);
+        await sleep(50);
       }
     };
     await Promise.all(Array.from({ length: 4 }, worker));
-    RESULTS = out;
-    renderAll();
+    // BTC sebagai acuan kondisi pasar
+    let btc = out.find(r => r.sym === 'BTCUSDT');
+    if (!btc) { try { const raw = await klines('BTCUSDT', S.tf, 500); btc = analyze(raw, null, Object.assign({}, P, { htf: false })); } catch (e) {} }
+    if (scope === 'watch') { WRESULTS = out; renderWatch(); }
+    else { RESULTS = out; REGIME = computeRegime(out, btc, map); renderScanner(); }
+    if (scope === 'watch' && !REGIME) REGIME = computeRegime(out, btc, map);
     const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    setStatus(`${abort ? 'Dihentikan' : 'Selesai'} · ${out.length} pair · ${time}` + (errs ? ` · ${errs} gagal` : ''));
+    setStatus(`${abort ? 'Dihentikan' : 'Update'} ${time} · ${out.length} pair · ${S.tf.toUpperCase()}` + (errs ? ` · ${errs} gagal` : ''));
     notifyNew(out);
   } catch (e) {
     $('#scanErr').textContent = e.message; setStatus('Error');
+    if (scope === 'watch') toast(e.message);
   } finally {
-    scanning = false; $('#btnScan').disabled = false; $('#btnStop').disabled = true;
+    scanning = false;
+    btn.lastChild.textContent = 'Scan'; btn.onclick = () => runScan();
+    wbtn.disabled = false; prog.style.width = '0%';
   }
 }
 
 /* =========================================================
-   RENDER TABEL
+   KONDISI PASAR (REGIME)
    ========================================================= */
+function computeRegime(list, btc, map) {
+  const valid = list.filter(r => r.trend !== 'N/A');
+  const up = valid.filter(r => r.trend === 'UP').length;
+  const breadth = valid.length ? up / valid.length : 0;
+  const bt = btc ? btc.trend : 'N/A';
+  const btcCh = map && map.get('BTCUSDT') ? +map.get('BTCUSDT').priceChangePercent : null;
+  let key, label, advice;
+  if (bt === 'UP' && breadth >= 0.45) { key = 'bull'; label = 'BULLISH'; advice = 'Kondisi mendukung spot long. Prioritaskan grade A/B dan ikuti rencana risiko normal.'; }
+  else if (bt === 'DOWN' || breadth < 0.25) {
+    key = 'bear'; label = 'BEARISH';
+    const why = bt === 'DOWN' && breadth < 0.25 ? 'BTC downtrend dan mayoritas pair turun.' : bt === 'DOWN' ? 'BTC sedang downtrend, dan altcoin biasanya ikut tertekan.' : 'Mayoritas pair sedang turun.';
+    advice = why + ' Kurangi frekuensi dan ukuran posisi (mis. setengah risiko normal), ambil hanya grade A, atau tunggu di stablecoin.';
+  }
+  else { key = 'neut'; label = 'NETRAL'; advice = 'Pasar campuran. Selektif: pilih pair dengan trend dan HTF yang sama-sama UP, dan pastikan RR ≥ ' + S.minRR + '.'; }
+  return { key, label, advice, breadth, up, total: valid.length, btcTrend: bt, btcPrice: btc ? btc.price : null, btcCh };
+}
+function renderRegime() {
+  const R = REGIME, box = $('#regimeBox');
+  if (!R) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="regime ${R.key}">
+    <div class="m"><span class="lbl">Kondisi pasar</span><span class="val ${R.key === 'bull' ? 'pos' : R.key === 'bear' ? 'neg' : 'amb'}">${R.label}</span></div>
+    <div class="m"><span class="lbl">BTC ${S.tf.toUpperCase()}</span><span class="val ${trendCls(R.btcTrend)}">${R.btcTrend}</span>${R.btcPrice ? `<span class="hint num">${fp(R.btcPrice)}${R.btcCh != null ? ` · <span class="${R.btcCh >= 0 ? 'pos' : 'neg'}">${pct(R.btcCh)}</span>` : ''}</span>` : ''}</div>
+    <div class="m"><span class="lbl">Pair uptrend</span><span class="val">${Math.round(R.breadth * 100)}% <span class="hint">(${R.up}/${R.total})</span></span><div class="breadth"><div style="width:${R.breadth * 100}%"></div></div></div>
+    <div class="adv">${R.advice}</div>
+  </div>`;
+}
+
+/* =========================================================
+   RENDER SCANNER
+   ========================================================= */
+function passSearch(r) { const q = $('#search').value.trim().toUpperCase(); return !q || r.sym.includes(q); }
+function renderKpis() {
+  const c = k => RESULTS.filter(r => category(r) === k).length;
+  const items = [
+    ['exec', 'Siap eksekusi', c('exec'), 'var(--green)'],
+    ['limit', 'Siapkan limit', c('limit'), 'var(--amber)'],
+    ['watch', 'Pantau', c('watch'), 'var(--brand)'],
+    ['up', 'Trend UP', RESULTS.filter(r => r.trend === 'UP').length, 'var(--green)'],
+    ['all', 'Di-scan', RESULTS.length, 'var(--dim)']
+  ];
+  $('#kpis').innerHTML = RESULTS.length ? items.map(([k, l, v, col]) => `<div class="kpi" data-k="${k}"><small><span class="dot" style="background:${col}"></span>${l}</small><b>${v}</b></div>`).join('') : '';
+}
+function levelsHTML(r, faded) {
+  const b = r.best;
+  return `<div class="lv ${faded ? 'faded' : ''}">
+    <div><small>Entry</small><b>${fp(b.entry)}</b></div>
+    <div><small>Stop loss</small><b class="neg">${fp(b.sl)}</b></div>
+    <div><small>TP1</small><b class="pos">${fp(b.tp1)}</b></div>
+    <div><small>RR</small><b>${b.rr.toFixed(2)}</b></div>
+  </div>`;
+}
+function pbarHTML(r) {
+  const b = r.best, lo = b.sl, hi = b.tp1;
+  if (!(hi > lo)) return '';
+  const pos = Math.max(0, Math.min(100, (r.price - lo) / (hi - lo) * 100));
+  const e = Math.max(0, Math.min(100, (b.entry - lo) / (hi - lo) * 100));
+  return `<div><div class="pbar" style="--e:${e}%"><i style="left:${pos}%"></i></div><div class="pbar-l" style="margin-top:4px"><span>SL</span><span>harga sekarang ▲</span><span>TP1</span></div></div>`;
+}
+function cardHTML(r) {
+  const cat = category(r), b = r.best, star = WATCH.includes(r.sym);
+  const g = r.grade === '–' ? '-' : r.grade;
+  return `<div class="oc ${cat === 'exec' ? 'conf' : cat === 'limit' ? 'setup' : ''}" data-sym="${r.sym}" data-tf="${r.tf}">
+    <div class="oc-top">
+      <div>
+        <div class="oc-sym">${base(r.sym)}<span>/USDT</span><span class="tfchip">${r.tf.toUpperCase()}</span></div>
+        <div class="oc-px num">${fp(r.price)} <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span></div>
+      </div>
+      <div class="row" style="gap:8px">${statusBadge(r)}<span class="grade g${g}" title="Skor ${r.score}">${r.grade}</span></div>
+    </div>
+    <p class="oc-sum">${esc(oneLiner(r))}</p>
+    ${b ? levelsHTML(r, cat === 'watch' || cat === 'other') : ''}
+    ${b && (cat === 'exec' || cat === 'limit') ? pbarHTML(r) : ''}
+    <div class="row hint" style="gap:12px">
+      <span>Trend <b class="${trendCls(r.trend)}">${r.trend}</b></span>
+      <span>HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b></span>
+      ${b ? `<span>Demand <b>${zoneStatus(Math.max(0, b.priorTests))}</b></span>` : ''}
+      <span>Skor <b>${r.score}</b></span>
+    </div>
+    <div class="oc-act">
+      <button class="btn ${cat === 'exec' ? 'green' : cat === 'limit' ? 'primary' : ''}" data-open>${cat === 'exec' || cat === 'limit' ? 'Lihat & eksekusi →' : 'Lihat detail'}</button>
+      <button class="star ${star ? 'on' : ''}" data-star title="Watchlist">${star ? '★' : '☆'}</button>
+    </div>
+  </div>`;
+}
+function sectionHTML(key, title, sub, items, emptyTxt) {
+  const c = CAT[key];
+  return `<div class="sec-title"><span class="dot" style="background:${c.dot};width:10px;height:10px"></span><h2>${title}</h2><span class="pill badge ${c.cls}">${items.length}</span><p>${sub}</p></div>
+    ${items.length ? `<div class="cards">${items.map(cardHTML).join('')}</div>` : `<div class="card empty" style="padding:18px">${emptyTxt}</div>`}`;
+}
+const sortScore = (a, b) => b.score - a.score;
+function renderCards(list, el) {
+  list = list.filter(passSearch);
+  if (!list.length) { el.innerHTML = `<div class="card empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><div>${RESULTS.length || el.id === 'wlCards' ? 'Tidak ada pair yang cocok.' : 'Tekan <b>Scan</b> untuk mencari peluang spot long.'}</div></div>`; return; }
+  const by = k => list.filter(r => category(r) === k).sort(sortScore);
+  const bear = REGIME && REGIME.key === 'bear';
+  el.innerHTML =
+    sectionHTML('exec', 'Siap eksekusi', 'Konfirmasi sudah muncul di demand zone · entry market', by('exec'), bear ? 'Belum ada. Wajar saat pasar bearish: sistem sengaja tidak memberi sinyal beli melawan trend.' : 'Belum ada sinyal terkonfirmasi saat ini.') +
+    sectionHTML('limit', 'Siapkan limit order', 'Harga dekat demand zone · pasang limit buy / tunggu konfirmasi', by('limit'), 'Belum ada pair yang dekat dengan demand zone valid.') +
+    sectionHTML('watch', 'Pantau', 'Trend mendukung, harga belum sampai zona · masukkan watchlist', by('watch').slice(0, 12), 'Belum ada kandidat untuk dipantau.') +
+    `<div class="sec-title"><span class="dot" style="background:var(--dim);width:10px;height:10px"></span><h2>Lainnya</h2><span class="pill badge b-wait">${by('other').length}</span><p>Tidak memenuhi syarat · lihat di <a href="#" data-gotable>Tabel semua</a></p></div>`;
+}
 function passFilter(r) {
-  const q = $('#search').value.trim().toUpperCase();
-  if (q && !r.sym.includes(q)) return false;
+  if (!passSearch(r)) return false;
+  const cat = category(r);
   switch (FILTER) {
-    case 'buyc': return r.signal === 'BUY' && r.state === 'CONFIRMED';
-    case 'buys': return r.signal === 'BUY' && r.state === 'SETUP';
+    case 'buyc': return cat === 'exec';
+    case 'buys': return cat === 'limit';
+    case 'watchc': return cat === 'watch';
     case 'up': return r.trend === 'UP';
-    case 'fresh': return r.best && r.best.priorTests === 0 && r.signal !== 'WAIT';
-    case 'ab': return r.grade === 'A' || r.grade === 'B';
+    case 'fresh': return r.best && r.best.priorTests === 0;
   }
   return true;
 }
@@ -919,23 +1399,11 @@ function sortVal(r, k) {
     case 'trend': return r.trend;
     case 'htf': return r.htfTrend;
     case 'score': return r.score;
-    case 'zone': return b ? b.priorTests : 99;
+    case 'zone': return b ? -b.priorTests : -99;
     case 'dist': return b ? -b.dist : -99;
     case 'rr': return b ? b.rr : 0;
-    default: return (r.state === 'CONFIRMED' ? 2000 : r.state === 'SETUP' ? 1000 : 0) + (r.signal === 'BUY' ? 100 : 0) + r.score;
+    default: return ({ exec: 3000, limit: 2000, watch: 1000, other: 0 })[category(r)] + r.score;
   }
-}
-function renderStats() {
-  const cnt = f => RESULTS.filter(f).length;
-  const items = [
-    ['Di-scan', RESULTS.length],
-    ['BUY Confirmed', cnt(r => r.signal === 'BUY' && r.state === 'CONFIRMED')],
-    ['BUY Setup', cnt(r => r.signal === 'BUY' && r.state === 'SETUP')],
-    ['Trend UP', cnt(r => r.trend === 'UP')],
-    ['Trend DOWN (hindari)', cnt(r => r.trend === 'DOWN')],
-    ['Grade A/B', cnt(r => r.grade === 'A' || r.grade === 'B')]
-  ];
-  $('#stats').innerHTML = items.map(([l, v]) => `<div class="stat"><small>${l}</small><b>${v}</b></div>`).join('');
 }
 function renderTable() {
   const rows = RESULTS.filter(passFilter).sort((a, b) => {
@@ -943,121 +1411,345 @@ function renderTable() {
     return (x > y ? 1 : x < y ? -1 : 0) * SORT.dir;
   });
   const tb = $('#tbody');
-  if (!rows.length) { tb.innerHTML = `<tr><td colspan="10" class="empty full">${RESULTS.length ? 'Tidak ada pair yang cocok dengan filter.' : 'Belum ada hasil. Tekan ▶ Scan untuk mulai.'}</td></tr>`; return; }
+  if (!rows.length) { tb.innerHTML = `<tr><td colspan="10" class="empty full">${RESULTS.length ? 'Tidak ada pair yang cocok dengan filter.' : 'Belum ada hasil. Tekan Scan untuk mulai.'}</td></tr>`; return; }
   tb.innerHTML = rows.map(r => {
-    const b = r.best;
-    const zone = b ? `${b.zone.type === 'demand' ? 'D' : 'S'} · ${zoneStatus(Math.max(0, b.priorTests))}` : '—';
-    return `<tr data-sym="${r.sym}">
-      <td data-l="Pair"><b>${r.sym.replace('USDT', '')}</b><span class="mut">/USDT</span></td>
+    const b = r.best, g = r.grade === '–' ? '-' : r.grade;
+    return `<tr class="click" data-sym="${r.sym}" data-tf="${r.tf}">
+      <td data-l="Pair"><b>${base(r.sym)}</b><span class="mut">/USDT</span></td>
       <td data-l="Harga" class="num">${fp(r.price)}</td>
       <td data-l="24j" class="num ${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</td>
       <td data-l="Trend" class="${trendCls(r.trend)}"><b>${r.trend}</b></td>
       <td data-l="HTF" class="${trendCls(r.htfTrend)}">${r.htfTrend}</td>
-      <td data-l="Sinyal">${sigBadge(r)}${r.reason ? `<div class="mut" style="font-size:11px;margin-top:2px">${r.reason}</div>` : ''}</td>
-      <td data-l="Skor"><span class="grade g${r.grade === '–' ? 'D' : r.grade}">${r.grade}</span> <span class="num ${r.state ? '' : 'mut'}">${r.score}</span></td>
-      <td data-l="Zona">${zone}</td>
+      <td data-l="Status" class="full">${statusBadge(r)}<div class="hint" style="font-size:11px;margin-top:2px">${esc(oneLiner(r))}</div></td>
+      <td data-l="Skor"><span class="grade g${g}" style="width:24px;height:24px;font-size:11px">${r.grade}</span> <span class="num ${r.state ? '' : 'mut'}">${r.score}</span></td>
+      <td data-l="Demand">${b ? zoneStatus(Math.max(0, b.priorTests)) : '—'}</td>
       <td data-l="Jarak" class="num">${b ? (b.inside ? 'di zona' : b.dist.toFixed(2) + ' ATR') : '—'}</td>
-      <td data-l="RR" class="num">${b && r.signal !== 'WAIT' ? b.rr.toFixed(2) : '—'}</td>
+      <td data-l="RR" class="num">${b && r.state ? b.rr.toFixed(2) : '—'}</td>
     </tr>`;
   }).join('');
 }
-function renderAll() { renderStats(); renderTable(); }
+function renderScanner() {
+  renderRegime(); renderKpis();
+  const v = S.view || 'cards';
+  $$('#viewSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('#viewCards').hidden = v !== 'cards'; $('#viewTable').hidden = v !== 'table';
+  if (v === 'cards') renderCards(RESULTS, $('#viewCards')); else renderTable();
+}
+
+/* =========================================================
+   WATCHLIST
+   ========================================================= */
+function saveWatch() { store.set('watch', WATCH); updateBadges(); }
+function toggleWatch(sym) {
+  if (WATCH.includes(sym)) { WATCH = WATCH.filter(s => s !== sym); toast(base(sym) + ' dihapus dari watchlist'); }
+  else { WATCH.push(sym); toast(base(sym) + ' ditambahkan ke watchlist ★'); }
+  saveWatch();
+  $$(`[data-sym="${sym}"] [data-star]`).forEach(b => { const on = WATCH.includes(sym); b.classList.toggle('on', on); b.textContent = on ? '★' : '☆'; });
+  if (DET && DET.sym === sym) { const on = WATCH.includes(sym); $('#dStar').classList.toggle('on', on); $('#dStar').textContent = on ? '★' : '☆'; }
+  renderWatchChips();
+}
+function renderWatchChips() {
+  $('#wlChips').innerHTML = WATCH.length ? WATCH.map(s => `<span class="wl-chip">${base(s)}<button data-wlrm="${s}" title="Hapus">×</button></span>`).join('') : '<span class="hint">Watchlist kosong. Ketuk ☆ di kartu peluang, atau tambahkan manual di atas.</span>';
+  $('#wlInfo').textContent = WATCH.length ? `${WATCH.length} pair · TF ${S.tf.toUpperCase()}` : '';
+}
+function renderWatch() {
+  renderWatchChips();
+  const el = $('#wlCards');
+  if (!WRESULTS.length) { el.innerHTML = WATCH.length ? '<div class="card empty">Tekan <b>Scan watchlist</b> untuk menganalisis pair di atas.</div>' : ''; return; }
+  const list = WRESULTS.filter(r => WATCH.includes(r.sym)).sort((a, b) => sortVal(b, 'sig') - sortVal(a, 'sig'));
+  el.innerHTML = `<div class="cards">${list.map(cardHTML).join('')}</div>`;
+}
+function updateBadges() {
+  const w = $('#wlCnt'); w.hidden = !WATCH.length; w.textContent = WATCH.length;
+  const act = JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN').length;
+  const j = $('#jCnt'); j.hidden = !act; j.textContent = act;
+}
 
 /* =========================================================
    DETAIL
    ========================================================= */
-let DET = null, ZOOM = 150;
+function findResult(sym, tf) { return RESULTS.find(x => x.sym === sym && x.tf === tf) || WRESULTS.find(x => x.sym === sym && x.tf === tf); }
 async function openDetail(sym, tf) {
   $('#detail').hidden = false; document.body.style.overflow = 'hidden';
-  $('#dTitle').textContent = sym.replace('USDT', '/USDT');
+  $('#detail').scrollTop = 0;
+  $('#dTitle').textContent = base(sym) + '/USDT';
+  const bUrl = `https://www.binance.com/en/trade/${base(sym)}_USDT?type=spot`;
+  $('#dBinance').href = bUrl; $('#btnOpenBinance').href = bUrl;
   $('#dTv').href = `https://www.tradingview.com/chart/?symbol=BINANCE:${sym}`;
+  const on = WATCH.includes(sym); $('#dStar').classList.toggle('on', on); $('#dStar').textContent = on ? '★' : '☆';
   $$('#dTfSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === tf));
-  let r = RESULTS.find(x => x.sym === sym && x.tf === tf);
+  let r = findResult(sym, tf);
   if (!r) {
-    $('#dSub').textContent = 'Memuat…';
+    $('#dSub').textContent = 'Memuat data…'; $('#dVerdict').innerHTML = ''; $('#ticket').innerHTML = '';
     try {
       const raw = await klines(sym, tf, 500);
       const hraw = S.htf ? await klines(sym, HTF_MAP[tf], 300) : null;
       r = analyze(raw, hraw, Object.assign({}, S, { tf }));
-      if (!r) { $('#dSub').textContent = 'Data kurang dari 220 candle untuk timeframe ini.'; clearDetail(); return; }
-      const base = RESULTS.find(x => x.sym === sym);
-      r.sym = sym; r.tf = tf; r.ch24 = base ? base.ch24 : 0;
+      if (!r) { $('#dSub').textContent = 'Data kurang dari 220 candle untuk timeframe ini.'; return; }
+      const prev = findResult(sym, S.tf) || RESULTS.find(x => x.sym === sym) || WRESULTS.find(x => x.sym === sym);
+      r.sym = sym; r.tf = tf; r.ch24 = prev ? prev.ch24 : 0;
     } catch (e) { $('#dSub').textContent = e.message; return; }
   }
-  DET = r; renderDetail();
+  DET = r; TK = null; renderDetail();
+  loadMTF(sym);
+  try { DET.filters = await getFilters(sym); } catch (e) { DET.filters = null; }
+  if (DET && DET.sym === sym) renderTicket();
 }
-function clearDetail() { ['#dPlan', '#dCheck', '#dCtx', '#dZones', '#cOut'].forEach(s => $(s).innerHTML = ''); const cv = $('#chart'); cv.getContext('2d').clearRect(0, 0, cv.width, cv.height); }
+function closeDetail() { $('#detail').hidden = true; document.body.style.overflow = ''; DET = null; }
 function renderDetail() {
   const r = DET, b = r.best;
-  $('#dSub').innerHTML = `${r.tf.toUpperCase()} · ${fp(r.price)} · ${sigBadge(r)} · Skor <b>${r.score}</b> (${r.grade}) · Trend <span class="${trendCls(r.trend)}">${r.trend}</span> · HTF <span class="${trendCls(r.htfTrend)}">${r.htfTrend}</span>`;
+  const g = r.grade === '–' ? '-' : r.grade;
+  $('#dGrade').innerHTML = `${statusBadge(r)} <span class="grade g${g}">${r.grade}</span>`;
+  $('#dSub').innerHTML = `<span class="num">${fp(r.price)}</span> <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span> · ${r.tf.toUpperCase()} · Trend <b class="${trendCls(r.trend)}">${r.trend}</b> · HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b> · Skor <b>${r.score}</b>/100`;
+  $('#dVerdict').innerHTML = verdictHTML(r);
   drawChart();
-  // plan
+  // skor
   if (b) {
-    const dir = b.side;
-    const active = r.signal !== 'WAIT';
-    $('#dPlan').innerHTML = `
-      <span>Arah</span><span><b class="pos">BUY (Spot Long)</b> ${active ? '' : '<span class="mut">(rencana bersyarat, sinyal belum aktif)</span>'}</span>
-      ${active ? '' : `<span>Status</span><span class="b-side">${r.reason}</span>`}
-      <span>Tipe entry</span><span>${b.state === 'CONFIRMED' ? 'Market / close terakhir' : 'Limit di proximal zona'}</span>
-      <span>Entry</span><span class="num"><b>${fp(b.entry)}</b></span>
-      <span>Stop Loss</span><span class="num neg">${fp(b.sl)} <span class="mut">(${(b.risk / b.entry * 100).toFixed(2)}%)</span></span>
-      <span>TP1</span><span class="num pos">${fp(b.tp1)} <span class="mut">(${b.tp1Src} · RR ${b.rr.toFixed(2)})</span></span>
-      <span>TP2</span><span class="num pos">${fp(b.tp2)} <span class="mut">(RR ${(Math.abs(b.tp2 - b.entry) / b.risk).toFixed(2)})</span></span>
-      <span>Zona</span><span>${b.zone.type === 'demand' ? 'Demand' : 'Supply'} ${b.zone.pattern} · ${fp(Math.min(b.zone.proximal, b.zone.distal))} – ${fp(Math.max(b.zone.proximal, b.zone.distal))}</span>
-      <span>Catatan</span><span>${b.risk > 3 * r.atr ? '⚠ SL lebar (&gt;3 ATR). ' : ''}${b.rr < S.minRR ? '⚠ RR di bawah minimum. ' : ''}${b.nearSupply < 1 ? '⚠ Supply zone dekat di atas harga (&lt;1 ATR), ruang naik sempit. ' : ''}TP1: tutup 50%, pindah SL ke BE.</span>`;
-    $('#dCheck').innerHTML = b.checks.map(([t, ok]) => `<li><span class="${ok === null ? 'mut' : ok ? 'ok' : 'no'}">${ok === null ? '–' : ok ? '✓' : '✗'}</span>${t}</li>`).join('');
+    const parts = [['Trend TF utama', b.sc.trend, 20], ['Trend HTF', b.sc.htf, 15], ['Kesegaran zona', b.sc.fresh, 15], ['Kekuatan zona', b.sc.strength, 15], ['Kedekatan ke zona', b.sc.prox, 10], ['Candle konfirmasi', b.sc.conf, 10], ['SMC (BOS/sweep)', b.sc.smc, 15]];
+    $('#dScore').innerHTML = parts.map(([l, v, m]) => `<div class="sbar"><span>${l}</span><div class="t"><div class="${v >= m ? 'full' : v <= 0 ? 'zero' : ''}" style="width:${Math.max(0, v / m * 100)}%"></div></div><span class="num mut">${v}/${m}</span></div>`).join('') +
+      (b.sc.rrPen ? `<div class="sbar"><span class="neg">Penalti RR</span><div></div><span class="num neg">${b.sc.rrPen}</span></div>` : '');
+    $('#dScoreTxt').textContent = `${r.score}/100 · grade ${r.grade}`;
+    $('#dCheck').innerHTML = b.checks.map(([t, ok]) => `<li><span class="ic ${ok === null ? 'na' : ok ? 'ok' : 'no'}">${ok === null ? '–' : ok ? '✓' : '✕'}</span><span>${t}</span></li>`).join('') +
+      `<li><span class="ic ${b.nearSupply >= 1 ? 'ok' : 'no'}">${b.nearSupply >= 1 ? '✓' : '✕'}</span><span>Ruang naik ke supply terdekat ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(tidak ada supply di atas)'}</span></li>`;
   } else {
-    $('#dPlan').innerHTML = '<span>Status</span><span>Tidak ada demand zone valid di bawah harga. Tunggu struktur baru terbentuk.</span>';
+    $('#dScore').innerHTML = '<div class="hint">Tidak ada demand zone valid.</div>'; $('#dScoreTxt').textContent = '';
     $('#dCheck').innerHTML = '';
   }
-  // konteks
-  const ev = r.st.last;
-  const lastSH = r.st.sh[r.st.sh.length - 1], lastSL = r.st.sl[r.st.sl.length - 1];
+  const ev = r.st.last, lastSH = r.st.sh[r.st.sh.length - 1], lastSL = r.st.sl[r.st.sl.length - 1];
   $('#dCtx').innerHTML = `
-    <span>EMA50</span><span class="num">${fp(r.e50)}</span>
-    <span>EMA200</span><span class="num">${fp(r.e200)}</span>
-    <span>ATR(14)</span><span class="num">${fp(r.atr)} <span class="mut">(${(r.atr / r.price * 100).toFixed(2)}%)</span></span>
+    <span>EMA50 / EMA200</span><span class="num">${fp(r.e50)} / ${fp(r.e200)}</span>
+    <span>ATR(14)</span><span class="num">${fp(r.atr)} <span class="mut">(${(r.atr / r.price * 100).toFixed(2)}% dari harga)</span></span>
     <span>Pola swing</span><span>${r.st.pattern}</span>
-    <span>Event terakhir</span><span>${ev ? `${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'} @ ${fp(ev.level)} <span class="mut">(${r.n - 1 - ev.i} candle lalu)</span>` : '—'}</span>
-    <span>Swing high</span><span class="num">${lastSH ? fp(lastSH.p) : '—'}</span>
-    <span>Swing low</span><span class="num">${lastSL ? fp(lastSL.p) : '—'}</span>
-    <span>Liquidity sweep</span><span>${r.st.sweep.bull ? 'Bullish (low tersapu)' : r.st.sweep.bear ? 'Bearish (high tersapu)' : 'Tidak ada'}</span>`;
-  // zona
+    <span>Event terakhir</span><span>${ev ? `${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'} di ${fp(ev.level)} <span class="mut">(${r.n - 1 - ev.i} candle lalu)</span>` : '—'}</span>
+    <span>Swing high / low</span><span class="num">${lastSH ? fp(lastSH.p) : '—'} / ${lastSL ? fp(lastSL.p) : '—'}</span>
+    <span>Liquidity sweep</span><span>${r.st.sweep.bull ? '<span class="pos">Swing low tersapu (bullish)</span>' : 'Tidak ada'}</span>`;
   const zs = r.zones.slice().sort((a, b) => b.proximal - a.proximal);
-  $('#dZones').innerHTML = `<tr><th>Tipe</th><th>Pola</th><th>Proximal</th><th>Distal</th><th>Status</th><th>Impulse</th><th>Jarak</th></tr>` +
-    (zs.length ? zs.map(z => `<tr><td class="${z.type === 'demand' ? 'pos' : 'neg'}">${z.type === 'demand' ? 'Demand' : 'Supply'}</td><td>${z.pattern}</td><td class="num">${fp(z.proximal)}</td><td class="num">${fp(z.distal)}</td><td>${zoneStatus(z.tests)}</td><td class="num">${z.impulse.toFixed(2)}×</td><td class="num">${((z.proximal - r.price) / r.price * 100).toFixed(2)}%</td></tr>`).join('')
-      : '<tr><td colspan="7" class="mut">Tidak ada zona aktif.</td></tr>');
-  calc();
+  $('#dZones').innerHTML = `<tr><th>Tipe</th><th>Fungsi</th><th>Pola</th><th>Proximal</th><th>Distal</th><th>Status</th><th>Impulse</th><th>Jarak</th></tr>` +
+    (zs.length ? zs.map(z => `<tr><td class="${z.type === 'demand' ? 'pos' : 'neg'}">${z.type === 'demand' ? 'Demand' : 'Supply'}</td><td class="mut">${z.type === 'demand' ? 'Area beli' : 'Target TP'}</td><td>${z.pattern}</td><td class="num">${fp(z.proximal)}</td><td class="num">${fp(z.distal)}</td><td>${zoneStatus(z.tests)}</td><td class="num">${z.impulse.toFixed(2)}×</td><td class="num ${z.proximal > r.price ? 'pos' : 'neg'}">${((z.proximal - r.price) / r.price * 100).toFixed(2)}%</td></tr>`).join('')
+      : '<tr><td colspan="8" class="mut">Tidak ada zona aktif.</td></tr>');
+  syncTicketInputs();
+  renderTicket();
 }
-function calc() {
-  if (!DET || !DET.best) { $('#cOut').innerHTML = ''; return; }
-  const b = DET.best;
+async function loadMTF(sym) {
+  const el = $('#dMtf'); el.innerHTML = '<span class="hint">Memuat…</span>';
+  const tfs = ['15m', '1h', '4h', '1d'];
+  try {
+    const rows = await Promise.all(tfs.map(async tf => {
+      const raw = await klines(sym, tf, 300);
+      const a = analyze(raw, null, Object.assign({}, S, { tf, htf: false }));
+      return { tf, a };
+    }));
+    if (!DET || DET.sym !== sym) return;
+    const ups = rows.filter(x => x.a && x.a.trend === 'UP').length;
+    el.innerHTML = `<table class="mtf"><tr><th>TF</th><th>Trend</th><th>Status</th><th>Demand terdekat</th></tr>${rows.map(({ tf, a }) => a ? `<tr><td><b>${tf.toUpperCase()}</b></td><td class="${trendCls(a.trend)}"><b>${a.trend}</b></td><td>${statusBadge(a)}</td><td class="num">${a.best ? fp(a.best.zone.proximal) + ` <span class="mut">(${a.best.inside ? 'di zona' : a.best.dist.toFixed(1) + ' ATR'})</span>` : '—'}</td></tr>` : `<tr><td><b>${tf.toUpperCase()}</b></td><td colspan="3" class="mut">Data kurang</td></tr>`).join('')}</table>
+      <div class="hint" style="margin-top:8px">${ups}/4 timeframe trend UP. ${ups >= 3 ? '<span class="pos">Keselarasan kuat.</span>' : ups === 2 ? '<span class="amb">Keselarasan sedang.</span>' : '<span class="neg">Keselarasan lemah, hati-hati.</span>'}</div>`;
+  } catch (e) { if (DET && DET.sym === sym) el.innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+
+/* =========================================================
+   TIKET EKSEKUSI (Binance Spot: Limit/Market + OCO)
+   ========================================================= */
+function syncTicketInputs() {
+  if ($('#cCap').dataset.init) return;
+  $('#cCap').value = S.capital; $('#cRisk').value = S.riskPct; $('#cMode').value = S.sizeMode; $('#cSplit').value = S.tpSplit;
+  const opt = [...$('#cPct').options].find(o => +o.value === +S.posPct);
+  $('#cPct').value = opt ? opt.value : 'custom'; $('#cPctCustom').value = S.posPct;
+  $('#cCap').dataset.init = '1';
+}
+function computeTicket(r) {
+  const b = r.best, f = r.filters || { tick: 0, tickDec: 8, step: 0, stepDec: 8, minQty: 0, minNotional: 5 };
+  const cap = +$('#cCap').value || 0, mode = $('#cMode').value, sel = $('#cPct').value;
+  const fee = (+S.fee || 0) / 100, off = (+S.stopOff || 0.3) / 100;
+  const market = r.state === 'CONFIRMED';
+  const entry = market ? b.entry : floorTo(b.entry, f.tick, f.tickDec);
+  const sl = floorTo(b.sl, f.tick, f.tickDec);
+  const stopLimit = floorTo(b.sl * (1 - off), f.tick, f.tickDec);
+  const tp1 = floorTo(b.tp1, f.tick, f.tickDec), tp2 = floorTo(b.tp2, f.tick, f.tickDec);
+  const perUnit = entry - sl;
+  let qtyRaw;
+  if (mode === 'pct') {
+    const pp = Math.min(100, Math.max(0, sel === 'custom' ? (+$('#cPctCustom').value || 0) : +sel));
+    qtyRaw = entry > 0 ? cap * pp / 100 / entry : 0;
+  } else {
+    qtyRaw = perUnit > 0 ? cap * (+$('#cRisk').value || 0) / 100 / perUnit : 0;
+  }
+  const warns = [];
+  let notional = qtyRaw * entry;
+  if (notional > cap && cap > 0) { qtyRaw = cap / entry * 0.998; notional = qtyRaw * entry; warns.push(['', 'Ukuran posisi dibatasi sebesar modal (Spot tanpa leverage). Risiko nyata jadi lebih kecil dari target.']); }
+  const qty = floorTo(qtyRaw, f.step, f.stepDec);
+  notional = qty * entry;
+  const sellQty = floorTo(qty * (1 - fee), f.step, f.stepDec);   // fee dipotong dari koin yang dibeli (tanpa BNB)
+  let split = $('#cSplit').value;
+  let qA = split === '50' ? floorTo(sellQty / 2, f.step, f.stepDec) : sellQty;
+  let qB = split === '50' ? floorTo(sellQty - qA, f.step, f.stepDec) : 0;
+  if (split === '50' && (qA * sl < f.minNotional || qB * sl < f.minNotional || qA < f.minQty || qB < f.minQty)) {
+    split = '100'; qA = sellQty; qB = 0;
+    warns.push(['', `Posisi terlalu kecil untuk dibagi 2 (min. order ${f.minNotional} USDT per order), jadi semua di TP1.`]);
+  }
+  if (qty <= 0 || notional < f.minNotional) warns.push(['red', `Nilai order ${usd(notional)} USDT di bawah minimum Binance (${f.minNotional} USDT). Perbesar modal atau % posisi.`]);
+  if (qty > 0 && qty < f.minQty) warns.push(['red', `Jumlah koin di bawah minimum (${f.minQty}).`]);
+  const riskUsd = qty * perUnit + notional * fee * 2;
+  const profit1 = (split === '50' ? qA : sellQty) * (tp1 - entry) - notional * fee;
+  const profit2 = split === '50' ? qA * (tp1 - entry) + qB * (tp2 - entry) - notional * fee * 2 : profit1;
+  if (cap && riskUsd / cap > 0.02) warns.push(['', `Risiko ${(riskUsd / cap * 100).toFixed(2)}% modal, di atas batas aman 2%.`]);
+  if (b.rr < S.minRR) warns.push(['', `RR ke TP1 hanya ${b.rr.toFixed(2)}, di bawah target ${S.minRR}.`]);
+  return { market, entry, sl, stopLimit, tp1, tp2, qty, sellQty, qA, qB, split, notional, riskUsd, profit1, profit2, cap, f, warns };
+}
+function fld(label, val, cls = '') { return `<div class="fld"><div><small>${label}</small><b class="${cls}">${val}</b></div><button class="cp" data-copy="${esc(String(val).replace(/,/g, ''))}" title="Salin">${ICON_COPY}</button></div>`; }
+function renderTicket() {
+  const r = DET, el = $('#ticket');
+  if (!r || !r.best) { el.innerHTML = '<div class="hint">Tidak ada rencana trade: belum ada demand zone valid.</div>'; $('#btnJournal').disabled = true; return; }
   const mode = $('#cMode').value, sel = $('#cPct').value;
   $('#cRiskWrap').style.display = mode === 'risk' ? '' : 'none';
   $('#cPctWrap').style.display = mode === 'pct' ? '' : 'none';
   $('#cPctCustomWrap').style.display = mode === 'pct' && sel === 'custom' ? '' : 'none';
-  const cap = +$('#cCap').value || 0, perUnit = Math.abs(b.entry - b.sl);
-  let qty, notional, riskUsd;
-  if (mode === 'pct') {
-    const pp = Math.min(100, Math.max(0, sel === 'custom' ? (+$('#cPctCustom').value || 0) : +sel));
-    notional = cap * pp / 100;
-    qty = b.entry > 0 ? notional / b.entry : 0;
-    riskUsd = qty * perUnit;
-  } else {
-    const rp = +$('#cRisk').value || 0;
-    riskUsd = cap * rp / 100;
-    qty = perUnit > 0 ? riskUsd / perUnit : 0;
-    notional = qty * b.entry;
-  }
-  const riskPctCap = cap ? riskUsd / cap * 100 : 0;
-  $('#cOut').innerHTML = `
-    <span>Risiko (kena SL)</span><span class="num ${mode === 'pct' && riskPctCap > 2 ? 'neg' : ''}">${riskUsd.toFixed(2)} USDT <span class="mut">(${riskPctCap.toFixed(2)}% modal)</span></span>
-    <span>Jumlah koin</span><span class="num"><b>${qty.toLocaleString('en-US', { maximumFractionDigits: 6 })}</b> ${DET.sym.replace('USDT', '')}</span>
-    <span>Nilai posisi</span><span class="num">${notional.toFixed(2)} USDT <span class="mut">(${cap ? (notional / cap * 100).toFixed(1) : 0}% modal)</span></span>
-    <span>Profit TP1</span><span class="num pos">+${(qty * Math.abs(b.tp1 - b.entry)).toFixed(2)} USDT</span>
-    <span>Profit TP2</span><span class="num pos">+${(qty * Math.abs(b.tp2 - b.entry)).toFixed(2)} USDT</span>
-    ${mode === 'pct' && riskPctCap > 2 ? '<span>⚠</span><span class="neg">Risiko di atas 2% modal. Pertimbangkan memperkecil % posisi.</span>' : ''}
-    ${mode === 'risk' && cap && notional > cap ? '<span>⚠</span><span class="neg">Nilai posisi melebihi modal. Di Spot, maksimal sebesar modal (risiko nyata jadi lebih kecil).</span>' : ''}`;
+  const t = TK = computeTicket(r), f = t.f, cat = category(r), b = r.best;
+  const P = v => fx(v, f.tickDec), Q = v => fx(v, f.stepDec), coin = base(r.sym);
+  $('#tkFilters').textContent = r.filters ? `tick ${f.tick} · step ${f.step} · min ${f.minNotional} USDT` : 'aturan pair belum dimuat';
+  $('#btnJournal').disabled = false;
+  const inactive = cat !== 'exec' && cat !== 'limit';
+  el.innerHTML = `
+    ${inactive ? `<div class="warn" style="margin:0 0 10px">Sinyal belum aktif (${CAT[cat].label}). Tiket ini rencana bersyarat. Jangan dieksekusi sebelum status menjadi Siap eksekusi atau Siapkan limit.</div>` : ''}
+    <div class="step">
+      <div class="step-h"><span class="step-n">1</span><b>${t.market ? 'Beli sekarang (Market / Limit di harga)' : 'Pasang Limit Buy'}</b><span class="badge ${t.market ? 'b-buy' : 'b-setup'}">${t.market ? 'MARKET' : 'LIMIT'}</span></div>
+      <div class="fields">
+        ${fld(t.market ? 'Harga ≈' : 'Harga limit', P(t.entry))}
+        ${fld('Jumlah ' + coin, Q(t.qty))}
+        ${fld('Total USDT', fx(t.notional, 2))}
+      </div>
+      <div class="hint" style="margin-top:6px">Binance → Spot → ${coin}/USDT → <b>Buy</b> → ${t.market ? 'Market (isi Total USDT) atau Limit di harga sekarang' : 'Limit'}.</div>
+    </div>
+    <div class="step">
+      <div class="step-h"><span class="step-n">2</span><b>Setelah terisi: pasang OCO Sell ${t.split === '50' ? '(A · 50% → TP1)' : '(100% → TP1)'}</b><span class="badge b-info">OCO</span></div>
+      <div class="fields">
+        ${fld('Take profit (limit)', P(t.tp1), 'pos')}
+        ${fld('Stop (trigger)', P(t.sl), 'neg')}
+        ${fld('Stop-limit', P(t.stopLimit), 'neg')}
+        ${fld('Jumlah ' + coin, Q(t.qA))}
+      </div>
+    </div>
+    ${t.split === '50' ? `<div class="step">
+      <div class="step-h"><span class="step-n">3</span><b>OCO Sell B · 50% → TP2</b><span class="badge b-info">OCO</span></div>
+      <div class="fields">
+        ${fld('Take profit (limit)', P(t.tp2), 'pos')}
+        ${fld('Stop (trigger)', P(t.sl), 'neg')}
+        ${fld('Stop-limit', P(t.stopLimit), 'neg')}
+        ${fld('Jumlah ' + coin, Q(t.qB))}
+      </div>
+      <div class="hint" style="margin-top:6px">Saat TP1 tercapai, batalkan OCO B lalu pasang ulang dengan stop di harga entry (${P(t.entry)}) agar sisa posisi bebas risiko.</div>
+    </div>` : ''}
+    <div class="kv" style="margin-top:10px">
+      <span>Risiko jika kena SL</span><span class="num neg">−${usd(t.riskUsd)} USDT <span class="mut">(${t.cap ? (t.riskUsd / t.cap * 100).toFixed(2) : 0}% modal, termasuk fee)</span></span>
+      <span>Profit di TP1</span><span class="num pos">+${usd(t.profit1)} USDT${t.split === '50' ? ' <span class="mut">(50% posisi)</span>' : ''}</span>
+      ${t.split === '50' ? `<span>Profit jika TP1 + TP2</span><span class="num pos">+${usd(t.profit2)} USDT</span>` : ''}
+      <span>Nilai posisi</span><span class="num">${usd(t.notional)} USDT <span class="mut">(${t.cap ? (t.notional / t.cap * 100).toFixed(1) : 0}% modal)</span></span>
+    </div>
+    ${t.warns.map(([c, m]) => `<div class="warn ${c}">⚠ ${m}</div>`).join('')}`;
+}
+function planText(r, t) {
+  const b = r.best; t = t || computeTicket(r);
+  const P = v => fx(v, t.f.tickDec), Q = v => fx(v, t.f.stepDec);
+  return `${CAT[category(r)].label} · ${base(r.sym)}/USDT ${r.tf.toUpperCase()} · Grade ${r.grade} (${r.score})
+Trend ${r.trend} · HTF ${r.htfTrend} · Demand ${zoneStatus(Math.max(0, b.priorTests))} ${b.zone.pattern}${b.conf ? ' · ' + b.conf : ''}
+1) BUY ${t.market ? 'MARKET ≈' : 'LIMIT'} ${P(t.entry)} · qty ${Q(t.qty)} · ${fx(t.notional, 2)} USDT
+2) OCO SELL qty ${Q(t.qA)} · TP ${P(t.tp1)} · Stop ${P(t.sl)} · Stop-limit ${P(t.stopLimit)}${t.split === '50' ? `\n3) OCO SELL qty ${Q(t.qB)} · TP ${P(t.tp2)} · Stop ${P(t.sl)} · Stop-limit ${P(t.stopLimit)}` : ''}
+Risiko −${usd(t.riskUsd)} USDT · RR TP1 ${b.rr.toFixed(2)}`;
+}
+
+/* =========================================================
+   JURNAL
+   ========================================================= */
+function saveJournal() { store.set('journal', JOURNAL); updateBadges(); }
+function addToJournal() {
+  const r = DET; if (!r || !r.best) return;
+  const t = TK || computeTicket(r);
+  JOURNAL.unshift({
+    id: Date.now().toString(36), sym: r.sym, tf: r.tf, grade: r.grade, score: r.score, cat: category(r),
+    created: Date.now(), status: t.market ? 'OPEN' : 'PLAN',
+    entry: t.entry, sl: t.sl, tp1: t.tp1, tp2: t.tp2, qty: t.qty, notional: t.notional, split: t.split,
+    tickDec: t.f.tickDec, stepDec: t.f.stepDec, exit: null, closed: null, note: ''
+  });
+  saveJournal(); toast('Disimpan ke jurnal ✓'); renderJournal();
+}
+function jR(j, px) { const risk = j.entry - j.sl; return risk > 0 ? (px - j.entry) / risk : 0; }
+function jPnl(j, px) { const fee = (+S.fee || 0) / 100; return j.qty * (px - j.entry) - j.notional * fee * 2; }
+function renderJournal() {
+  const closed = JOURNAL.filter(j => j.status === 'WIN' || j.status === 'LOSS');
+  const wins = closed.filter(j => j.status === 'WIN').length;
+  const rs = closed.map(j => jR(j, j.exit));
+  const totR = rs.reduce((a, b) => a + b, 0), totP = closed.reduce((a, j) => a + jPnl(j, j.exit), 0);
+  const active = JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN').length;
+  const st = [
+    ['Trade aktif', active, ''],
+    ['Trade selesai', closed.length, ''],
+    ['Win rate', closed.length ? Math.round(wins / closed.length * 100) + '%' : '—', closed.length && wins / closed.length >= 0.5 ? 'pos' : ''],
+    ['Rata-rata R', closed.length ? (totR / closed.length).toFixed(2) + 'R' : '—', totR >= 0 ? 'pos' : 'neg'],
+    ['Total R', closed.length ? (totR >= 0 ? '+' : '') + totR.toFixed(2) + 'R' : '—', totR >= 0 ? 'pos' : 'neg'],
+    ['Total P&L', closed.length ? (totP >= 0 ? '+' : '') + usd(totP) : '—', totP >= 0 ? 'pos' : 'neg']
+  ];
+  $('#jStats').innerHTML = st.map(([l, v, c]) => `<div class="kpi" style="cursor:default"><small>${l}</small><b class="${c}" style="font-size:20px">${v}</b></div>`).join('');
+  let list = JOURNAL;
+  if (JFILTER === 'active') list = JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN');
+  if (JFILTER === 'closed') list = JOURNAL.filter(j => j.status !== 'PLAN' && j.status !== 'OPEN');
+  const el = $('#jList');
+  if (!list.length) { el.innerHTML = `<div class="card empty">${JOURNAL.length ? 'Tidak ada trade di kategori ini.' : 'Jurnal masih kosong. Buka detail sebuah pair, lalu tekan <b>＋ Simpan ke jurnal</b> di Tiket Eksekusi.'}</div>`; return; }
+  const SL = { PLAN: 'MENUNGGU ENTRY', OPEN: 'POSISI TERBUKA', WIN: 'PROFIT', LOSS: 'LOSS', CANCEL: 'BATAL' };
+  el.innerHTML = list.map(j => {
+    const P = v => fx(v, j.tickDec ?? 6), px = JPRICES[j.sym];
+    const live = (j.status === 'PLAN' || j.status === 'OPEN') && px;
+    let alert = '';
+    if (live) {
+      if (j.status === 'PLAN' && px <= j.entry) alert = '<span class="badge b-setup">Harga sudah di entry, cek order terisi?</span>';
+      if (j.status === 'OPEN' && px <= j.sl) alert = '<span class="badge" style="background:var(--red-bg);color:var(--red)">Harga ≤ SL</span>';
+      if (j.status === 'OPEN' && px >= j.tp1) alert = '<span class="badge b-buy">TP1 tercapai 🎯</span>';
+    }
+    const rNow = j.status === 'OPEN' && px ? jR(j, px) : null;
+    const done = j.exit != null ? jR(j, j.exit) : null;
+    return `<div class="jc" data-jid="${j.id}">
+      <div class="jc-top">
+        <b style="font-size:15px">${base(j.sym)}<span class="mut" style="font-weight:500">/USDT</span></b><span class="tfchip">${j.tf.toUpperCase()}</span>
+        <span class="badge st-${j.status}">${SL[j.status]}</span>${alert}
+        <div class="r">
+          ${rNow != null ? `<div class="num ${rNow >= 0 ? 'pos' : 'neg'}"><b>${rNow >= 0 ? '+' : ''}${rNow.toFixed(2)}R</b> <span class="mut">· ${(jPnl(j, px) >= 0 ? '+' : '') + usd(jPnl(j, px))} USDT</span></div>` : ''}
+          ${done != null ? `<div class="num ${done >= 0 ? 'pos' : 'neg'}"><b>${done >= 0 ? '+' : ''}${done.toFixed(2)}R</b> <span class="mut">· ${(jPnl(j, j.exit) >= 0 ? '+' : '') + usd(jPnl(j, j.exit))} USDT</span></div>` : ''}
+          <div class="hint">${new Date(j.created).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}${px && live ? ' · harga ' + fp(px) : ''}</div>
+        </div>
+      </div>
+      <div class="lv">
+        <div><small>Entry</small><b>${P(j.entry)}</b></div>
+        <div><small>SL</small><b class="neg">${P(j.sl)}</b></div>
+        <div><small>TP1 / TP2</small><b class="pos">${P(j.tp1)}${j.split === '50' ? ' / ' + P(j.tp2) : ''}</b></div>
+        <div><small>Qty</small><b>${fx(j.qty, j.stepDec ?? 6)}</b></div>
+      </div>
+      ${j.exit != null ? `<div class="hint" style="margin-top:6px">Exit di ${P(j.exit)}</div>` : ''}
+      <div class="jc-act">
+        ${j.status === 'PLAN' ? `<button class="btn sm" data-jact="open">✓ Order terisi</button><button class="btn sm" data-jact="cancel">Batal</button>` : ''}
+        ${j.status === 'OPEN' ? `<input type="number" step="any" placeholder="Harga exit" data-jexit value="${px ? +px : ''}"><button class="btn sm green" data-jact="close">Tutup posisi</button><button class="btn sm" data-jact="closetp">Kena TP1</button><button class="btn sm danger" data-jact="closesl">Kena SL</button>` : ''}
+        <button class="btn sm ghost" data-jact="detail">Lihat chart</button>
+        <button class="btn sm ghost danger" data-jact="del" style="margin-left:auto">Hapus</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function closeTrade(j, exit) {
+  if (!(exit > 0)) { toast('Isi harga exit dulu'); return; }
+  j.exit = exit; j.closed = Date.now(); j.status = exit >= j.entry ? 'WIN' : 'LOSS';
+  saveJournal(); renderJournal(); toast(`Trade ${base(j.sym)} ditutup: ${jR(j, exit).toFixed(2)}R`);
+}
+async function refreshJournalPrices() {
+  const syms = [...new Set(JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN').map(j => j.sym))];
+  if (!syms.length) { renderJournal(); return; }
+  try { JPRICES = Object.assign(JPRICES, await tickerPrices(syms)); } catch (e) { toast(e.message); }
+  renderJournal();
+}
+function exportJournalCsv() {
+  const head = ['tanggal', 'pair', 'tf', 'grade', 'status', 'entry', 'sl', 'tp1', 'tp2', 'qty', 'nilai_usdt', 'exit', 'R', 'pnl_usdt'];
+  const rows = JOURNAL.map(j => [new Date(j.created).toISOString(), j.sym, j.tf, j.grade, j.status, j.entry, j.sl, j.tp1, j.tp2, j.qty, j.notional.toFixed(2), j.exit ?? '', j.exit != null ? jR(j, j.exit).toFixed(2) : '', j.exit != null ? jPnl(j, j.exit).toFixed(2) : ''].join(','));
+  download(`jurnal-precision-zone-${new Date().toISOString().slice(0, 10)}.csv`, head.join(',') + '\n' + rows.join('\n'), 'text/csv');
+}
+function download(name, text, type) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 
 /* =========================================================
@@ -1138,130 +1830,181 @@ function drawChart() {
   hl(r.price, '#7c9cff', fp(r.price), false);
 }
 
+
 /* =========================================================
    NOTIFIKASI
    ========================================================= */
 function tgSend(text) {
   if (!S.tgToken || !S.tgChat) return Promise.resolve(false);
-  const url = `https://api.telegram.org/bot${S.tgToken}/sendMessage?chat_id=${encodeURIComponent(S.tgChat)}&parse_mode=HTML&disable_web_page_preview=true&text=${encodeURIComponent(text)}`;
+  const url = `https://api.telegram.org/bot${S.tgToken}/sendMessage?chat_id=${encodeURIComponent(S.tgChat)}&disable_web_page_preview=true&text=${encodeURIComponent(text)}`;
   return fetch(url).then(r => r.ok).catch(() => fetch(url, { mode: 'no-cors' }).then(() => true).catch(() => false));
 }
-function planText(r) {
-  const b = r.best;
-  return `<b>${r.signal} ${r.state}</b> · ${r.sym} ${r.tf.toUpperCase()}\nSkor ${r.score} (${r.grade}) · Trend ${r.trend} · HTF ${r.htfTrend}\nZona: ${b.zone.type} ${b.zone.pattern} ${zoneStatus(Math.max(0, b.priorTests))}\nEntry: ${fp(b.entry)}\nSL: ${fp(b.sl)}\nTP1: ${fp(b.tp1)} (RR ${b.rr.toFixed(2)})\nTP2: ${fp(b.tp2)}${b.conf ? '\nKonfirmasi: ' + b.conf : ''}`;
-}
 function notifyNew(list) {
-  const hits = list.filter(r => r.state === 'CONFIRMED' && r.signal === 'BUY');
+  const hits = list.filter(r => r.state === 'CONFIRMED');
   const fresh = [];
   for (const r of hits) {
-    const key = `${r.sym}|${r.tf}|${r.signal}|${r.best.zone.t}`;
+    const key = `${r.sym}|${r.tf}|BUY|${r.best.zone.t}`;
     if (!SEEN.has(key)) { SEEN.add(key); fresh.push(r); }
   }
   store.set('seen', [...SEEN].slice(-500));
   if (!fresh.length) return;
   if (S.notify && 'Notification' in window && Notification.permission === 'granted') {
-    try { new Notification(`Precision Zone: ${fresh.length} sinyal baru`, { body: fresh.slice(0, 5).map(r => `${r.signal} ${r.sym} (${r.grade})`).join(' · ') }); } catch (e) {}
+    try { new Notification(`Precision Zone: ${fresh.length} sinyal siap eksekusi`, { body: fresh.slice(0, 5).map(r => `${base(r.sym)} ${r.tf.toUpperCase()} (grade ${r.grade})`).join(' · ') }); } catch (e) {}
   }
-  if (S.tgToken && S.tgChat) fresh.slice(0, 10).forEach((r, i) => setTimeout(() => tgSend(planText(r)), i * 400));
+  if (S.tgToken && S.tgChat) fresh.slice(0, 10).forEach((r, i) => setTimeout(() => tgSend('🟢 ' + planText(r, computeTicketSimple(r))), i * 400));
+}
+// versi tiket tanpa input DOM (untuk notifikasi): pakai pengaturan default
+function computeTicketSimple(r) {
+  const b = r.best, fee = (+S.fee || 0) / 100;
+  const perUnit = b.entry - b.sl;
+  let qty = S.sizeMode === 'pct' ? S.capital * S.posPct / 100 / b.entry : (perUnit > 0 ? S.capital * S.riskPct / 100 / perUnit : 0);
+  qty = Math.min(qty, S.capital / b.entry);
+  const sellQty = qty * (1 - fee), split = S.tpSplit;
+  const f = { tickDec: Math.max(2, Math.min(8, 6 - Math.floor(Math.log10(b.entry)))), stepDec: 6 };
+  return { market: r.state === 'CONFIRMED', entry: b.entry, sl: b.sl, stopLimit: b.sl * (1 - (+S.stopOff || 0.3) / 100), tp1: b.tp1, tp2: b.tp2, qty, qA: split === '50' ? sellQty / 2 : sellQty, qB: split === '50' ? sellQty / 2 : 0, split, notional: qty * b.entry, riskUsd: qty * perUnit, f };
 }
 
 /* =========================================================
-   SETTINGS UI
+   PENGATURAN
    ========================================================= */
-const SET_KEYS = ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'tgToken', 'tgChat', 'exclude'];
+const NUM_KEYS = ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'posPct', 'fee', 'stopOff'];
 function loadSettingsUI() {
-  SET_KEYS.forEach(k => $('#s_' + k).value = S[k]);
+  NUM_KEYS.forEach(k => $('#s_' + k).value = S[k]);
+  $('#s_tgToken').value = S.tgToken; $('#s_tgChat').value = S.tgChat; $('#s_exclude').value = S.exclude;
+  $('#s_sizeMode').value = S.sizeMode; $('#s_tpSplit').value = S.tpSplit;
   $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto;
-  $('#s_sizeMode').value = S.sizeMode; $('#s_posPct').value = S.posPct;
-  $('#tf').value = S.tf; $('#topN').value = S.topN; $('#minVol').value = S.minVol; $('#auto').value = S.auto;
-  $('#pairs').value = S.pairs; $('#htf').checked = S.htf;
-  setScope(S.scope);
+  $('#scope').value = S.scope; $('#tf').value = S.tf; $('#topN').value = S.topN; $('#minVol').value = S.minVol; $('#auto').value = S.auto;
+  $('#pairs').value = S.pairs; $('#htf').checked = S.htf; $('#htfLbl').textContent = S.htf ? 'Aktif' : 'Mati';
+  applyScopeUI();
 }
 function saveSettingsUI() {
-  ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'posPct'].forEach(k => { const v = parseFloat($('#s_' + k).value); if (isFinite(v)) S[k] = v; });
+  NUM_KEYS.forEach(k => { const v = parseFloat($('#s_' + k).value); if (isFinite(v)) S[k] = v; });
   S.maxBase = Math.max(1, Math.min(6, Math.round(S.maxBase)));
-  S.posPct = Math.max(1, Math.min(100, S.posPct)); S.sizeMode = $('#s_sizeMode').value;
-  syncCalcDefaults();
-  S.tgToken = $('#s_tgToken').value.trim(); S.tgChat = $('#s_tgChat').value.trim();
-  S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked; S.exclude = $('#s_exclude').value.trim();
+  S.posPct = Math.max(1, Math.min(100, S.posPct));
+  S.tgToken = $('#s_tgToken').value.trim(); S.tgChat = $('#s_tgChat').value.trim(); S.exclude = $('#s_exclude').value.trim();
+  S.sizeMode = $('#s_sizeMode').value; S.tpSplit = $('#s_tpSplit').value;
+  S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked;
   persist();
-}
-function syncCalcDefaults() {
-  $('#cCap').value = S.capital; $('#cRisk').value = S.riskPct; $('#cMode').value = S.sizeMode;
-  const opt = [...$('#cPct').options].find(o => +o.value === +S.posPct);
-  $('#cPct').value = opt ? opt.value : 'custom'; $('#cPctCustom').value = S.posPct;
-  calc();
+  delete $('#cCap').dataset.init;
 }
 function persist() { store.set('settings', S); }
-function setScope(v) {
-  S.scope = v;
-  $$('#scopeSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
-  $$('[data-scope]').forEach(el => el.style.display = el.dataset.scope === v ? '' : 'none');
-}
+function applyScopeUI() { $$('[data-scope]').forEach(el => el.style.display = el.dataset.scope === S.scope ? '' : 'none'); }
 function setAuto() {
   clearInterval(autoTimer);
   const m = +S.auto;
   if (m > 0) autoTimer = setInterval(() => { if (!scanning) runScan(); }, m * 60000);
 }
 function exportCsv() {
-  const head = ['pair', 'tf', 'harga', 'ch24', 'trend', 'htf', 'sinyal', 'state', 'skor', 'grade', 'zona', 'pola', 'status_zona', 'entry', 'sl', 'tp1', 'tp2', 'rr'];
+  const head = ['pair', 'tf', 'harga', 'ch24', 'trend', 'htf', 'status', 'skor', 'grade', 'demand', 'pola', 'entry', 'sl', 'tp1', 'tp2', 'rr', 'catatan'];
   const rows = RESULTS.filter(passFilter).map(r => {
     const b = r.best;
-    return [r.sym, r.tf, r.price, r.ch24, r.trend, r.htfTrend, r.signal, r.state, r.score, r.grade,
-      b ? b.zone.type : '', b ? b.zone.pattern : '', b ? zoneStatus(Math.max(0, b.priorTests)) : '',
-      b ? b.entry : '', b ? b.sl : '', b ? b.tp1 : '', b ? b.tp2 : '', b ? b.rr.toFixed(2) : ''].join(',');
+    return [r.sym, r.tf, r.price, r.ch24, r.trend, r.htfTrend, CAT[category(r)].label, r.score, r.grade,
+      b ? zoneStatus(Math.max(0, b.priorTests)) : '', b ? b.zone.pattern : '',
+      b ? b.entry : '', b ? b.sl : '', b ? b.tp1 : '', b ? b.tp2 : '', b ? b.rr.toFixed(2) : '', '"' + oneLiner(r).replace(/"/g, "'") + '"'].join(',');
   });
-  const blob = new Blob([head.join(',') + '\n' + rows.join('\n')], { type: 'text/csv' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `precision-zone-${S.tf}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '')}.csv`; a.click();
+  download(`precision-zone-${S.tf}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '')}.csv`, head.join(',') + '\n' + rows.join('\n'), 'text/csv');
 }
 
 /* =========================================================
    INIT
    ========================================================= */
+function switchTab(tab) {
+  $$('#nav button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  ['scan', 'watch', 'journal', 'guide', 'settings'].forEach(t => $('#tab-' + t).hidden = t !== tab);
+  if (tab === 'journal') refreshJournalPrices();
+  if (tab === 'watch') renderWatch();
+  window.scrollTo(0, 0);
+}
 function init() {
   loadSettingsUI();
-  $$('#tabs button').forEach(b => b.onclick = () => {
-    $$('#tabs button').forEach(x => x.classList.toggle('active', x === b));
-    ['scan', 'guide', 'settings'].forEach(t => $('#tab-' + t).hidden = t !== b.dataset.tab);
-  });
-  $$('#scopeSeg button').forEach(b => b.onclick = () => { setScope(b.dataset.v); persist(); });
+  updateBadges();
+  renderScanner();
+  renderWatch();
+  $$('#nav button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
+  // kontrol scan
+  $('#scope').onchange = e => { S.scope = e.target.value; persist(); applyScopeUI(); };
   $('#tf').onchange = e => { S.tf = e.target.value; persist(); };
   $('#topN').onchange = e => { S.topN = e.target.value; persist(); };
   $('#minVol').onchange = e => { S.minVol = e.target.value; persist(); };
-  $('#auto').onchange = e => { S.auto = e.target.value; persist(); setAuto(); };
+  $('#auto').onchange = e => { S.auto = e.target.value; persist(); setAuto(); toast(+S.auto ? `Auto-scan tiap ${S.auto} menit (selama tab terbuka)` : 'Auto-scan dimatikan'); };
   $('#pairs').onchange = e => { S.pairs = e.target.value; persist(); };
-  $('#htf').onchange = e => { S.htf = e.target.checked; persist(); };
+  $('#htf').onchange = e => { S.htf = e.target.checked; $('#htfLbl').textContent = S.htf ? 'Aktif' : 'Mati'; persist(); };
   $('#btnScan').onclick = () => { S.pairs = $('#pairs').value; persist(); runScan(); };
-  $('#btnStop').onclick = () => { abort = true; };
-  $$('#filterChips .chip').forEach(c => c.onclick = () => { FILTER = c.dataset.f; $$('#filterChips .chip').forEach(x => x.classList.toggle('on', x === c)); renderTable(); });
-  $('#search').oninput = renderTable;
+  $('#search').oninput = () => renderScanner();
   $('#btnCsv').onclick = exportCsv;
+  $$('#viewSeg button').forEach(b => b.onclick = () => { S.view = b.dataset.v; persist(); renderScanner(); });
+  $$('#filterChips .chip').forEach(c => c.onclick = () => { FILTER = c.dataset.f; $$('#filterChips .chip').forEach(x => x.classList.toggle('on', x === c)); renderTable(); });
   $$('#tbl th').forEach(th => th.onclick = () => { const k = th.dataset.s; SORT = { k, dir: SORT.k === k ? -SORT.dir : -1 }; renderTable(); });
-  $('#tbody').onclick = e => { const tr = e.target.closest('tr[data-sym]'); if (tr) openDetail(tr.dataset.sym, S.tf); };
+  $('#kpis').onclick = e => {
+    const k = e.target.closest('.kpi'); if (!k) return;
+    const map = { exec: 'buyc', limit: 'buys', watch: 'watchc', up: 'up', all: 'all' };
+    FILTER = map[k.dataset.k] || 'all'; S.view = 'table'; persist();
+    $$('#filterChips .chip').forEach(x => x.classList.toggle('on', x.dataset.f === FILTER));
+    renderScanner();
+  };
+  // klik kartu / baris (delegasi)
+  document.addEventListener('click', e => {
+    const cp = e.target.closest('[data-copy]'); if (cp) { e.stopPropagation(); copyText(cp.dataset.copy); return; }
+    const st = e.target.closest('[data-star]'); if (st) { e.stopPropagation(); toggleWatch(st.closest('[data-sym]').dataset.sym); return; }
+    const gt = e.target.closest('[data-gotable]'); if (gt) { e.preventDefault(); S.view = 'table'; persist(); renderScanner(); return; }
+    const rm = e.target.closest('[data-wlrm]'); if (rm) { toggleWatch(rm.dataset.wlrm); renderWatch(); return; }
+    const card = e.target.closest('.oc[data-sym], tr.click[data-sym]');
+    if (card) openDetail(card.dataset.sym, card.dataset.tf);
+  });
+  // watchlist
+  const addWl = () => { const list = parsePairs($('#wlAdd').value); list.forEach(s => { if (!WATCH.includes(s)) WATCH.push(s); }); saveWatch(); $('#wlAdd').value = ''; renderWatch(); if (list.length) toast(list.length + ' pair ditambahkan'); };
+  $('#btnWlAdd').onclick = addWl;
+  $('#wlAdd').onkeydown = e => { if (e.key === 'Enter') addWl(); };
+  $('#btnWlScan').onclick = () => runScan('watch');
+  // jurnal
+  $$('#jFilter .chip').forEach(c => c.onclick = () => { JFILTER = c.dataset.f; $$('#jFilter .chip').forEach(x => x.classList.toggle('on', x === c)); renderJournal(); });
+  $('#btnJRefresh').onclick = refreshJournalPrices;
+  $('#btnJCsv').onclick = exportJournalCsv;
+  $('#jList').onclick = e => {
+    const b = e.target.closest('[data-jact]'); if (!b) return;
+    const card = b.closest('[data-jid]'), j = JOURNAL.find(x => x.id === card.dataset.jid); if (!j) return;
+    const act = b.dataset.jact;
+    if (act === 'open') { j.status = 'OPEN'; j.opened = Date.now(); saveJournal(); renderJournal(); }
+    if (act === 'cancel') { j.status = 'CANCEL'; saveJournal(); renderJournal(); }
+    if (act === 'close') closeTrade(j, parseFloat(card.querySelector('[data-jexit]').value));
+    if (act === 'closetp') closeTrade(j, j.tp1);
+    if (act === 'closesl') closeTrade(j, j.sl);
+    if (act === 'detail') openDetail(j.sym, j.tf);
+    if (act === 'del') { if (b.dataset.sure) { JOURNAL = JOURNAL.filter(x => x.id !== j.id); saveJournal(); renderJournal(); } else { b.dataset.sure = '1'; b.textContent = 'Yakin hapus?'; } }
+  };
   // detail
-  $('#dClose').onclick = () => { $('#detail').hidden = true; document.body.style.overflow = ''; };
-  $('#detail').onclick = e => { if (e.target.id === 'detail') $('#dClose').click(); };
+  $('#dClose').onclick = closeDetail;
+  $('#detail').onclick = e => { if (e.target.id === 'detail') closeDetail(); };
+  $('#dStar').onclick = () => DET && toggleWatch(DET.sym);
   $$('#dTfSeg button').forEach(b => b.onclick = () => DET && openDetail(DET.sym, b.dataset.v));
   $$('#dZoom button').forEach(b => { b.classList.toggle('on', +b.dataset.v === ZOOM); b.onclick = () => { ZOOM = +b.dataset.v; $$('#dZoom button').forEach(x => x.classList.toggle('on', x === b)); drawChart(); }; });
-  syncCalcDefaults();
-  ['#cCap', '#cRisk', '#cPctCustom'].forEach(id => $(id).oninput = calc);
-  ['#cMode', '#cPct'].forEach(id => $(id).onchange = calc);
-  $('#dCopy').onclick = () => {
-    if (!DET || !DET.best) return;
-    const txt = planText(DET).replace(/<\/?b>/g, '');
-    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => $('#dCopyMsg').textContent = 'Tersalin ✓', () => $('#dCopyMsg').textContent = 'Gagal menyalin');
-  };
+  ['#cCap', '#cRisk', '#cPctCustom'].forEach(id => $(id).oninput = renderTicket);
+  ['#cMode', '#cPct', '#cSplit'].forEach(id => $(id).onchange = renderTicket);
+  $('#btnJournal').onclick = addToJournal;
+  $('#btnCopyAll').onclick = () => DET && DET.best && copyText(planText(DET, TK));
   window.addEventListener('resize', () => { if (!$('#detail').hidden) drawChart(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#dClose').click(); });
-  // settings
-  $('#btnSave').onclick = () => { saveSettingsUI(); $('#saveMsg').textContent = 'Tersimpan ✓ (scan ulang untuk menerapkan)'; setTimeout(() => $('#saveMsg').textContent = '', 3000); };
-  $('#btnReset').onclick = () => { const keep = { tgToken: S.tgToken, tgChat: S.tgChat }; S = Object.assign({}, DEFAULTS, keep); persist(); loadSettingsUI(); $('#saveMsg').textContent = 'Direset ke default'; };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#detail').hidden) closeDetail(); });
+  // pengaturan
+  $('#btnSave').onclick = () => { saveSettingsUI(); $('#saveMsg').textContent = 'Tersimpan ✓ Scan ulang untuk menerapkan parameter.'; setTimeout(() => $('#saveMsg').textContent = '', 3500); };
+  $('#btnReset').onclick = () => { Object.assign(S, PARAM_DEFAULTS); persist(); loadSettingsUI(); $('#saveMsg').textContent = 'Parameter sistem direset ke default.'; };
   $('#s_notify').onchange = e => { if (e.target.checked && 'Notification' in window && Notification.permission !== 'granted') Notification.requestPermission(); };
-  $('#btnTgTest').onclick = async () => { saveSettingsUI(); $('#tgMsg').textContent = 'Mengirim…'; const ok = await tgSend('✅ Tes dari Precision Zone Crypto berhasil.'); $('#tgMsg').textContent = ok ? 'Terkirim. Cek Telegram Anda.' : 'Gagal. Periksa token & chat ID.'; };
+  $('#btnTgTest').onclick = async () => { saveSettingsUI(); $('#tgMsg').textContent = 'Mengirim…'; const ok = await tgSend('✅ Tes dari Precision Zone · Spot Long Scanner berhasil.'); $('#tgMsg').textContent = ok ? 'Terkirim. Cek Telegram Anda.' : 'Gagal. Periksa token & chat ID.'; };
+  $('#btnBackup').onclick = () => download(`precision-zone-backup-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ app: 'precision-zone', version: APP_VERSION, settings: S, watch: WATCH, journal: JOURNAL }, null, 2), 'application/json');
+  $('#fileRestore').onchange = async e => {
+    const file = e.target.files[0]; if (!file) return;
+    try {
+      const d = JSON.parse(await file.text());
+      if (d.app !== 'precision-zone') throw new Error('bukan file backup aplikasi ini');
+      if (d.settings) { S = Object.assign({}, DEFAULTS, d.settings); persist(); }
+      if (Array.isArray(d.watch)) { WATCH = d.watch; saveWatch(); }
+      if (Array.isArray(d.journal)) { JOURNAL = d.journal; saveJournal(); }
+      loadSettingsUI(); renderWatch(); renderJournal(); toast('Data berhasil dipulihkan ✓');
+    } catch (err) { toast('Gagal restore: ' + err.message); }
+    e.target.value = '';
+  };
   setAuto();
 }
-if (typeof document !== 'undefined' && document.getElementById('tabs')) init();
+if (typeof document !== 'undefined' && document.getElementById('nav')) init();
 </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# Precision Zone Crypto — Scanner (Web App Gratis)
+# Precision Zone · Spot Long Scanner v2.0 (Web App Gratis)
 
 Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Precision Zone System**. Hanya sinyal BUY, supply zone dipakai sebagai target TP. Isinya: filter trend EMA 50/200, zona Supply & Demand, candle konfirmasi, konteks SMC (BOS/CHoCH/liquidity sweep), serta trading plan otomatis (Entry, SL, TP1, TP2, RR) dan kalkulator ukuran posisi.
 
@@ -34,12 +34,20 @@ Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Pr
 
 ---
 
+## Fitur v2.0
+- **Kartu peluang** dikelompokkan: Siap eksekusi → Siapkan limit → Pantau, masing-masing dengan ringkasan bahasa sederhana.
+- **Banner kondisi pasar** (BTC trend + % pair uptrend) dengan saran sikap.
+- **Tiket eksekusi Binance Spot**: Limit/Market Buy + OCO Sell (TP1/TP2 + stop-limit). Harga dan qty dibulatkan sesuai tick/step size pair dan dicek terhadap minimum order.
+- **Rincian skor**, checklist, dan tabel **multi-timeframe** (15m/1H/4H/1D) di halaman detail.
+- **Watchlist** (☆) dan **Jurnal trading** (R, win rate, P&L), plus backup/restore JSON.
+- Tampilan responsif dengan navigasi bawah di HP.
+
 ## 2. Cara pakai singkat
-1. Pilih **Semua Crypto** (top N berdasarkan volume) atau **Pair Pilihan** (mis. `BTC, ETH, SOL`).
-2. Pilih timeframe (4H untuk swing, 1H untuk intraday) dan aktifkan **Filter HTF**.
-3. Tekan **▶ Scan**, lalu saring dengan *BUY Confirmed*, *Zona Fresh*, atau *Grade A/B*.
-4. Ketuk sebuah pair untuk melihat chart dengan zona, trading plan, checklist, dan kalkulator posisi.
-5. Validasi di TradingView sebelum eksekusi.
+1. Atur modal, metode ukuran posisi, dan pembagian TP di **Pengaturan**.
+2. Pilih cakupan (Semua crypto / Pair pilihan / Watchlist) dan timeframe, lalu tekan **Scan**.
+3. Cek banner **Kondisi pasar**.
+4. Buka kartu **Siap eksekusi** atau **Siapkan limit**, lalu ikuti **Tiket eksekusi** (tombol salin di setiap angka).
+5. Tekan **Simpan ke jurnal** untuk melacak hasilnya.
 
 Panduan lengkap (aturan sistem, arti sinyal, komponen skor, manajemen posisi, Telegram, troubleshooting) ada di tab **Panduan** di dalam aplikasi.
 
@@ -51,8 +59,8 @@ Panduan lengkap (aturan sistem, arti sinyal, komponen skor, manajemen posisi, Te
 | Trend | UP: EMA50 > EMA200 dan harga > EMA200 (cari BUY) · DOWN: hindari beli · selain itu SIDEWAYS (tunggu) |
 | Zona | Base 1–3 candle kecil, diikuti impulse dengan body ≥ 1,2×ATR. Proximal = body base, distal = ekstrem base |
 | Status zona | Fresh → Tested 1× → Lemah (≥ 2×). Zona Broken (close melewati distal) dihapus |
-| BUY CONFIRMED | Trend UP, HTF tidak DOWN, demand disentuh ≤ 3 candle terakhir, pin bar/engulfing bullish, harga ≤ 1 ATR dari zona |
-| BUY SETUP | Trend UP, demand Fresh/Tested 1× dalam jarak ≤ 1,5 ATR |
+| Siap eksekusi | Trend UP, HTF tidak DOWN, demand disentuh ≤ 3 candle terakhir, pin bar/engulfing bullish, harga ≤ 1 ATR dari zona |
+| Siapkan limit | Trend UP, demand Fresh/Tested 1× dalam jarak ≤ 1,5 ATR |
 | SL | Distal − 0,2×ATR |
 | TP1 / TP2 | Supply zone terdekat di atas entry (kalau ≥ 1R), atau 2R · TP2 ≥ 3R |
 | Eksekusi | Limit buy + OCO (TP & SL) di Binance Spot |
