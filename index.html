@@ -258,7 +258,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <header class="appbar"><div class="in">
   <div class="logo">
     <svg width="34" height="34" viewBox="0 0 34 34"><rect width="34" height="34" rx="9" fill="#151d2c"/><rect x="6" y="19" width="22" height="6" rx="1.5" fill="#16c784" opacity=".35"/><path d="M7 22 L13 15 L17 18 L27 8" stroke="#6d8cff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27" cy="8" r="2.4" fill="#16c784"/></svg>
-    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.0</small></div>
+    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.1</small></div>
   </div>
   <nav class="nav" id="nav">
     <button data-tab="scan" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Scanner</button>
@@ -267,7 +267,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <button data-tab="guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>Panduan</button>
     <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Pengaturan</button>
   </nav>
-  <div class="right"><div id="status">Siap</div></div>
+  <div class="right"><div id="status">Siap</div><div class="seg" id="langSeg" title="Bahasa / Language"><button data-l="id">ID</button><button data-l="en">EN</button></div></div>
 </div></header>
 
 <main>
@@ -372,7 +372,8 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 
 <!-- ================= GUIDE ================= -->
 <section id="tab-guide" class="guide" hidden>
-  <div class="callout blue"><b>Mulai di sini:</b> baca bagian 1–3 untuk memasang dan memakai aplikasi, bagian 4–7 untuk memahami dan mengeksekusi sinyal, lalu bagian 8–10 untuk manajemen risiko, checklist, dan jurnal. Bagian terakhir berisi glosarium istilah.</div>
+<div data-lang-block="id">
+  <div class="callout blue"><b>Mulai di sini:</b> baca bagian 1–3 untuk memasang dan memakai aplikasi, bagian 4–7 untuk memahami dan mengeksekusi sinyal, lalu bagian 8–10 untuk manajemen risiko, checklist, dan jurnal. Bagian 14 berisi glosarium istilah. Ganti bahasa lewat tombol <b>ID | EN</b> di kanan atas.</div>
 
   <details open><summary>1. Apa yang dilakukan aplikasi ini</summary>
     <p>Aplikasi ini memindai pasar Spot Binance (pair USDT) dengan kerangka <b>Precision Zone System</b>, <b>khusus untuk Spot Long</b> (beli lalu jual lebih tinggi). Tidak ada sinyal short atau sell. Prosesnya:</p>
@@ -561,7 +562,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <li>Tidak ada berita besar (FOMC, CPI, unlock token) dalam beberapa jam ke depan.</li>
       <li>Ukuran posisi sudah dihitung sesuai risiko %.</li>
     </ol>
-    <p>Halaman detail menampilkan checklist otomatis untuk poin 1–6. Poin 7–8 Anda cek sendiri.</p>
+    <p>Halaman detail menampilkan checklist otomatis untuk poin 1–7. Poin 8–9 Anda cek sendiri.</p>
   </details>
 
   <details><summary>10. Watchlist & Jurnal trading</summary>
@@ -621,7 +622,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <tr><td>"Rate limit" (429)</td><td>Terlalu banyak request. Tunggu 1 menit, kurangi Top pair, atau perpanjang interval auto-scan.</td></tr>
       <tr><td>Pair tidak muncul di Pair Pilihan</td><td>Pastikan pair ada di Spot Binance dengan quote USDT. Pair dengan data &lt; 220 candle (koin baru) dilewati karena EMA200 belum valid.</td></tr>
       <tr><td>Notifikasi tidak muncul di HP</td><td>Gunakan Telegram. Notifikasi browser di HP terbatas, terutama di iOS (harus dipasang ke Home Screen).</td></tr>
-      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. Pastikan header bertuliskan <b>Spot Long Scanner · v2.0</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=20</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
+      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. Pastikan header bertuliskan <b>Spot Long Scanner · v2.1</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=21</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
       <tr><td>Tiket menampilkan "aturan pair belum dimuat"</td><td>Koneksi ke exchangeInfo gagal. Tutup lalu buka lagi detail pair-nya. Tanpa aturan pair, angka tidak dibulatkan dan perlu disesuaikan manual di Binance.</td></tr>
       <tr><td>Pengaturan hilang</td><td>Pengaturan disimpan per browser. Mode incognito atau menghapus data browser akan meresetnya.</td></tr>
     </table>
@@ -647,6 +648,284 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
   <details><summary>15. Disclaimer</summary>
     <p>Aplikasi ini adalah alat bantu analisis, <b>bukan nasihat keuangan</b>. Sinyal dihasilkan oleh aturan otomatis yang bisa salah, terutama saat volatilitas ekstrem atau likuiditas rendah. Lakukan backtest atau paper trading dulu, gunakan manajemen risiko, dan tanggung sendiri setiap keputusan trading.</p>
   </details>
+</div>
+<div data-lang-block="en" hidden>
+  <div class="callout blue"><b>Start here:</b> read sections 1–3 to set up and use the app, sections 4–7 to understand and execute signals, and sections 8–10 for risk management, the checklist and the journal. Section 14 is a glossary. Switch languages with the <b>ID | EN</b> button at the top right.</div>
+
+  <details open><summary>1. What this app does</summary>
+    <p>This app scans the Binance Spot market (USDT pairs) using the <b>Precision Zone System</b> framework, <b>for Spot Long trades only</b> (buy, then sell higher). It never gives short or sell signals. The process:</p>
+    <ol>
+      <li>Determine the <b>trend direction</b> with EMA 50 and EMA 200.</li>
+      <li>Find <b>Supply & Demand zones</b> (base + impulse) that are still valid.</li>
+      <li>Check whether price is <b>approaching or tapping a demand zone</b> while the trend is UP.</li>
+      <li>Look for a <b>confirmation candle</b> (pin bar or engulfing) at the zone, plus SMC/price-action context (BOS, CHoCH, liquidity sweep).</li>
+      <li>Build a <b>Binance Spot execution ticket</b>: Limit/Market Buy followed by an OCO Sell (TP + SL). Prices and quantities are already rounded to the pair's Binance rules.</li>
+      <li>Save the plan to the <b>Journal</b> to track results (R, win rate, P&amp;L).</li>
+    </ol>
+    <div class="callout">Data comes from Binance's public API, so <b>no login or API key is needed, and the app cannot place orders</b>. All calculations run in your browser. The rules here are an algorithmic translation of the Precision Zone concept (EMA 50/200 + S&D). You can tune the numbers to match your cheat sheet in the Settings tab.</div>
+  </details>
+
+  <details><summary>2. Free deployment (online 24/7, $0)</summary>
+    <p>The whole app is a single <code>index.html</code> file, with no server and no database. Pick one of these options:</p>
+    <h3>A. GitHub Pages (recommended)</h3>
+    <ol>
+      <li>Sign up or log in at <a href="https://github.com" target="_blank" rel="noopener">github.com</a>.</li>
+      <li>Click <b>+ → New repository</b>, give it a name such as <code>precision-zone</code>, choose <b>Public</b>, then <b>Create repository</b>.</li>
+      <li>Click <b>Add file → Upload files</b>, upload <code>index.html</code> (and <code>README.md</code> if you like), then click <b>Commit changes</b>.</li>
+      <li>Open <b>Settings → Pages</b>. Under <i>Build and deployment</i> choose <b>Source: Deploy from a branch</b>, Branch <b>main</b>, folder <b>/ (root)</b>, then <b>Save</b>.</li>
+      <li>Wait 1–3 minutes. The app will be live at <code>https://USERNAME.github.io/precision-zone/</code>.</li>
+      <li>To update: upload the new <code>index.html</code> to the same repository.</li>
+    </ol>
+    <h3>B. Cloudflare Pages</h3>
+    <ol>
+      <li>Log in at dash.cloudflare.com, then open <b>Workers & Pages → Create → Pages → Upload assets</b>.</li>
+      <li>Name the project, upload the folder containing <code>index.html</code>, then <b>Deploy</b>. Your address will look like <code>name.pages.dev</code>.</li>
+    </ol>
+    <h3>C. Netlify Drop (fastest, from a laptop)</h3>
+    <ol>
+      <li>Open <a href="https://app.netlify.com/drop" target="_blank" rel="noopener">app.netlify.com/drop</a> and drag in the folder containing <code>index.html</code>. The site goes live immediately.</li>
+      <li>Create a free account so the site is kept and you can change its address.</li>
+    </ol>
+    <h3>Install it on your phone like an app</h3>
+    <ul>
+      <li><b>Android (Chrome):</b> open the app URL, tap the ⋮ menu, then <b>Add to Home screen</b>.</li>
+      <li><b>iPhone (Safari):</b> tap the Share button, then <b>Add to Home Screen</b>.</li>
+    </ul>
+    <div class="callout">You can also open <code>index.html</code> directly in a laptop browser without deploying. Deploying is only needed to open the app from your phone or any other device.</div>
+  </details>
+
+  <details open><summary>3. Quick start (5 steps)</summary>
+    <ol>
+      <li><b>Set up once in Settings:</b> enter your capital, position sizing method (risk % or % of capital) and take-profit split.</li>
+      <li><b>Scan:</b> choose a scope (All crypto, Selected pairs or Watchlist) and a timeframe (4H for swing, 1H for intraday), then press <b>Scan</b>.</li>
+      <li><b>Read the market condition</b> in the top banner. If it says <span class="neg">BEARISH</span>, reduce your position size or wait.</li>
+      <li><b>Go through the opportunity cards</b> from top to bottom: <span class="pos">Ready to execute</span>, then <span class="amb">Set limit order</span>, then Watch. Tap a card to open its details.</li>
+      <li>In the details, <b>follow the Execution Ticket</b> step by step (every number has a copy button), then press <b>Save to journal</b>.</li>
+    </ol>
+    <div class="callout">For pairs that look interesting but aren't ready yet, tap ☆ to add them to your Watchlist, then scan the watchlist regularly.</div>
+  </details>
+
+  <details><summary>4. System rules (the logic behind the signals)</summary>
+    <h3>4.1 Trend (main filter)</h3>
+    <table>
+      <tr><th>Condition</th><th>Trend</th><th>What to look for</th></tr>
+      <tr><td>EMA50 &gt; EMA200 and price &gt; EMA200</td><td class="b-up">UP</td><td>Look for BUYs at demand zones</td></tr>
+      <tr><td>EMA50 &lt; EMA200 and price &lt; EMA200</td><td class="b-down">DOWN</td><td>Avoid buying. If you already hold the coin, consider taking profit or exiting.</td></tr>
+      <tr><td>Anything else</td><td class="b-side">SIDEWAYS</td><td>Wait (no signal)</td></tr>
+    </table>
+    <p>In an uptrend, pullbacks into the area between EMA50 and EMA200 are often where the highest-probability demand zones sit.</p>
+    <h3>4.2 Supply & Demand zones</h3>
+    <ul>
+      <li><b>Base:</b> 1–3 small candles (body ≤ 50% of range or ≤ 0.5×ATR), i.e. a consolidation area.</li>
+      <li><b>Impulse (leg-out):</b> a large candle after the base, with body ≥ 1.2×ATR (adjustable) and body ≥ 55% of range. It must close well away from the base.</li>
+      <li><b>Proximal line:</b> the zone boundary closest to price (the highest body of the base for demand). This is the limit entry level.</li>
+      <li><b>Distal line:</b> the far boundary (the lowest low of the base for demand). The stop loss goes below it.</li>
+      <li><b>Demand patterns:</b> <code>DBR</code> (Drop-Base-Rally) is a reversal zone and usually stronger. <code>RBR</code> (Rally-Base-Rally) is a continuation zone.</li>
+      <li><b>Supply zones</b> (<code>RBD</code>/<code>DBD</code>) are still drawn on the chart. For spot longs they serve as <b>TP targets</b> and as a warning: if supply sits too close above price, upside room is limited.</li>
+    </ul>
+    <h3>4.3 Zone status</h3>
+    <table>
+      <tr><th>Status</th><th>Meaning</th><th>Quality</th></tr>
+      <tr><td>Fresh</td><td>Not revisited since it formed</td><td class="pos">Best</td></tr>
+      <tr><td>Tested 1×</td><td>Revisited once</td><td class="b-side">Acceptable</td></tr>
+      <tr><td>Weak</td><td>Revisited 2× or more (orders already absorbed)</td><td class="neg">Avoid</td></tr>
+      <tr><td>Broken</td><td>A candle closed beyond the distal line, so the zone is invalid</td><td class="mut">Removed automatically</td></tr>
+    </table>
+    <h3>4.4 Confirmation candle (at the zone)</h3>
+    <ul>
+      <li><b>Pin bar / rejection:</b> wick toward the zone ≥ 2× the body and ≥ 50% of range, closing in the opposite half of the range.</li>
+      <li><b>Engulfing:</b> the last candle's body engulfs the previous candle's body, in the signal direction.</li>
+    </ul>
+    <h3>4.5 SMC / price-action context</h3>
+    <ul>
+      <li><b>Swing high/low:</b> a pivot with 3 candles on each side.</li>
+      <li><b>BOS (Break of Structure):</b> a close beyond a swing in the direction of the bias, meaning the trend continues.</li>
+      <li><b>CHoCH (Change of Character):</b> a close beyond a swing against the bias, an early sign of reversal.</li>
+      <li><b>Liquidity sweep:</b> a wick beyond a swing low/high that closes back inside. Retail stop losses get swept, which often precedes a move in the opposite direction.</li>
+    </ul>
+  </details>
+
+  <details><summary>5. Reading scan results & signal status</summary>
+    <table>
+      <tr><th>Status</th><th>Meaning</th><th>Action</th></tr>
+      <tr><td><span class="badge b-buy">READY TO EXECUTE</span></td><td>Trend UP, HTF not DOWN, price tapped a valid demand zone within the last 3 candles, a bullish confirmation candle printed, and price is still ≤ 1 ATR from the zone</td><td>Buy now (market), then place the OCO from the ticket.</td></tr>
+      <tr><td><span class="badge b-setup">SET LIMIT ORDER</span></td><td>Trend UP and price is ≤ 1.5 ATR from a Fresh/Tested 1× demand zone, but no confirmation yet</td><td>Place a limit buy at the proximal line, or wait until it becomes Ready to execute.</td></tr>
+      <tr><td><span class="badge b-info">WATCH</span></td><td>Supportive trend and a good zone, but price is still far away (≤ 4 ATR)</td><td>Tap ☆ to add it to the Watchlist, and rescan later.</td></tr>
+      <tr><td><span class="badge b-wait">WAIT</span></td><td>Conditions not met, e.g. DOWN trend, weak demand, or no zone. The reason is shown on the card.</td><td>Do not buy.</td></tr>
+    </table>
+    <p>Each card shows a one-sentence summary, the Entry/SL/TP1/RR levels, and a price-position bar (red = distance to SL, green = distance to TP1, white marker = current price).</p>
+    <h3>Score components (0–100)</h3>
+    <table>
+      <tr><th>Component</th><th>Weight</th></tr>
+      <tr><td>Main timeframe trend aligned</td><td>20</td></tr>
+      <tr><td>HTF trend aligned (10 neutral if the HTF filter is off)</td><td>15</td></tr>
+      <tr><td>Zone freshness (Fresh 15 / Tested 1× 8)</td><td>15</td></tr>
+      <tr><td>Zone strength (impulse size, extended leg-out, reversal pattern)</td><td>15</td></tr>
+      <tr><td>Price proximity to the zone / zone already tapped</td><td>10</td></tr>
+      <tr><td>Confirmation candle</td><td>10</td></tr>
+      <tr><td>SMC: aligned BOS/CHoCH (8) + liquidity sweep (7)</td><td>15</td></tr>
+      <tr><td>Penalty: TP1 RR below minimum</td><td>−10</td></tr>
+    </table>
+    <p><b>Grade:</b> A ≥ 75 · B ≥ 60 · C ≥ 45 · D &lt; 45. Focus on grade A/B.</p>
+    <p>Pairs with <b>Watch/Wait</b> status have no grade (–). Their score is still shown as a gauge of the nearest zone's quality. On the details page, <b>Why this score?</b> breaks down every component.</p>
+    <p>The <b>Distance column</b> shows how far price is from the proximal line, in ATR. 0 means price is already inside the zone.</p>
+  </details>
+
+  <details><summary>6. Market condition & multi-timeframe</summary>
+    <p>The <b>Market condition</b> banner appears after a scan and is based on two things: BTC's trend on the selected timeframe, and the <b>% of pairs trending UP</b> (market breadth).</p>
+    <table>
+      <tr><th>Condition</th><th>Rule</th><th>Stance</th></tr>
+      <tr><td class="pos"><b>BULLISH</b></td><td>BTC UP and ≥ 45% of pairs UP</td><td>Normal risk, prioritise grade A/B.</td></tr>
+      <tr><td class="amb"><b>NEUTRAL</b></td><td>In between</td><td>Be selective: trend and HTF both UP, RR ≥ minimum.</td></tr>
+      <tr><td class="neg"><b>BEARISH</b></td><td>BTC DOWN or &lt; 25% of pairs UP</td><td>Half your normal risk, grade A only, or wait in stablecoins.</td></tr>
+    </table>
+    <p>On the details page, the <b>Multi-timeframe</b> table shows the trend and status on 15m, 1H, 4H and 1D. The more timeframes trending UP (ideally ≥ 3 of 4), the stronger the setup.</p>
+  </details>
+
+  <details><summary>7. Executing on Binance Spot (Execution Ticket)</summary>
+    <p>The execution ticket turns a signal into orders you can copy straight into Binance. Prices are rounded to the pair's <i>tick size</i> and quantities to its <i>step size</i>, then checked against Binance's minimum order value.</p>
+    <h3>Step 1 · Buy</h3>
+    <ul>
+      <li><b>Ready to execute</b>: Binance → Spot → pair → <b>Buy → Market</b>, enter the Total USDT from the ticket (or a Limit at the current price).</li>
+      <li><b>Set limit order</b>: <b>Buy → Limit</b>, enter the Limit price and Quantity from the ticket. The order waits until price drops into the zone.</li>
+    </ul>
+    <h3>Step 2 (& 3) · Place the OCO Sell once the buy is filled</h3>
+    <ol>
+      <li>Choose the <b>Sell → OCO</b> tab.</li>
+      <li><b>Take profit / Limit</b> = the TP price from the ticket.</li>
+      <li><b>Stop</b> = the Stop (trigger) price, and <b>Stop-limit</b> = the Stop-limit price (slightly below the stop so the sell order fills even when price drops fast).</li>
+      <li><b>Quantity</b> = the qty on the ticket. It already accounts for the 0.1% fee deducted in coins.</li>
+      <li>If you chose <b>50% TP1 · 50% TP2</b>, create 2 OCOs (A and B) with the same stop.</li>
+    </ol>
+    <h3>After TP1 is hit</h3>
+    <p>OCO A is done. Cancel OCO B and re-place it with the stop at your <b>entry price</b> (break-even), so the remaining position is risk-free.</p>
+    <div class="callout">If you see a red warning (below the minimum order value), increase your capital or position %, or choose <b>100% at TP1</b>. If you pay fees in BNB, you'll be able to sell slightly more coins than the ticket shows, which is fine.</div>
+  </details>
+
+  <details><summary>8. Trading plan & position management</summary>
+    <table>
+      <tr><th>Level</th><th>Rule (Spot Long)</th></tr>
+      <tr><td>Entry</td><td>Confirmed: last close (market). Setup: limit buy at the demand proximal line.</td></tr>
+      <tr><td>Stop Loss</td><td>Demand distal − 0.2×ATR. On Spot, place it as a stop-limit or OCO.</td></tr>
+      <tr><td>TP1</td><td>The proximal line of the nearest supply zone above entry, if it is ≥ 1R away. Otherwise Entry + (Min RR × risk).</td></tr>
+      <tr><td>TP2</td><td>Entry + (Min RR + 1) × risk, at least 3R</td></tr>
+    </table>
+    <h3>Recommended execution rules</h3>
+    <ol>
+      <li>Risk at most <b>1–2% of capital</b> per trade. Use the calculator on the details page.</li>
+      <li>The calculator has 2 position sizing methods:
+        <ul>
+          <li><b>By risk %</b>: you set what % of capital you are willing to lose if the SL is hit, and the app calculates the quantity. The position can be large when the SL is tight.</li>
+          <li><b>By % of capital</b>: you choose the position size (5%–100% of capital or custom), and the app calculates the loss if the SL is hit. A warning appears if risk exceeds 2% of capital.</li>
+        </ul>
+        The default method and percentage are set in the Settings tab.</li>
+      <li>At TP1, close about <b>50%</b> of the position and move the SL to <b>break-even</b>.</li>
+      <li>Let the rest run to TP2, or trail it below the latest swing low.</li>
+      <li>If a candle closes below the distal line, exit. The zone has failed.</li>
+      <li>On Binance Spot, use an <b>OCO</b> (One-Cancels-the-Other) order so TP and SL are placed together.</li>
+      <li>Avoid entries where the TP1 RR is below 1.5, or the SL is more than 3×ATR.</li>
+    </ol>
+  </details>
+
+  <details><summary>9. Pre-entry checklist</summary>
+    <ol>
+      <li>Main timeframe trend is UP and the HTF is not DOWN.</li>
+      <li>Demand zone is Fresh or Tested 1×, not Weak.</li>
+      <li>No supply zone sitting too close above price.</li>
+      <li>The impulse leaving the zone is strong (≥ 1.5×ATR is better).</li>
+      <li>A confirmation candle printed at the zone (pin bar or engulfing).</li>
+      <li>Supporting SMC context: an upward BOS/CHoCH or a swing-low sweep.</li>
+      <li>RR to TP1 ≥ Min RR (default 2).</li>
+      <li>No major news (FOMC, CPI, token unlocks) in the next few hours.</li>
+      <li>Position size calculated according to your risk %.</li>
+    </ol>
+    <p>The details page shows an automatic checklist for points 1–7. Check points 8–9 yourself.</p>
+  </details>
+
+  <details><summary>10. Watchlist & trading journal</summary>
+    <h3>Watchlist</h3>
+    <ul>
+      <li>Tap ☆ on a card or the details page to save a pair. You can also add pairs manually in the Watchlist tab.</li>
+      <li><b>Scan watchlist</b> analyses only your favourite pairs, so it is faster. Good for checking every few hours.</li>
+    </ul>
+    <h3>Journal</h3>
+    <ol>
+      <li>In the Execution Ticket press <b>＋ Save to journal</b>. The initial status is <i>Awaiting entry</i> (limit) or <i>Position open</i> (market).</li>
+      <li>Once the limit is filled, press <b>✓ Order filled</b>.</li>
+      <li>Close the position with <b>Hit TP1</b>, <b>Hit SL</b>, or enter an exit price and press <b>Close position</b>.</li>
+      <li>Press <b>↻ Refresh prices</b> to see running R and alerts (price at entry, TP1 reached, price ≤ SL).</li>
+    </ol>
+    <p>Statistics calculate win rate, average R, total R and total P&amp;L from closed trades. <b>R</b> = result divided by initial risk: +2R means a profit of 2× your risk, −1R means a full stop-out.</p>
+    <div class="callout">Journal and watchlist data are stored in this browser. Use <b>Settings → Backup data</b> regularly, then <b>Restore</b> on another browser or phone.</div>
+  </details>
+
+  <details><summary>11. Browser & Telegram notifications</summary>
+    <ul>
+      <li><b>Auto-scan</b> rescans every N minutes <b>while the app tab is open</b>. Mobile browsers usually suspend background tabs.</li>
+      <li><b>Browser notifications:</b> enable them in the Settings tab and allow them when prompted. They fire for new <i>Ready to execute</i> signals, including the order ticket (on Telegram).</li>
+      <li><b>Telegram (free):</b>
+        <ol>
+          <li>Chat with <code>@BotFather</code> on Telegram, send <code>/newbot</code>, and copy the <b>token</b>.</li>
+          <li>Send any message to your new bot (required, so the bot is allowed to reply).</li>
+          <li>Chat with <code>@userinfobot</code> to get your <b>Chat ID</b>.</li>
+          <li>Enter the token and Chat ID in Settings, then press <b>Test Telegram</b>.</li>
+        </ol>
+      </li>
+    </ul>
+    <div class="callout">The bot token is stored only in your browser (localStorage) and is never uploaded to GitHub. Do not write the token inside <code>index.html</code>.</div>
+  </details>
+
+  <details><summary>12. Parameters explained (Settings tab)</summary>
+    <table>
+      <tr><th>Parameter</th><th>Default</th><th>Effect</th></tr>
+      <tr><td>Position sizing method</td><td>Risk %</td><td>Risk % = quantity is calculated from the distance to the SL. % of capital = fixed position size.</td></tr>
+      <tr><td>Take-profit split</td><td>50/50</td><td>50% at TP1 and 50% at TP2 (2 OCOs), or 100% at TP1 (1 OCO)</td></tr>
+      <tr><td>Trading fee</td><td>0.1%</td><td>Used in risk, profit, journal and sellable-quantity calculations</td></tr>
+      <tr><td>Stop-limit offset</td><td>0.3%</td><td>How far the stop-limit price sits below the stop (trigger)</td></tr>
+      <tr><td>Min. impulse (×ATR)</td><td>1.2</td><td>Higher = fewer but stronger zones</td></tr>
+      <tr><td>Max. base candles</td><td>3</td><td>Long bases (extended consolidation) are usually weaker</td></tr>
+      <tr><td>Setup distance (×ATR)</td><td>1.5</td><td>How close price must be to a zone to count as SET LIMIT ORDER</td></tr>
+      <tr><td>SL buffer (×ATR)</td><td>0.2</td><td>Extra room for the SL beyond the distal line to avoid stop hunts</td></tr>
+      <tr><td>Min RR</td><td>2</td><td>Minimum target RR, also used for the default TP</td></tr>
+      <tr><td>Exclude stock tokens &amp; gold</td><td>Yes</td><td>Binance Spot also lists stock tokens (NVDAB, TSLAB, etc.) and gold (XAUT, PAXG). This filter uses a name list, so some may slip through. Add them yourself under "Exclude specific pairs". The filter does not apply in Selected pairs mode.</td></tr>
+      <tr><td>Exclude specific pairs</td><td>—</td><td>Pairs you don't want scanned in All crypto mode</td></tr>
+    </table>
+  </details>
+
+  <details><summary>13. Troubleshooting</summary>
+    <table>
+      <tr><th>Problem</th><th>Solution</th></tr>
+      <tr><td>"Failed to load data"</td><td>Check your connection. If your network or ISP blocks Binance domains, try another network or DNS 1.1.1.1. The app automatically tries 2 endpoints.</td></tr>
+      <tr><td>"Rate limit" (429)</td><td>Too many requests. Wait 1 minute, reduce the number of pairs, or lengthen the auto-scan interval.</td></tr>
+      <tr><td>A pair doesn't show up in Selected pairs</td><td>Make sure it is listed on Binance Spot with a USDT quote. Pairs with fewer than 220 candles (new coins) are skipped because EMA200 isn't valid yet.</td></tr>
+      <tr><td>Notifications don't appear on my phone</td><td>Use Telegram. Browser notifications on phones are limited, especially on iOS (the app must be added to the Home Screen).</td></tr>
+      <tr><td>SELL signals or an old layout still appear</td><td>That's an old cached version. Make sure the header reads <b>Spot Long Scanner · v2.1</b>. If not: re-upload <code>index.html</code> to GitHub, wait 1–3 minutes, then open the URL with <code>?v=21</code> appended, or hard refresh (laptop: Ctrl+Shift+R; phone: clear site data or open it in an incognito tab).</td></tr>
+      <tr><td>The ticket says "pair rules not loaded"</td><td>The exchangeInfo request failed. Close and reopen the pair's details. Without pair rules, numbers aren't rounded and may need manual adjustment in Binance.</td></tr>
+      <tr><td>Settings disappeared</td><td>Settings are stored per browser. Incognito mode or clearing browser data resets them.</td></tr>
+    </table>
+  </details>
+
+  <details><summary>14. Glossary</summary>
+    <table>
+      <tr><td><b>ATR</b></td><td>Average True Range: the average distance price moves per candle. Used to measure distances relative to volatility.</td></tr>
+      <tr><td><b>Demand zone</b></td><td>A price area where large buyers previously stepped in (the base before a strong rally). A buy area.</td></tr>
+      <tr><td><b>Supply zone</b></td><td>An area where large sellers stepped in. In this app it is used as a TP target.</td></tr>
+      <tr><td><b>Proximal / Distal</b></td><td>The zone boundary nearest to price (entry level) and the far boundary (SL basis).</td></tr>
+      <tr><td><b>Fresh</b></td><td>A zone that hasn't been revisited, so its orders are still intact.</td></tr>
+      <tr><td><b>HTF</b></td><td>Higher Timeframe, the timeframe above (e.g. 1D for a 4H scan).</td></tr>
+      <tr><td><b>BOS / CHoCH</b></td><td>Break of Structure (trend continuation) and Change of Character (early reversal sign).</td></tr>
+      <tr><td><b>Liquidity sweep</b></td><td>A wick through a swing low that closes back above it, a sign that retail stop losses were swept.</td></tr>
+      <tr><td><b>RR</b></td><td>Risk:Reward, potential profit divided by potential loss. RR 2 means a profit of 2× the risk.</td></tr>
+      <tr><td><b>R</b></td><td>A trade's result relative to its initial risk (+1R = profit equal to the risk).</td></tr>
+      <tr><td><b>OCO</b></td><td>One-Cancels-the-Other: two sell orders (TP and SL) at once. When one fills, the other is cancelled automatically.</td></tr>
+      <tr><td><b>Tick / Step size</b></td><td>The smallest price and quantity increments Binance allows for that pair.</td></tr>
+    </table>
+  </details>
+
+  <details><summary>15. Disclaimer</summary>
+    <p>This app is an analysis tool, <b>not financial advice</b>. Signals come from automated rules that can be wrong, especially during extreme volatility or low liquidity. Backtest or paper trade first, use risk management, and take responsibility for every trading decision you make.</p>
+  </details>
+</div>
 
 </section>
 
@@ -775,10 +1054,10 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <script>
 'use strict';
 /* =========================================================
-   PRECISION ZONE · SPOT LONG SCANNER v2.0
+   PRECISION ZONE · SPOT LONG SCANNER v2.1
    Konfigurasi & penyimpanan
    ========================================================= */
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 const API_BASES = ['https://data-api.binance.vision', 'https://api.binance.com'];
 const HTF_MAP = { '15m': '1h', '1h': '4h', '4h': '1d', '1d': '1w' };
 const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR','EURI','AEUR','GBP','USDE','USD1','XUSD','BFUSD','RLUSD','PYUSD','UST','USTC','PAX','SUSD','FRAX','LUSD','GUSD','TRY','BRL','ZAR','IDRT','BIDR','U','USDEB','RWUSD','USDS','USDQ','EURC']);
@@ -791,7 +1070,8 @@ const DEFAULTS = Object.assign({
   scope: 'all', pairs: 'BTC, ETH, SOL, BNB, XRP, DOGE, ADA, LINK, AVAX, SUI',
   topN: '80', minVol: '5000000', tf: '4h', htf: true, auto: '0',
   capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, tpSplit: '50', fee: 0.1, stopOff: 0.3,
-  notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: '', view: 'cards'
+  notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: '', view: 'cards',
+  lang: 'id'
 }, PARAM_DEFAULTS);
 const store = {
   get(k, d) { try { const v = localStorage.getItem('pzc_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -799,6 +1079,99 @@ const store = {
 };
 let S = Object.assign({}, DEFAULTS, store.get('settings', {}));
 delete S.showSell;
+
+
+/* =========================================================
+   BAHASA / LANGUAGE (ID · EN)
+   ========================================================= */
+const isEN = () => S.lang === 'en';
+const L = (id, en) => isEN() ? en : id;                 // teks dinamis bilingual
+const LOC = () => isEN() ? 'en-US' : 'id-ID';
+// Kamus teks statis HTML + teks dari mesin analisis (ID → EN)
+const DICT = {
+  'Spot Long Scanner · v2.1': 'Spot Long Scanner · v2.1',
+  'Jurnal': 'Journal', 'Panduan': 'Guide', 'Pengaturan': 'Settings', 'Siap': 'Ready',
+  'Cakupan': 'Scope', 'Semua crypto (top volume)': 'All crypto (top volume)', 'Pair pilihan': 'Selected pairs', 'Watchlist saya': 'My watchlist',
+  '1D · posisi': '1D · position', 'Jumlah pair': 'Number of pairs', 'Min. volume 24j': 'Min. 24h volume',
+  '≥ 1 jt USDT': '≥ 1M USDT', '≥ 5 jt USDT': '≥ 5M USDT', '≥ 20 jt USDT': '≥ 20M USDT', '≥ 50 jt USDT': '≥ 50M USDT',
+  'Mati': 'Off', 'Tiap 5 menit': 'Every 5 min', 'Tiap 15 menit': 'Every 15 min', 'Tiap 30 menit': 'Every 30 min', 'Tiap 60 menit': 'Every 60 min',
+  'Filter HTF': 'HTF filter', 'Aktif': 'Active',
+  'Pair pilihan (pisahkan koma, contoh: BTC, ETH, SOL)': 'Selected pairs (comma-separated, e.g. BTC, ETH, SOL)',
+  'Scan hanya pair di Watchlist. Tambahkan pair lewat tombol ☆ di kartu, atau di tab Watchlist.': 'Scans only your Watchlist pairs. Add pairs with the ☆ button on a card, or in the Watchlist tab.',
+  'Kartu peluang': 'Opportunity cards', 'Tabel semua': 'Full table', 'Semua': 'All',
+  'Siap eksekusi': 'Ready to execute', 'Siapkan limit': 'Set limit order', 'Pantau': 'Watch', 'Demand fresh': 'Fresh demand',
+  'Harga': 'Price', '24j': '24h', 'Skor': 'Score', 'Jarak': 'Distance',
+  '+ Tambah': '+ Add', 'Scan watchlist': 'Scan watchlist', 'Selesai': 'Closed', '↻ Update harga': '↻ Refresh prices',
+  'Modal & ukuran posisi': 'Capital & position size', 'Modal (USDT)': 'Capital (USDT)', 'Metode ukuran posisi': 'Position sizing method',
+  'Berdasarkan risiko %': 'By risk %', 'Berdasarkan % modal': 'By % of capital', 'Risiko per trade (%)': 'Risk per trade (%)',
+  'Nilai posisi default (% modal)': 'Default position size (% of capital)', 'Pembagian take profit': 'Take-profit split',
+  '50% di TP1 · 50% di TP2': '50% at TP1 · 50% at TP2', '100% di TP1': '100% at TP1', 'Fee trading (%)': 'Trading fee (%)',
+  'Jarak stop-limit dari stop (%)': 'Stop-limit offset from stop (%)', 'Parameter sistem': 'System parameters',
+  'Impulse min (×ATR)': 'Min. impulse (×ATR)', 'Maks. candle base': 'Max. base candles', 'Jarak setup (×ATR)': 'Setup distance (×ATR)',
+  'Kecualikan token saham (NVDAB, TSLAB, …) & emas (XAUT, PAXG)': 'Exclude stock tokens (NVDAB, TSLAB, …) & gold (XAUT, PAXG)',
+  'Kecualikan pair tertentu (pisahkan koma)': 'Exclude specific pairs (comma-separated)', 'Notifikasi': 'Notifications',
+  'Notifikasi browser untuk sinyal "Siap eksekusi" baru': 'Browser notification for new "Ready to execute" signals',
+  'Tes Telegram': 'Test Telegram', 'Restore data': 'Restore data', 'Backup data (JSON)': 'Backup data (JSON)',
+  'Backup berisi pengaturan, watchlist, dan jurnal. Berguna untuk pindah browser atau perangkat.': 'The backup contains your settings, watchlist and journal. Useful when moving to another browser or device.',
+  'Simpan pengaturan': 'Save settings', 'Reset parameter ke default': 'Reset parameters to default',
+  'Data: Binance Public API · Perhitungan berjalan di browser Anda · Khusus Spot Long · Bukan nasihat keuangan': 'Data: Binance Public API · All calculations run in your browser · Spot Long only · Not financial advice',
+  '✕ Tutup': '✕ Close', 'Tiket eksekusi · Binance Spot': 'Execution ticket · Binance Spot', 'Metode': 'Method',
+  'Risiko %': 'Risk %', '% modal': '% of capital', 'Risiko (%)': 'Risk (%)', 'Nilai posisi': 'Position size',
+  '5% modal': '5% of capital', '10% modal': '10% of capital', '20% modal': '20% of capital', '25% modal': '25% of capital',
+  '33% modal': '33% of capital', '50% modal': '50% of capital', '75% modal': '75% of capital', '100% modal': '100% of capital',
+  '＋ Simpan ke jurnal': '＋ Save to journal', 'Salin plan': 'Copy plan', 'Buka di Binance ↗': 'Open in Binance ↗',
+  'Kenapa skor ini?': 'Why this score?', 'Multi-timeframe': 'Multi-timeframe', 'trend di semua TF': 'trend across all TFs',
+  'Memuat…': 'Loading…', 'Struktur pasar': 'Market structure', 'Zona aktif': 'Active zones',
+  'Cari pair…': 'Search pair…', 'Tambah pair, mis. BTC, SOL': 'Add pairs, e.g. BTC, SOL', 'contoh: TRX, FDUSD': 'e.g. TRX, FDUSD',
+  'Watchlist': 'Watchlist', 'Hapus': 'Remove',
+  // dari mesin analisis
+  'Trend DOWN, hindari beli': 'Trend DOWN, avoid buying', 'Trend belum UP': 'Trend not UP yet', 'HTF DOWN': 'HTF DOWN',
+  'Demand sudah lemah': 'Demand already weak', 'Menunggu candle konfirmasi': 'Waiting for a confirmation candle',
+  'Harga sudah lari dari zona, tunggu retest': 'Price has run away from the zone, wait for a retest',
+  'Tidak ada demand zone valid di bawah harga': 'No valid demand zone below price', 'Belum memenuhi syarat': 'Conditions not met yet',
+  'Campuran': 'Mixed', 'HH-LL (ekspansi)': 'HH-LL (expansion)', 'LH-HL (kompresi)': 'LH-HL (compression)',
+  'Fresh': 'Fresh', 'Tested 1×': 'Tested 1×', 'Lemah': 'Weak'
+};
+const DICT_RX = [
+  [/^Harga jauh dari demand \((.+) ATR\)$/, (m, a) => `Price far from demand (${a} ATR)`]
+];
+function tr(s) {
+  if (!isEN() || s == null) return s;
+  const k = String(s);
+  if (DICT[k] != null) return DICT[k];
+  for (const [rx, fn] of DICT_RX) { const m = k.match(rx); if (m) return fn(...m); }
+  return k;
+}
+// Elemen yang isinya dirender ulang oleh JS (tidak diterjemahkan oleh walker)
+const DYN_IDS = new Set(['viewCards', 'tbody', 'kpis', 'regimeBox', 'wlCards', 'wlChips', 'jList', 'jStats', 'ticket', 'dVerdict', 'dScore', 'dCheck', 'dMtf', 'dCtx', 'dZones', 'dSub', 'dGrade', 'dTitle', 'status', 'scanErr', 'toast', 'tkFilters', 'dScoreTxt', 'wlInfo', 'saveMsg', 'tgMsg', 'htfLbl', 'wlCnt', 'jCnt']);
+function applyStaticLang() {
+  document.documentElement.lang = S.lang;
+  document.title = L('Precision Zone · Spot Long Scanner', 'Precision Zone · Spot Long Scanner');
+  const walk = el => {
+    for (const n of el.childNodes) {
+      if (n.nodeType === 3) {
+        if (n.__orig == null) n.__orig = n.nodeValue;
+        const key = n.__orig.replace(/\s+/g, ' ').trim();
+        if (!key) continue;
+        const en = isEN() ? DICT[key] : null;
+        n.nodeValue = en != null ? n.__orig.replace(n.__orig.trim(), en) : n.__orig;
+      } else if (n.nodeType === 1) {
+        if (['SCRIPT', 'STYLE', 'svg'].includes(n.nodeName) || n.hasAttribute('data-lang-block') || DYN_IDS.has(n.id)) continue;
+        for (const a of ['placeholder', 'title']) {
+          if (!n.hasAttribute(a)) continue;
+          const dk = 'orig' + a;
+          if (n.dataset[dk] == null) n.dataset[dk] = n.getAttribute(a);
+          const en = isEN() ? DICT[n.dataset[dk]] : null;
+          n.setAttribute(a, en != null ? en : n.dataset[dk]);
+        }
+        walk(n);
+      }
+    }
+  };
+  walk(document.body);
+  $$('[data-lang-block]').forEach(b => b.hidden = b.dataset.langBlock !== S.lang);
+  $$('#langSeg button').forEach(b => b.classList.toggle('on', b.dataset.l === S.lang));
+}
 
 /* =========================================================
    INDIKATOR
@@ -1056,6 +1429,7 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
 }
 
 
+
 /* =========================================================
    DATA BINANCE
    ========================================================= */
@@ -1066,13 +1440,13 @@ async function api(path) {
     const idx = (ACTIVE_BASE + t) % API_BASES.length;
     try {
       const r = await fetch(API_BASES[idx] + path);
-      if (r.status === 429 || r.status === 418) throw Object.assign(new Error('Rate limit Binance, tunggu ±1 menit'), { fatal: true });
+      if (r.status === 429 || r.status === 418) throw Object.assign(new Error(L('Rate limit Binance, tunggu ±1 menit', 'Binance rate limit, wait about 1 minute')), { fatal: true, rate: true });
       if (!r.ok) { lastErr = new Error('HTTP ' + r.status); continue; }
       ACTIVE_BASE = idx;
       return await r.json();
     } catch (e) { if (e.fatal) throw e; lastErr = e; }
   }
-  throw new Error('Gagal memuat data (' + (lastErr ? lastErr.message : 'jaringan') + ')');
+  throw new Error(L('Gagal memuat data', 'Failed to load data') + ' (' + (lastErr ? lastErr.message : L('jaringan', 'network')) + ')');
 }
 async function klines(sym, tf, limit = 500) {
   const d = await api(`/api/v3/klines?symbol=${sym}&interval=${tf}&limit=${limit}`);
@@ -1137,23 +1511,23 @@ const pct = x => (x >= 0 ? '+' : '') + x.toFixed(2) + '%';
 const usd = x => (x < 0 ? '-' : '') + Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const base = sym => sym.replace(/USDT$/, '');
 const trendCls = t => t === 'UP' ? 'b-up' : t === 'DOWN' ? 'b-down' : t === 'SIDEWAYS' ? 'b-side' : 'mut';
+const zst = tests => tr(zoneStatus(Math.max(0, tests)));      // status zona sesuai bahasa
 const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
 function setStatus(t) { const el = $('#status'); if (el) el.textContent = t; }
 let toastT;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
 function copyText(txt) {
-  const ok = () => toast('Disalin: ' + (txt.length > 40 ? txt.slice(0, 40) + '…' : txt));
+  const ok = () => toast(L('Disalin: ', 'Copied: ') + (txt.length > 40 ? txt.slice(0, 40) + '…' : txt));
   if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt).then(ok, () => fallbackCopy(txt, ok));
   fallbackCopy(txt, ok);
 }
 function fallbackCopy(txt, ok) {
   const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
   document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); ok(); } catch (e) { toast('Gagal menyalin'); }
+  try { document.execCommand('copy'); ok(); } catch (e) { toast(L('Gagal menyalin', 'Copy failed')); }
   ta.remove();
 }
 function floorTo(v, step, dec) { if (!(step > 0)) return +v.toFixed(8); return +(Math.floor(v / step + 1e-9) * step).toFixed(dec); }
-function ceilTo(v, step, dec) { if (!(step > 0)) return +v.toFixed(8); return +(Math.ceil(v / step - 1e-9) * step).toFixed(dec); }
 const fx = (v, dec) => Number(v).toFixed(dec);
 
 /* =========================================================
@@ -1168,37 +1542,50 @@ function category(r) {
   return 'other';
 }
 const CAT = {
-  exec: { label: 'SIAP EKSEKUSI', cls: 'b-buy', dot: 'var(--green)' },
-  limit: { label: 'SIAPKAN LIMIT', cls: 'b-setup', dot: 'var(--amber)' },
-  watch: { label: 'PANTAU', cls: 'b-info', dot: 'var(--brand)' },
-  other: { label: 'TUNGGU', cls: 'b-wait', dot: 'var(--dim)' }
+  exec: { cls: 'b-buy', dot: 'var(--green)' },
+  limit: { cls: 'b-setup', dot: 'var(--amber)' },
+  watch: { cls: 'b-info', dot: 'var(--brand)' },
+  other: { cls: 'b-wait', dot: 'var(--dim)' }
 };
-function statusBadge(r) { const c = CAT[category(r)]; return `<span class="badge ${c.cls}">${c.label}</span>`; }
+function catLabel(k) {
+  return ({
+    exec: L('SIAP EKSEKUSI', 'READY TO EXECUTE'), limit: L('SIAPKAN LIMIT', 'SET LIMIT ORDER'),
+    watch: L('PANTAU', 'WATCH'), other: L('TUNGGU', 'WAIT')
+  })[k];
+}
+function statusBadge(r) { const k = category(r); return `<span class="badge ${CAT[k].cls}">${catLabel(k)}</span>`; }
+const reasonText = r => tr(r.reason) || L('Belum memenuhi syarat.', 'Conditions not met yet.');
 function oneLiner(r) {
   const b = r.best;
-  if (!b) return 'Belum ada demand zone valid di bawah harga.';
-  const zs = zoneStatus(Math.max(0, b.priorTests)).toLowerCase();
-  if (r.state === 'CONFIRMED') return `${b.conf} muncul di demand ${zs}. Beli sekarang (market) dengan SL di bawah zona.`;
-  if (r.state === 'SETUP') return b.inside ? `Harga sudah di dalam demand ${zs}. Pasang limit buy, atau tunggu candle konfirmasi.` : `Harga ${b.dist.toFixed(1)} ATR di atas demand ${zs}. Pasang limit buy di proximal.`;
-  if (category(r) === 'watch') return `Trend mendukung. Tunggu harga turun ke demand ${zs} (${b.dist.toFixed(1)} ATR lagi).`;
-  return r.reason || 'Belum memenuhi syarat.';
+  if (!b) return L('Belum ada demand zone valid di bawah harga.', 'No valid demand zone below price yet.');
+  const zs = zst(b.priorTests).toLowerCase(), d = b.dist.toFixed(1);
+  if (r.state === 'CONFIRMED') return L(`${b.conf} muncul di demand ${zs}. Beli sekarang (market) dengan SL di bawah zona.`, `${b.conf} printed at a ${zs} demand zone. Buy now (market) with the SL below the zone.`);
+  if (r.state === 'SETUP') return b.inside
+    ? L(`Harga sudah di dalam demand ${zs}. Pasang limit buy, atau tunggu candle konfirmasi.`, `Price is already inside a ${zs} demand zone. Place a limit buy, or wait for a confirmation candle.`)
+    : L(`Harga ${d} ATR di atas demand ${zs}. Pasang limit buy di proximal.`, `Price is ${d} ATR above a ${zs} demand zone. Place a limit buy at the proximal line.`);
+  if (category(r) === 'watch') return L(`Trend mendukung. Tunggu harga turun ke demand ${zs} (${d} ATR lagi).`, `Trend is supportive. Wait for price to drop into the ${zs} demand zone (${d} ATR away).`);
+  return reasonText(r);
 }
 function verdictHTML(r) {
-  const b = r.best, cat = category(r);
-  if (!b) return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>TUNGGU · tidak ada setup</h4><p>Tidak ada demand zone yang masih valid di bawah harga pada timeframe ${r.tf.toUpperCase()}. Tunggu struktur baru terbentuk, atau cek timeframe lain.</p></div></div>`;
-  const zs = zoneStatus(Math.max(0, b.priorTests)).toLowerCase();
+  const b = r.best, cat = category(r), TF = r.tf.toUpperCase();
+  if (!b) return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>${L('TUNGGU · tidak ada setup', 'WAIT · no setup')}</h4><p>${L(`Tidak ada demand zone yang masih valid di bawah harga pada timeframe ${TF}. Tunggu struktur baru terbentuk, atau cek timeframe lain.`, `There is no valid demand zone below price on the ${TF} timeframe. Wait for new structure to form, or check another timeframe.`)}</p></div></div>`;
+  const zs = zst(b.priorTests).toLowerCase(), d = b.dist.toFixed(1);
   const slp = (b.risk / b.entry * 100).toFixed(2), tpp = ((b.tp1 - b.entry) / b.entry * 100).toFixed(2);
   const lv = `Entry <b>${fp(b.entry)}</b>, SL <b class="neg">${fp(b.sl)}</b> (−${slp}%), TP1 <b class="pos">${fp(b.tp1)}</b> (+${tpp}%), RR <b>${b.rr.toFixed(2)}</b>.`;
   const warn = [];
-  if (b.nearSupply < 1) warn.push('supply zone dekat di atas harga, ruang naik sempit');
-  if (b.risk > 3 * r.atr) warn.push('SL lebar (> 3 ATR)');
-  if (b.rr < S.minRR) warn.push(`RR di bawah ${S.minRR}`);
-  if (REGIME && REGIME.key === 'bear') warn.push('kondisi pasar bearish, perkecil posisi');
-  const w = warn.length ? `<br><span class="amb">⚠ Perhatian: ${warn.join('; ')}.</span>` : '';
-  if (cat === 'exec') return `<div class="verdict conf"><div class="vi">✓</div><div><h4>SIAP EKSEKUSI · beli sekarang</h4><p>Trend ${r.tf.toUpperCase()} naik dan harga baru saja menyentuh demand ${zs} (${b.zone.pattern}), lalu muncul <b>${b.conf}</b>. ${lv} Ikuti langkah di Tiket Eksekusi.${w}</p></div></div>`;
-  if (cat === 'limit') return `<div class="verdict setup"><div class="vi">⏱</div><div><h4>SIAPKAN LIMIT ORDER · tunggu harga datang</h4><p>Trend ${r.tf.toUpperCase()} naik dan harga ${b.inside ? 'sudah berada di dalam' : `tinggal ${b.dist.toFixed(1)} ATR di atas`} demand ${zs} (${b.zone.pattern}). Pasang <b>limit buy</b> di proximal, atau tunggu candle konfirmasi bullish untuk entry yang lebih aman. ${lv}${w}</p></div></div>`;
-  if (cat === 'watch') return `<div class="verdict wait"><div class="vi">👁</div><div><h4>PANTAU · belum waktunya</h4><p>Trend mendukung, tetapi harga masih ${b.dist.toFixed(1)} ATR di atas demand ${zs} terdekat (${fp(b.zone.proximal)}). Tambahkan ke Watchlist dan scan ulang nanti. Rencana bersyarat: ${lv}</p></div></div>`;
-  return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>TUNGGU · jangan beli dulu</h4><p>Alasan: <b>${esc(r.reason)}</b>. ${r.trend === 'DOWN' ? 'Untuk spot long, hindari membeli saat trend turun. Kalau sudah memegang koin ini, pertimbangkan ambil profit atau perketat SL.' : 'Syarat Precision Zone belum terpenuhi.'}</p></div></div>`;
+  if (b.nearSupply < 1) warn.push(L('supply zone dekat di atas harga, ruang naik sempit', 'a supply zone sits just above price, limited upside room'));
+  if (b.risk > 3 * r.atr) warn.push(L('SL lebar (> 3 ATR)', 'wide SL (> 3 ATR)'));
+  if (b.rr < S.minRR) warn.push(L(`RR di bawah ${S.minRR}`, `RR below ${S.minRR}`));
+  if (REGIME && REGIME.key === 'bear') warn.push(L('kondisi pasar bearish, perkecil posisi', 'bearish market conditions, reduce position size'));
+  const w = warn.length ? `<br><span class="amb">⚠ ${L('Perhatian', 'Note')}: ${warn.join('; ')}.</span>` : '';
+  if (cat === 'exec') return `<div class="verdict conf"><div class="vi">✓</div><div><h4>${L('SIAP EKSEKUSI · beli sekarang', 'READY TO EXECUTE · buy now')}</h4><p>${L(`Trend ${TF} naik dan harga baru saja menyentuh demand ${zs} (${b.zone.pattern}), lalu muncul <b>${b.conf}</b>.`, `The ${TF} trend is up and price just tapped a ${zs} demand zone (${b.zone.pattern}), followed by a <b>${b.conf}</b>.`)} ${lv} ${L('Ikuti langkah di Tiket Eksekusi.', 'Follow the steps in the Execution Ticket.')}${w}</p></div></div>`;
+  if (cat === 'limit') return `<div class="verdict setup"><div class="vi">⏱</div><div><h4>${L('SIAPKAN LIMIT ORDER · tunggu harga datang', 'SET A LIMIT ORDER · let price come to you')}</h4><p>${b.inside
+    ? L(`Trend ${TF} naik dan harga sudah berada di dalam demand ${zs} (${b.zone.pattern}).`, `The ${TF} trend is up and price is already inside a ${zs} demand zone (${b.zone.pattern}).`)
+    : L(`Trend ${TF} naik dan harga tinggal ${d} ATR di atas demand ${zs} (${b.zone.pattern}).`, `The ${TF} trend is up and price is only ${d} ATR above a ${zs} demand zone (${b.zone.pattern}).`)} ${L('Pasang <b>limit buy</b> di proximal, atau tunggu candle konfirmasi bullish untuk entry yang lebih aman.', 'Place a <b>limit buy</b> at the proximal line, or wait for a bullish confirmation candle for a safer entry.')} ${lv}${w}</p></div></div>`;
+  if (cat === 'watch') return `<div class="verdict wait"><div class="vi">👁</div><div><h4>${L('PANTAU · belum waktunya', 'WATCH · not yet')}</h4><p>${L(`Trend mendukung, tetapi harga masih ${d} ATR di atas demand ${zs} terdekat (${fp(b.zone.proximal)}). Tambahkan ke Watchlist dan scan ulang nanti. Rencana bersyarat:`, `The trend is supportive, but price is still ${d} ATR above the nearest ${zs} demand zone (${fp(b.zone.proximal)}). Add it to your Watchlist and rescan later. Conditional plan:`)} ${lv}</p></div></div>`;
+  return `<div class="verdict wait"><div class="vi">⏸</div><div><h4>${L('TUNGGU · jangan beli dulu', 'WAIT · do not buy yet')}</h4><p>${L('Alasan', 'Reason')}: <b>${esc(reasonText(r))}</b>. ${r.trend === 'DOWN'
+    ? L('Untuk spot long, hindari membeli saat trend turun. Kalau sudah memegang koin ini, pertimbangkan ambil profit atau perketat SL.', 'For spot long trades, avoid buying in a downtrend. If you already hold this coin, consider taking profit or tightening your SL.')
+    : L('Syarat Precision Zone belum terpenuhi.', 'The Precision Zone conditions are not met yet.')}</p></div></div>`;
 }
 
 /* =========================================================
@@ -1211,28 +1598,33 @@ let SEEN = new Set(store.get('seen', []));
 let WATCH = store.get('watch', []);
 let JOURNAL = store.get('journal', []);
 let JFILTER = 'active', JPRICES = {};
-let DET = null, ZOOM = 150, TK = null;
+let DET = null, ZOOM = 150, TK = null, LAST_SCAN = null;
 
 /* =========================================================
    SCAN
    ========================================================= */
+function scanBtnLabel(running) { $('#btnScan').lastChild.textContent = running ? 'Stop' : 'Scan'; }
+function renderStatus() {
+  if (!LAST_SCAN) { setStatus(L('Siap', 'Ready')); return; }
+  const s = LAST_SCAN;
+  setStatus(`${s.aborted ? L('Dihentikan', 'Stopped') : 'Update'} ${new Date(s.time).toLocaleTimeString(LOC(), { hour: '2-digit', minute: '2-digit' })} · ${s.n} ${L('pair', 'pairs')} · ${s.tf.toUpperCase()}` + (s.errs ? ` · ${s.errs} ${L('gagal', 'failed')}` : ''));
+}
 async function runScan(scope) {
   if (scanning) return;
   scope = scope || S.scope;
-  if (scope === 'watch' && !WATCH.length) { toast('Watchlist masih kosong'); return; }
+  if (scope === 'watch' && !WATCH.length) { toast(L('Watchlist masih kosong', 'Your watchlist is empty')); return; }
   scanning = true; abort = false;
   const btn = $('#btnScan'), wbtn = $('#btnWlScan');
-  btn.disabled = true; wbtn.disabled = true;
-  btn.lastChild.textContent = 'Stop';
-  btn.disabled = false; btn.onclick = () => { abort = true; };
+  wbtn.disabled = true; scanBtnLabel(true);
+  btn.onclick = () => { abort = true; };
   $('#scanErr').textContent = '';
   const prog = $('#prog'); prog.style.width = '0%';
   const P = Object.assign({}, S, { tf: S.tf });
   try {
-    setStatus('Memuat daftar pair…');
+    setStatus(L('Memuat daftar pair…', 'Loading pair list…'));
     const { list, map, missing } = await universe(scope);
-    if (missing.length) $('#scanErr').textContent = 'Tidak ditemukan / tidak aktif di Spot Binance: ' + missing.map(base).join(', ');
-    if (!list.length) throw new Error('Tidak ada pair untuk di-scan.');
+    if (missing.length) $('#scanErr').textContent = L('Tidak ditemukan / tidak aktif di Spot Binance: ', 'Not found / not active on Binance Spot: ') + missing.map(base).join(', ');
+    if (!list.length) throw new Error(L('Tidak ada pair untuk di-scan.', 'No pairs to scan.'));
     const out = []; let done = 0, idx = 0, errs = 0;
     const htf = HTF_MAP[S.tf];
     const worker = async () => {
@@ -1247,7 +1639,7 @@ async function runScan(scope) {
             a.sym = sym; a.tf = S.tf; a.ch24 = t ? +t.priceChangePercent : 0; a.vol = t ? +t.quoteVolume : 0;
             out.push(a);
           }
-        } catch (e) { errs++; if (/Rate limit/.test(e.message)) { abort = true; $('#scanErr').textContent = e.message; } }
+        } catch (e) { errs++; if (e.rate) { abort = true; $('#scanErr').textContent = e.message; } }
         done++;
         prog.style.width = (done / list.length * 100).toFixed(1) + '%';
         setStatus(`Scan ${done}/${list.length}…`);
@@ -1258,18 +1650,17 @@ async function runScan(scope) {
     // BTC sebagai acuan kondisi pasar
     let btc = out.find(r => r.sym === 'BTCUSDT');
     if (!btc) { try { const raw = await klines('BTCUSDT', S.tf, 500); btc = analyze(raw, null, Object.assign({}, P, { htf: false })); } catch (e) {} }
-    if (scope === 'watch') { WRESULTS = out; renderWatch(); }
+    if (scope === 'watch') { WRESULTS = out; if (!REGIME) REGIME = computeRegime(out, btc, map); renderWatch(); }
     else { RESULTS = out; REGIME = computeRegime(out, btc, map); renderScanner(); }
-    if (scope === 'watch' && !REGIME) REGIME = computeRegime(out, btc, map);
-    const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    setStatus(`${abort ? 'Dihentikan' : 'Update'} ${time} · ${out.length} pair · ${S.tf.toUpperCase()}` + (errs ? ` · ${errs} gagal` : ''));
+    LAST_SCAN = { time: Date.now(), n: out.length, tf: S.tf, errs, aborted: abort };
+    renderStatus();
     notifyNew(out);
   } catch (e) {
     $('#scanErr').textContent = e.message; setStatus('Error');
     if (scope === 'watch') toast(e.message);
   } finally {
     scanning = false;
-    btn.lastChild.textContent = 'Scan'; btn.onclick = () => runScan();
+    scanBtnLabel(false); btn.onclick = () => runScan();
     wbtn.disabled = false; prog.style.width = '0%';
   }
 }
@@ -1283,24 +1674,31 @@ function computeRegime(list, btc, map) {
   const breadth = valid.length ? up / valid.length : 0;
   const bt = btc ? btc.trend : 'N/A';
   const btcCh = map && map.get('BTCUSDT') ? +map.get('BTCUSDT').priceChangePercent : null;
-  let key, label, advice;
-  if (bt === 'UP' && breadth >= 0.45) { key = 'bull'; label = 'BULLISH'; advice = 'Kondisi mendukung spot long. Prioritaskan grade A/B dan ikuti rencana risiko normal.'; }
-  else if (bt === 'DOWN' || breadth < 0.25) {
-    key = 'bear'; label = 'BEARISH';
-    const why = bt === 'DOWN' && breadth < 0.25 ? 'BTC downtrend dan mayoritas pair turun.' : bt === 'DOWN' ? 'BTC sedang downtrend, dan altcoin biasanya ikut tertekan.' : 'Mayoritas pair sedang turun.';
-    advice = why + ' Kurangi frekuensi dan ukuran posisi (mis. setengah risiko normal), ambil hanya grade A, atau tunggu di stablecoin.';
-  }
-  else { key = 'neut'; label = 'NETRAL'; advice = 'Pasar campuran. Selektif: pilih pair dengan trend dan HTF yang sama-sama UP, dan pastikan RR ≥ ' + S.minRR + '.'; }
-  return { key, label, advice, breadth, up, total: valid.length, btcTrend: bt, btcPrice: btc ? btc.price : null, btcCh };
+  let key, why = '';
+  if (bt === 'UP' && breadth >= 0.45) key = 'bull';
+  else if (bt === 'DOWN' || breadth < 0.25) { key = 'bear'; why = bt === 'DOWN' && breadth < 0.25 ? 'both' : bt === 'DOWN' ? 'btc' : 'breadth'; }
+  else key = 'neut';
+  return { key, why, breadth, up, total: valid.length, btcTrend: bt, btcPrice: btc ? btc.price : null, btcCh, tf: S.tf };
+}
+function regimeText(R) {
+  if (R.key === 'bull') return [L('BULLISH', 'BULLISH'), L('Kondisi mendukung spot long. Prioritaskan grade A/B dan ikuti rencana risiko normal.', 'Conditions favour spot longs. Prioritise grade A/B setups and use your normal risk plan.')];
+  if (R.key === 'neut') return [L('NETRAL', 'NEUTRAL'), L(`Pasar campuran. Selektif: pilih pair dengan trend dan HTF yang sama-sama UP, dan pastikan RR ≥ ${S.minRR}.`, `Mixed market. Be selective: pick pairs where both trend and HTF are UP, and make sure RR ≥ ${S.minRR}.`)];
+  const why = {
+    both: L('BTC downtrend dan mayoritas pair turun.', 'BTC is in a downtrend and most pairs are falling.'),
+    btc: L('BTC sedang downtrend, dan altcoin biasanya ikut tertekan.', 'BTC is in a downtrend, and altcoins usually come under pressure too.'),
+    breadth: L('Mayoritas pair sedang turun.', 'Most pairs are falling.')
+  }[R.why];
+  return [L('BEARISH', 'BEARISH'), why + ' ' + L('Kurangi frekuensi dan ukuran posisi (mis. setengah risiko normal), ambil hanya grade A, atau tunggu di stablecoin.', 'Trade less often and smaller (e.g. half your normal risk), take only grade A setups, or wait in stablecoins.')];
 }
 function renderRegime() {
   const R = REGIME, box = $('#regimeBox');
   if (!R) { box.innerHTML = ''; return; }
+  const [label, advice] = regimeText(R);
   box.innerHTML = `<div class="regime ${R.key}">
-    <div class="m"><span class="lbl">Kondisi pasar</span><span class="val ${R.key === 'bull' ? 'pos' : R.key === 'bear' ? 'neg' : 'amb'}">${R.label}</span></div>
-    <div class="m"><span class="lbl">BTC ${S.tf.toUpperCase()}</span><span class="val ${trendCls(R.btcTrend)}">${R.btcTrend}</span>${R.btcPrice ? `<span class="hint num">${fp(R.btcPrice)}${R.btcCh != null ? ` · <span class="${R.btcCh >= 0 ? 'pos' : 'neg'}">${pct(R.btcCh)}</span>` : ''}</span>` : ''}</div>
-    <div class="m"><span class="lbl">Pair uptrend</span><span class="val">${Math.round(R.breadth * 100)}% <span class="hint">(${R.up}/${R.total})</span></span><div class="breadth"><div style="width:${R.breadth * 100}%"></div></div></div>
-    <div class="adv">${R.advice}</div>
+    <div class="m"><span class="lbl">${L('Kondisi pasar', 'Market condition')}</span><span class="val ${R.key === 'bull' ? 'pos' : R.key === 'bear' ? 'neg' : 'amb'}">${label}</span></div>
+    <div class="m"><span class="lbl">BTC ${R.tf.toUpperCase()}</span><span class="val ${trendCls(R.btcTrend)}">${R.btcTrend}</span>${R.btcPrice ? `<span class="hint num">${fp(R.btcPrice)}${R.btcCh != null ? ` · <span class="${R.btcCh >= 0 ? 'pos' : 'neg'}">${pct(R.btcCh)}</span>` : ''}</span>` : ''}</div>
+    <div class="m"><span class="lbl">${L('Pair uptrend', 'Pairs in uptrend')}</span><span class="val">${Math.round(R.breadth * 100)}% <span class="hint">(${R.up}/${R.total})</span></span><div class="breadth"><div style="width:${R.breadth * 100}%"></div></div></div>
+    <div class="adv">${advice}</div>
   </div>`;
 }
 
@@ -1311,11 +1709,11 @@ function passSearch(r) { const q = $('#search').value.trim().toUpperCase(); retu
 function renderKpis() {
   const c = k => RESULTS.filter(r => category(r) === k).length;
   const items = [
-    ['exec', 'Siap eksekusi', c('exec'), 'var(--green)'],
-    ['limit', 'Siapkan limit', c('limit'), 'var(--amber)'],
-    ['watch', 'Pantau', c('watch'), 'var(--brand)'],
+    ['exec', L('Siap eksekusi', 'Ready to execute'), c('exec'), 'var(--green)'],
+    ['limit', L('Siapkan limit', 'Set limit order'), c('limit'), 'var(--amber)'],
+    ['watch', L('Pantau', 'Watch'), c('watch'), 'var(--brand)'],
     ['up', 'Trend UP', RESULTS.filter(r => r.trend === 'UP').length, 'var(--green)'],
-    ['all', 'Di-scan', RESULTS.length, 'var(--dim)']
+    ['all', L('Di-scan', 'Scanned'), RESULTS.length, 'var(--dim)']
   ];
   $('#kpis').innerHTML = RESULTS.length ? items.map(([k, l, v, col]) => `<div class="kpi" data-k="${k}"><small><span class="dot" style="background:${col}"></span>${l}</small><b>${v}</b></div>`).join('') : '';
 }
@@ -1333,7 +1731,7 @@ function pbarHTML(r) {
   if (!(hi > lo)) return '';
   const pos = Math.max(0, Math.min(100, (r.price - lo) / (hi - lo) * 100));
   const e = Math.max(0, Math.min(100, (b.entry - lo) / (hi - lo) * 100));
-  return `<div><div class="pbar" style="--e:${e}%"><i style="left:${pos}%"></i></div><div class="pbar-l" style="margin-top:4px"><span>SL</span><span>harga sekarang ▲</span><span>TP1</span></div></div>`;
+  return `<div><div class="pbar" style="--e:${e}%"><i style="left:${pos}%"></i></div><div class="pbar-l" style="margin-top:4px"><span>SL</span><span>${L('harga sekarang', 'current price')} ▲</span><span>TP1</span></div></div>`;
 }
 function cardHTML(r) {
   const cat = category(r), b = r.best, star = WATCH.includes(r.sym);
@@ -1344,7 +1742,7 @@ function cardHTML(r) {
         <div class="oc-sym">${base(r.sym)}<span>/USDT</span><span class="tfchip">${r.tf.toUpperCase()}</span></div>
         <div class="oc-px num">${fp(r.price)} <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span></div>
       </div>
-      <div class="row" style="gap:8px">${statusBadge(r)}<span class="grade g${g}" title="Skor ${r.score}">${r.grade}</span></div>
+      <div class="row" style="gap:8px">${statusBadge(r)}<span class="grade g${g}" title="${L('Skor', 'Score')} ${r.score}">${r.grade}</span></div>
     </div>
     <p class="oc-sum">${esc(oneLiner(r))}</p>
     ${b ? levelsHTML(r, cat === 'watch' || cat === 'other') : ''}
@@ -1352,11 +1750,11 @@ function cardHTML(r) {
     <div class="row hint" style="gap:12px">
       <span>Trend <b class="${trendCls(r.trend)}">${r.trend}</b></span>
       <span>HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b></span>
-      ${b ? `<span>Demand <b>${zoneStatus(Math.max(0, b.priorTests))}</b></span>` : ''}
-      <span>Skor <b>${r.score}</b></span>
+      ${b ? `<span>Demand <b>${zst(b.priorTests)}</b></span>` : ''}
+      <span>${L('Skor', 'Score')} <b>${r.score}</b></span>
     </div>
     <div class="oc-act">
-      <button class="btn ${cat === 'exec' ? 'green' : cat === 'limit' ? 'primary' : ''}" data-open>${cat === 'exec' || cat === 'limit' ? 'Lihat & eksekusi →' : 'Lihat detail'}</button>
+      <button class="btn ${cat === 'exec' ? 'green' : cat === 'limit' ? 'primary' : ''}" data-open>${cat === 'exec' || cat === 'limit' ? L('Lihat & eksekusi →', 'View & execute →') : L('Lihat detail', 'View details')}</button>
       <button class="star ${star ? 'on' : ''}" data-star title="Watchlist">${star ? '★' : '☆'}</button>
     </div>
   </div>`;
@@ -1369,14 +1767,15 @@ function sectionHTML(key, title, sub, items, emptyTxt) {
 const sortScore = (a, b) => b.score - a.score;
 function renderCards(list, el) {
   list = list.filter(passSearch);
-  if (!list.length) { el.innerHTML = `<div class="card empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><div>${RESULTS.length || el.id === 'wlCards' ? 'Tidak ada pair yang cocok.' : 'Tekan <b>Scan</b> untuk mencari peluang spot long.'}</div></div>`; return; }
+  if (!list.length) { el.innerHTML = `<div class="card empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><div>${RESULTS.length ? L('Tidak ada pair yang cocok.', 'No matching pairs.') : L('Tekan <b>Scan</b> untuk mencari peluang spot long.', 'Press <b>Scan</b> to find spot long opportunities.')}</div></div>`; return; }
   const by = k => list.filter(r => category(r) === k).sort(sortScore);
   const bear = REGIME && REGIME.key === 'bear';
   el.innerHTML =
-    sectionHTML('exec', 'Siap eksekusi', 'Konfirmasi sudah muncul di demand zone · entry market', by('exec'), bear ? 'Belum ada. Wajar saat pasar bearish: sistem sengaja tidak memberi sinyal beli melawan trend.' : 'Belum ada sinyal terkonfirmasi saat ini.') +
-    sectionHTML('limit', 'Siapkan limit order', 'Harga dekat demand zone · pasang limit buy / tunggu konfirmasi', by('limit'), 'Belum ada pair yang dekat dengan demand zone valid.') +
-    sectionHTML('watch', 'Pantau', 'Trend mendukung, harga belum sampai zona · masukkan watchlist', by('watch').slice(0, 12), 'Belum ada kandidat untuk dipantau.') +
-    `<div class="sec-title"><span class="dot" style="background:var(--dim);width:10px;height:10px"></span><h2>Lainnya</h2><span class="pill badge b-wait">${by('other').length}</span><p>Tidak memenuhi syarat · lihat di <a href="#" data-gotable>Tabel semua</a></p></div>`;
+    sectionHTML('exec', L('Siap eksekusi', 'Ready to execute'), L('Konfirmasi sudah muncul di demand zone · entry market', 'Confirmation printed at a demand zone · market entry'), by('exec'),
+      bear ? L('Belum ada. Wajar saat pasar bearish: sistem sengaja tidak memberi sinyal beli melawan trend.', 'None yet. Normal in a bearish market: the system deliberately avoids buy signals against the trend.') : L('Belum ada sinyal terkonfirmasi saat ini.', 'No confirmed signals right now.')) +
+    sectionHTML('limit', L('Siapkan limit order', 'Set a limit order'), L('Harga dekat demand zone · pasang limit buy / tunggu konfirmasi', 'Price near a demand zone · place a limit buy / wait for confirmation'), by('limit'), L('Belum ada pair yang dekat dengan demand zone valid.', 'No pairs near a valid demand zone yet.')) +
+    sectionHTML('watch', L('Pantau', 'Watch'), L('Trend mendukung, harga belum sampai zona · masukkan watchlist', 'Trend supportive, price not at the zone yet · add to watchlist'), by('watch').slice(0, 12), L('Belum ada kandidat untuk dipantau.', 'No candidates to watch yet.')) +
+    `<div class="sec-title"><span class="dot" style="background:var(--dim);width:10px;height:10px"></span><h2>${L('Lainnya', 'Others')}</h2><span class="pill badge b-wait">${by('other').length}</span><p>${L('Tidak memenuhi syarat · lihat di', 'Do not qualify · see the')} <a href="#" data-gotable>${L('Tabel semua', 'Full table')}</a></p></div>`;
 }
 function passFilter(r) {
   if (!passSearch(r)) return false;
@@ -1411,19 +1810,20 @@ function renderTable() {
     return (x > y ? 1 : x < y ? -1 : 0) * SORT.dir;
   });
   const tb = $('#tbody');
-  if (!rows.length) { tb.innerHTML = `<tr><td colspan="10" class="empty full">${RESULTS.length ? 'Tidak ada pair yang cocok dengan filter.' : 'Belum ada hasil. Tekan Scan untuk mulai.'}</td></tr>`; return; }
+  if (!rows.length) { tb.innerHTML = `<tr><td colspan="10" class="empty full">${RESULTS.length ? L('Tidak ada pair yang cocok dengan filter.', 'No pairs match this filter.') : L('Belum ada hasil. Tekan Scan untuk mulai.', 'No results yet. Press Scan to start.')}</td></tr>`; return; }
+  const H = { pair: 'Pair', px: L('Harga', 'Price'), ch: L('24j', '24h'), st: 'Status', sc: L('Skor', 'Score'), dm: 'Demand', ds: L('Jarak', 'Distance') };
   tb.innerHTML = rows.map(r => {
     const b = r.best, g = r.grade === '–' ? '-' : r.grade;
     return `<tr class="click" data-sym="${r.sym}" data-tf="${r.tf}">
-      <td data-l="Pair"><b>${base(r.sym)}</b><span class="mut">/USDT</span></td>
-      <td data-l="Harga" class="num">${fp(r.price)}</td>
-      <td data-l="24j" class="num ${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</td>
+      <td data-l="${H.pair}"><b>${base(r.sym)}</b><span class="mut">/USDT</span></td>
+      <td data-l="${H.px}" class="num">${fp(r.price)}</td>
+      <td data-l="${H.ch}" class="num ${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</td>
       <td data-l="Trend" class="${trendCls(r.trend)}"><b>${r.trend}</b></td>
       <td data-l="HTF" class="${trendCls(r.htfTrend)}">${r.htfTrend}</td>
-      <td data-l="Status" class="full">${statusBadge(r)}<div class="hint" style="font-size:11px;margin-top:2px">${esc(oneLiner(r))}</div></td>
-      <td data-l="Skor"><span class="grade g${g}" style="width:24px;height:24px;font-size:11px">${r.grade}</span> <span class="num ${r.state ? '' : 'mut'}">${r.score}</span></td>
-      <td data-l="Demand">${b ? zoneStatus(Math.max(0, b.priorTests)) : '—'}</td>
-      <td data-l="Jarak" class="num">${b ? (b.inside ? 'di zona' : b.dist.toFixed(2) + ' ATR') : '—'}</td>
+      <td data-l="${H.st}" class="full">${statusBadge(r)}<div class="hint" style="font-size:11px;margin-top:2px">${esc(oneLiner(r))}</div></td>
+      <td data-l="${H.sc}"><span class="grade g${g}" style="width:24px;height:24px;font-size:11px">${r.grade}</span> <span class="num ${r.state ? '' : 'mut'}">${r.score}</span></td>
+      <td data-l="${H.dm}">${b ? zst(b.priorTests) : '—'}</td>
+      <td data-l="${H.ds}" class="num">${b ? (b.inside ? L('di zona', 'in zone') : b.dist.toFixed(2) + ' ATR') : '—'}</td>
       <td data-l="RR" class="num">${b && r.state ? b.rr.toFixed(2) : '—'}</td>
     </tr>`;
   }).join('');
@@ -1441,21 +1841,21 @@ function renderScanner() {
    ========================================================= */
 function saveWatch() { store.set('watch', WATCH); updateBadges(); }
 function toggleWatch(sym) {
-  if (WATCH.includes(sym)) { WATCH = WATCH.filter(s => s !== sym); toast(base(sym) + ' dihapus dari watchlist'); }
-  else { WATCH.push(sym); toast(base(sym) + ' ditambahkan ke watchlist ★'); }
+  if (WATCH.includes(sym)) { WATCH = WATCH.filter(s => s !== sym); toast(base(sym) + L(' dihapus dari watchlist', ' removed from watchlist')); }
+  else { WATCH.push(sym); toast(base(sym) + L(' ditambahkan ke watchlist ★', ' added to watchlist ★')); }
   saveWatch();
   $$(`[data-sym="${sym}"] [data-star]`).forEach(b => { const on = WATCH.includes(sym); b.classList.toggle('on', on); b.textContent = on ? '★' : '☆'; });
   if (DET && DET.sym === sym) { const on = WATCH.includes(sym); $('#dStar').classList.toggle('on', on); $('#dStar').textContent = on ? '★' : '☆'; }
   renderWatchChips();
 }
 function renderWatchChips() {
-  $('#wlChips').innerHTML = WATCH.length ? WATCH.map(s => `<span class="wl-chip">${base(s)}<button data-wlrm="${s}" title="Hapus">×</button></span>`).join('') : '<span class="hint">Watchlist kosong. Ketuk ☆ di kartu peluang, atau tambahkan manual di atas.</span>';
-  $('#wlInfo').textContent = WATCH.length ? `${WATCH.length} pair · TF ${S.tf.toUpperCase()}` : '';
+  $('#wlChips').innerHTML = WATCH.length ? WATCH.map(s => `<span class="wl-chip">${base(s)}<button data-wlrm="${s}" title="${L('Hapus', 'Remove')}">×</button></span>`).join('') : `<span class="hint">${L('Watchlist kosong. Ketuk ☆ di kartu peluang, atau tambahkan manual di atas.', 'Your watchlist is empty. Tap ☆ on an opportunity card, or add pairs manually above.')}</span>`;
+  $('#wlInfo').textContent = WATCH.length ? `${WATCH.length} ${L('pair', 'pairs')} · TF ${S.tf.toUpperCase()}` : '';
 }
 function renderWatch() {
   renderWatchChips();
   const el = $('#wlCards');
-  if (!WRESULTS.length) { el.innerHTML = WATCH.length ? '<div class="card empty">Tekan <b>Scan watchlist</b> untuk menganalisis pair di atas.</div>' : ''; return; }
+  if (!WRESULTS.length) { el.innerHTML = WATCH.length ? `<div class="card empty">${L('Tekan <b>Scan watchlist</b> untuk menganalisis pair di atas.', 'Press <b>Scan watchlist</b> to analyse the pairs above.')}</div>` : ''; return; }
   const list = WRESULTS.filter(r => WATCH.includes(r.sym)).sort((a, b) => sortVal(b, 'sig') - sortVal(a, 'sig'));
   el.innerHTML = `<div class="cards">${list.map(cardHTML).join('')}</div>`;
 }
@@ -1473,19 +1873,19 @@ async function openDetail(sym, tf) {
   $('#detail').hidden = false; document.body.style.overflow = 'hidden';
   $('#detail').scrollTop = 0;
   $('#dTitle').textContent = base(sym) + '/USDT';
-  const bUrl = `https://www.binance.com/en/trade/${base(sym)}_USDT?type=spot`;
+  const bUrl = `https://www.binance.com/${isEN() ? 'en' : 'id'}/trade/${base(sym)}_USDT?type=spot`;
   $('#dBinance').href = bUrl; $('#btnOpenBinance').href = bUrl;
   $('#dTv').href = `https://www.tradingview.com/chart/?symbol=BINANCE:${sym}`;
   const on = WATCH.includes(sym); $('#dStar').classList.toggle('on', on); $('#dStar').textContent = on ? '★' : '☆';
   $$('#dTfSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === tf));
   let r = findResult(sym, tf);
   if (!r) {
-    $('#dSub').textContent = 'Memuat data…'; $('#dVerdict').innerHTML = ''; $('#ticket').innerHTML = '';
+    $('#dSub').textContent = L('Memuat data…', 'Loading data…'); $('#dVerdict').innerHTML = ''; $('#ticket').innerHTML = '';
     try {
       const raw = await klines(sym, tf, 500);
       const hraw = S.htf ? await klines(sym, HTF_MAP[tf], 300) : null;
       r = analyze(raw, hraw, Object.assign({}, S, { tf }));
-      if (!r) { $('#dSub').textContent = 'Data kurang dari 220 candle untuk timeframe ini.'; return; }
+      if (!r) { $('#dSub').textContent = L('Data kurang dari 220 candle untuk timeframe ini.', 'Fewer than 220 candles available on this timeframe.'); return; }
       const prev = findResult(sym, S.tf) || RESULTS.find(x => x.sym === sym) || WRESULTS.find(x => x.sym === sym);
       r.sym = sym; r.tf = tf; r.ch24 = prev ? prev.ch24 : 0;
     } catch (e) { $('#dSub').textContent = e.message; return; }
@@ -1496,42 +1896,57 @@ async function openDetail(sym, tf) {
   if (DET && DET.sym === sym) renderTicket();
 }
 function closeDetail() { $('#detail').hidden = true; document.body.style.overflow = ''; DET = null; }
+function checksHTML(r) {
+  const b = r.best, ev = r.st.last, bullEv = !!(ev && ev.dir === 'bull');
+  const htfOn = S.htf && r.htfTrend !== 'OFF';
+  const items = [
+    [L(`Trend ${r.tf} UP (${r.trend})`, `${r.tf} trend UP (${r.trend})`), r.trend === 'UP'],
+    [htfOn ? L(`Trend HTF UP (${r.htfTrend})`, `HTF trend UP (${r.htfTrend})`) : L('Filter HTF (nonaktif)', 'HTF filter (off)'), htfOn ? r.htfTrend === 'UP' : null],
+    [`Demand ${zst(b.priorTests)} (${b.zone.pattern})`, b.priorTests <= 1],
+    [L(`Impulse kuat (${b.zone.impulse.toFixed(2)}×ATR)`, `Strong impulse (${b.zone.impulse.toFixed(2)}×ATR)`), b.zone.impulse >= 1.5],
+    [b.conf ? L(`Konfirmasi: ${b.conf}`, `Confirmation: ${b.conf}`) : L('Candle konfirmasi bullish di zona', 'Bullish confirmation candle at the zone'), !!(b.conf && b.touchedNow)],
+    [ev ? L(`Struktur: ${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'}`, `Structure: ${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'}`) : L('Struktur BOS/CHoCH ↑', 'BOS/CHoCH structure ↑'), bullEv],
+    [L('Liquidity sweep swing low', 'Swing-low liquidity sweep'), r.st.sweep.bull],
+    [`RR TP1 ≥ ${S.minRR} (${b.rr.toFixed(2)})`, b.rr >= S.minRR],
+    [L(`Ruang naik ke supply terdekat ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(tidak ada supply di atas)'}`, `Room to the nearest supply ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(no supply above)'}`), b.nearSupply >= 1]
+  ];
+  return items.map(([t, ok]) => `<li><span class="ic ${ok === null ? 'na' : ok ? 'ok' : 'no'}">${ok === null ? '–' : ok ? '✓' : '✕'}</span><span>${t}</span></li>`).join('');
+}
 function renderDetail() {
   const r = DET, b = r.best;
   const g = r.grade === '–' ? '-' : r.grade;
   $('#dGrade').innerHTML = `${statusBadge(r)} <span class="grade g${g}">${r.grade}</span>`;
-  $('#dSub').innerHTML = `<span class="num">${fp(r.price)}</span> <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span> · ${r.tf.toUpperCase()} · Trend <b class="${trendCls(r.trend)}">${r.trend}</b> · HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b> · Skor <b>${r.score}</b>/100`;
+  $('#dSub').innerHTML = `<span class="num">${fp(r.price)}</span> <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span> · ${r.tf.toUpperCase()} · Trend <b class="${trendCls(r.trend)}">${r.trend}</b> · HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b> · ${L('Skor', 'Score')} <b>${r.score}</b>/100`;
   $('#dVerdict').innerHTML = verdictHTML(r);
   drawChart();
-  // skor
   if (b) {
-    const parts = [['Trend TF utama', b.sc.trend, 20], ['Trend HTF', b.sc.htf, 15], ['Kesegaran zona', b.sc.fresh, 15], ['Kekuatan zona', b.sc.strength, 15], ['Kedekatan ke zona', b.sc.prox, 10], ['Candle konfirmasi', b.sc.conf, 10], ['SMC (BOS/sweep)', b.sc.smc, 15]];
+    const parts = [[L('Trend TF utama', 'Main TF trend'), b.sc.trend, 20], [L('Trend HTF', 'HTF trend'), b.sc.htf, 15], [L('Kesegaran zona', 'Zone freshness'), b.sc.fresh, 15], [L('Kekuatan zona', 'Zone strength'), b.sc.strength, 15], [L('Kedekatan ke zona', 'Proximity to zone'), b.sc.prox, 10], [L('Candle konfirmasi', 'Confirmation candle'), b.sc.conf, 10], [L('SMC (BOS/sweep)', 'SMC (BOS/sweep)'), b.sc.smc, 15]];
     $('#dScore').innerHTML = parts.map(([l, v, m]) => `<div class="sbar"><span>${l}</span><div class="t"><div class="${v >= m ? 'full' : v <= 0 ? 'zero' : ''}" style="width:${Math.max(0, v / m * 100)}%"></div></div><span class="num mut">${v}/${m}</span></div>`).join('') +
-      (b.sc.rrPen ? `<div class="sbar"><span class="neg">Penalti RR</span><div></div><span class="num neg">${b.sc.rrPen}</span></div>` : '');
+      (b.sc.rrPen ? `<div class="sbar"><span class="neg">${L('Penalti RR', 'RR penalty')}</span><div></div><span class="num neg">${b.sc.rrPen}</span></div>` : '');
     $('#dScoreTxt').textContent = `${r.score}/100 · grade ${r.grade}`;
-    $('#dCheck').innerHTML = b.checks.map(([t, ok]) => `<li><span class="ic ${ok === null ? 'na' : ok ? 'ok' : 'no'}">${ok === null ? '–' : ok ? '✓' : '✕'}</span><span>${t}</span></li>`).join('') +
-      `<li><span class="ic ${b.nearSupply >= 1 ? 'ok' : 'no'}">${b.nearSupply >= 1 ? '✓' : '✕'}</span><span>Ruang naik ke supply terdekat ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(tidak ada supply di atas)'}</span></li>`;
+    $('#dCheck').innerHTML = checksHTML(r);
   } else {
-    $('#dScore').innerHTML = '<div class="hint">Tidak ada demand zone valid.</div>'; $('#dScoreTxt').textContent = '';
+    $('#dScore').innerHTML = `<div class="hint">${L('Tidak ada demand zone valid.', 'No valid demand zone.')}</div>`; $('#dScoreTxt').textContent = '';
     $('#dCheck').innerHTML = '';
   }
   const ev = r.st.last, lastSH = r.st.sh[r.st.sh.length - 1], lastSL = r.st.sl[r.st.sl.length - 1];
   $('#dCtx').innerHTML = `
     <span>EMA50 / EMA200</span><span class="num">${fp(r.e50)} / ${fp(r.e200)}</span>
-    <span>ATR(14)</span><span class="num">${fp(r.atr)} <span class="mut">(${(r.atr / r.price * 100).toFixed(2)}% dari harga)</span></span>
-    <span>Pola swing</span><span>${r.st.pattern}</span>
-    <span>Event terakhir</span><span>${ev ? `${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'} di ${fp(ev.level)} <span class="mut">(${r.n - 1 - ev.i} candle lalu)</span>` : '—'}</span>
+    <span>ATR(14)</span><span class="num">${fp(r.atr)} <span class="mut">(${(r.atr / r.price * 100).toFixed(2)}% ${L('dari harga', 'of price')})</span></span>
+    <span>${L('Pola swing', 'Swing pattern')}</span><span>${tr(r.st.pattern)}</span>
+    <span>${L('Event terakhir', 'Last event')}</span><span>${ev ? `${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'} ${L('di', 'at')} ${fp(ev.level)} <span class="mut">(${r.n - 1 - ev.i} ${L('candle lalu', 'candles ago')})</span>` : '—'}</span>
     <span>Swing high / low</span><span class="num">${lastSH ? fp(lastSH.p) : '—'} / ${lastSL ? fp(lastSL.p) : '—'}</span>
-    <span>Liquidity sweep</span><span>${r.st.sweep.bull ? '<span class="pos">Swing low tersapu (bullish)</span>' : 'Tidak ada'}</span>`;
+    <span>Liquidity sweep</span><span>${r.st.sweep.bull ? `<span class="pos">${L('Swing low tersapu (bullish)', 'Swing low swept (bullish)')}</span>` : L('Tidak ada', 'None')}</span>`;
   const zs = r.zones.slice().sort((a, b) => b.proximal - a.proximal);
-  $('#dZones').innerHTML = `<tr><th>Tipe</th><th>Fungsi</th><th>Pola</th><th>Proximal</th><th>Distal</th><th>Status</th><th>Impulse</th><th>Jarak</th></tr>` +
-    (zs.length ? zs.map(z => `<tr><td class="${z.type === 'demand' ? 'pos' : 'neg'}">${z.type === 'demand' ? 'Demand' : 'Supply'}</td><td class="mut">${z.type === 'demand' ? 'Area beli' : 'Target TP'}</td><td>${z.pattern}</td><td class="num">${fp(z.proximal)}</td><td class="num">${fp(z.distal)}</td><td>${zoneStatus(z.tests)}</td><td class="num">${z.impulse.toFixed(2)}×</td><td class="num ${z.proximal > r.price ? 'pos' : 'neg'}">${((z.proximal - r.price) / r.price * 100).toFixed(2)}%</td></tr>`).join('')
-      : '<tr><td colspan="8" class="mut">Tidak ada zona aktif.</td></tr>');
+  $('#dZones').innerHTML = `<tr><th>${L('Tipe', 'Type')}</th><th>${L('Fungsi', 'Role')}</th><th>${L('Pola', 'Pattern')}</th><th>Proximal</th><th>Distal</th><th>Status</th><th>Impulse</th><th>${L('Jarak', 'Distance')}</th></tr>` +
+    (zs.length ? zs.map(z => `<tr><td class="${z.type === 'demand' ? 'pos' : 'neg'}">${z.type === 'demand' ? 'Demand' : 'Supply'}</td><td class="mut">${z.type === 'demand' ? L('Area beli', 'Buy area') : L('Target TP', 'TP target')}</td><td>${z.pattern}</td><td class="num">${fp(z.proximal)}</td><td class="num">${fp(z.distal)}</td><td>${zst(z.tests)}</td><td class="num">${z.impulse.toFixed(2)}×</td><td class="num ${z.proximal > r.price ? 'pos' : 'neg'}">${((z.proximal - r.price) / r.price * 100).toFixed(2)}%</td></tr>`).join('')
+      : `<tr><td colspan="8" class="mut">${L('Tidak ada zona aktif.', 'No active zones.')}</td></tr>`);
   syncTicketInputs();
   renderTicket();
 }
+let MTF = null;
 async function loadMTF(sym) {
-  const el = $('#dMtf'); el.innerHTML = '<span class="hint">Memuat…</span>';
+  const el = $('#dMtf'); el.innerHTML = `<span class="hint">${L('Memuat…', 'Loading…')}</span>`; MTF = null;
   const tfs = ['15m', '1h', '4h', '1d'];
   try {
     const rows = await Promise.all(tfs.map(async tf => {
@@ -1540,10 +1955,14 @@ async function loadMTF(sym) {
       return { tf, a };
     }));
     if (!DET || DET.sym !== sym) return;
-    const ups = rows.filter(x => x.a && x.a.trend === 'UP').length;
-    el.innerHTML = `<table class="mtf"><tr><th>TF</th><th>Trend</th><th>Status</th><th>Demand terdekat</th></tr>${rows.map(({ tf, a }) => a ? `<tr><td><b>${tf.toUpperCase()}</b></td><td class="${trendCls(a.trend)}"><b>${a.trend}</b></td><td>${statusBadge(a)}</td><td class="num">${a.best ? fp(a.best.zone.proximal) + ` <span class="mut">(${a.best.inside ? 'di zona' : a.best.dist.toFixed(1) + ' ATR'})</span>` : '—'}</td></tr>` : `<tr><td><b>${tf.toUpperCase()}</b></td><td colspan="3" class="mut">Data kurang</td></tr>`).join('')}</table>
-      <div class="hint" style="margin-top:8px">${ups}/4 timeframe trend UP. ${ups >= 3 ? '<span class="pos">Keselarasan kuat.</span>' : ups === 2 ? '<span class="amb">Keselarasan sedang.</span>' : '<span class="neg">Keselarasan lemah, hati-hati.</span>'}</div>`;
+    MTF = { sym, rows }; renderMTF();
   } catch (e) { if (DET && DET.sym === sym) el.innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+function renderMTF() {
+  if (!MTF || !DET || MTF.sym !== DET.sym) return;
+  const rows = MTF.rows, ups = rows.filter(x => x.a && x.a.trend === 'UP').length;
+  $('#dMtf').innerHTML = `<table class="mtf"><tr><th>TF</th><th>Trend</th><th>Status</th><th>${L('Demand terdekat', 'Nearest demand')}</th></tr>${rows.map(({ tf, a }) => a ? `<tr><td><b>${tf.toUpperCase()}</b></td><td class="${trendCls(a.trend)}"><b>${a.trend}</b></td><td>${statusBadge(a)}</td><td class="num">${a.best ? fp(a.best.zone.proximal) + ` <span class="mut">(${a.best.inside ? L('di zona', 'in zone') : a.best.dist.toFixed(1) + ' ATR'})</span>` : '—'}</td></tr>` : `<tr><td><b>${tf.toUpperCase()}</b></td><td colspan="3" class="mut">${L('Data kurang', 'Not enough data')}</td></tr>`).join('')}</table>
+    <div class="hint" style="margin-top:8px">${L(`${ups}/4 timeframe trend UP.`, `${ups}/4 timeframes trending UP.`)} ${ups >= 3 ? `<span class="pos">${L('Keselarasan kuat.', 'Strong alignment.')}</span>` : ups === 2 ? `<span class="amb">${L('Keselarasan sedang.', 'Moderate alignment.')}</span>` : `<span class="neg">${L('Keselarasan lemah, hati-hati.', 'Weak alignment, be careful.')}</span>`}</div>`;
 }
 
 /* =========================================================
@@ -1575,7 +1994,7 @@ function computeTicket(r) {
   }
   const warns = [];
   let notional = qtyRaw * entry;
-  if (notional > cap && cap > 0) { qtyRaw = cap / entry * 0.998; notional = qtyRaw * entry; warns.push(['', 'Ukuran posisi dibatasi sebesar modal (Spot tanpa leverage). Risiko nyata jadi lebih kecil dari target.']); }
+  if (notional > cap && cap > 0) { qtyRaw = cap / entry * 0.998; notional = qtyRaw * entry; warns.push(['', L('Ukuran posisi dibatasi sebesar modal (Spot tanpa leverage). Risiko nyata jadi lebih kecil dari target.', 'Position size capped at your capital (spot, no leverage). Actual risk is therefore lower than the target.')]); }
   const qty = floorTo(qtyRaw, f.step, f.stepDec);
   notional = qty * entry;
   const sellQty = floorTo(qty * (1 - fee), f.step, f.stepDec);   // fee dipotong dari koin yang dibeli (tanpa BNB)
@@ -1584,48 +2003,50 @@ function computeTicket(r) {
   let qB = split === '50' ? floorTo(sellQty - qA, f.step, f.stepDec) : 0;
   if (split === '50' && (qA * sl < f.minNotional || qB * sl < f.minNotional || qA < f.minQty || qB < f.minQty)) {
     split = '100'; qA = sellQty; qB = 0;
-    warns.push(['', `Posisi terlalu kecil untuk dibagi 2 (min. order ${f.minNotional} USDT per order), jadi semua di TP1.`]);
+    warns.push(['', L(`Posisi terlalu kecil untuk dibagi 2 (min. order ${f.minNotional} USDT per order), jadi semua di TP1.`, `Position too small to split in two (min. ${f.minNotional} USDT per order), so everything goes to TP1.`)]);
   }
-  if (qty <= 0 || notional < f.minNotional) warns.push(['red', `Nilai order ${usd(notional)} USDT di bawah minimum Binance (${f.minNotional} USDT). Perbesar modal atau % posisi.`]);
-  if (qty > 0 && qty < f.minQty) warns.push(['red', `Jumlah koin di bawah minimum (${f.minQty}).`]);
+  if (qty <= 0 || notional < f.minNotional) warns.push(['red', L(`Nilai order ${usd(notional)} USDT di bawah minimum Binance (${f.minNotional} USDT). Perbesar modal atau % posisi.`, `Order value ${usd(notional)} USDT is below Binance's minimum (${f.minNotional} USDT). Increase capital or position %.`)]);
+  if (qty > 0 && qty < f.minQty) warns.push(['red', L(`Jumlah koin di bawah minimum (${f.minQty}).`, `Quantity is below the minimum (${f.minQty}).`)]);
   const riskUsd = qty * perUnit + notional * fee * 2;
   const profit1 = (split === '50' ? qA : sellQty) * (tp1 - entry) - notional * fee;
   const profit2 = split === '50' ? qA * (tp1 - entry) + qB * (tp2 - entry) - notional * fee * 2 : profit1;
-  if (cap && riskUsd / cap > 0.02) warns.push(['', `Risiko ${(riskUsd / cap * 100).toFixed(2)}% modal, di atas batas aman 2%.`]);
-  if (b.rr < S.minRR) warns.push(['', `RR ke TP1 hanya ${b.rr.toFixed(2)}, di bawah target ${S.minRR}.`]);
+  if (cap && riskUsd / cap > 0.02) warns.push(['', L(`Risiko ${(riskUsd / cap * 100).toFixed(2)}% modal, di atas batas aman 2%.`, `Risk is ${(riskUsd / cap * 100).toFixed(2)}% of capital, above the 2% safety limit.`)]);
+  if (b.rr < S.minRR) warns.push(['', L(`RR ke TP1 hanya ${b.rr.toFixed(2)}, di bawah target ${S.minRR}.`, `RR to TP1 is only ${b.rr.toFixed(2)}, below the ${S.minRR} target.`)]);
   return { market, entry, sl, stopLimit, tp1, tp2, qty, sellQty, qA, qB, split, notional, riskUsd, profit1, profit2, cap, f, warns };
 }
-function fld(label, val, cls = '') { return `<div class="fld"><div><small>${label}</small><b class="${cls}">${val}</b></div><button class="cp" data-copy="${esc(String(val).replace(/,/g, ''))}" title="Salin">${ICON_COPY}</button></div>`; }
+function fld(label, val, cls = '') { return `<div class="fld"><div><small>${label}</small><b class="${cls}">${val}</b></div><button class="cp" data-copy="${esc(String(val).replace(/,/g, ''))}" title="${L('Salin', 'Copy')}">${ICON_COPY}</button></div>`; }
 function renderTicket() {
   const r = DET, el = $('#ticket');
-  if (!r || !r.best) { el.innerHTML = '<div class="hint">Tidak ada rencana trade: belum ada demand zone valid.</div>'; $('#btnJournal').disabled = true; return; }
+  if (!r) return;
+  if (!r.best) { el.innerHTML = `<div class="hint">${L('Tidak ada rencana trade: belum ada demand zone valid.', 'No trade plan: there is no valid demand zone yet.')}</div>`; $('#btnJournal').disabled = true; return; }
   const mode = $('#cMode').value, sel = $('#cPct').value;
   $('#cRiskWrap').style.display = mode === 'risk' ? '' : 'none';
   $('#cPctWrap').style.display = mode === 'pct' ? '' : 'none';
   $('#cPctCustomWrap').style.display = mode === 'pct' && sel === 'custom' ? '' : 'none';
-  const t = TK = computeTicket(r), f = t.f, cat = category(r), b = r.best;
+  const t = TK = computeTicket(r), f = t.f, cat = category(r);
   const P = v => fx(v, f.tickDec), Q = v => fx(v, f.stepDec), coin = base(r.sym);
-  $('#tkFilters').textContent = r.filters ? `tick ${f.tick} · step ${f.step} · min ${f.minNotional} USDT` : 'aturan pair belum dimuat';
+  $('#tkFilters').textContent = r.filters ? `tick ${f.tick} · step ${f.step} · min ${f.minNotional} USDT` : L('aturan pair belum dimuat', 'pair rules not loaded');
   $('#btnJournal').disabled = false;
   const inactive = cat !== 'exec' && cat !== 'limit';
+  const Qn = L('Jumlah', 'Qty');
   el.innerHTML = `
-    ${inactive ? `<div class="warn" style="margin:0 0 10px">Sinyal belum aktif (${CAT[cat].label}). Tiket ini rencana bersyarat. Jangan dieksekusi sebelum status menjadi Siap eksekusi atau Siapkan limit.</div>` : ''}
+    ${inactive ? `<div class="warn" style="margin:0 0 10px">${L(`Sinyal belum aktif (${catLabel(cat)}). Tiket ini rencana bersyarat. Jangan dieksekusi sebelum status menjadi Siap eksekusi atau Siapkan limit.`, `Signal not active yet (${catLabel(cat)}). This ticket is a conditional plan. Do not execute it until the status becomes Ready to execute or Set limit order.`)}</div>` : ''}
     <div class="step">
-      <div class="step-h"><span class="step-n">1</span><b>${t.market ? 'Beli sekarang (Market / Limit di harga)' : 'Pasang Limit Buy'}</b><span class="badge ${t.market ? 'b-buy' : 'b-setup'}">${t.market ? 'MARKET' : 'LIMIT'}</span></div>
+      <div class="step-h"><span class="step-n">1</span><b>${t.market ? L('Beli sekarang (Market / Limit di harga)', 'Buy now (Market / Limit at current price)') : L('Pasang Limit Buy', 'Place a Limit Buy')}</b><span class="badge ${t.market ? 'b-buy' : 'b-setup'}">${t.market ? 'MARKET' : 'LIMIT'}</span></div>
       <div class="fields">
-        ${fld(t.market ? 'Harga ≈' : 'Harga limit', P(t.entry))}
-        ${fld('Jumlah ' + coin, Q(t.qty))}
+        ${fld(t.market ? L('Harga ≈', 'Price ≈') : L('Harga limit', 'Limit price'), P(t.entry))}
+        ${fld(`${Qn} ${coin}`, Q(t.qty))}
         ${fld('Total USDT', fx(t.notional, 2))}
       </div>
-      <div class="hint" style="margin-top:6px">Binance → Spot → ${coin}/USDT → <b>Buy</b> → ${t.market ? 'Market (isi Total USDT) atau Limit di harga sekarang' : 'Limit'}.</div>
+      <div class="hint" style="margin-top:6px">Binance → Spot → ${coin}/USDT → <b>Buy</b> → ${t.market ? L('Market (isi Total USDT) atau Limit di harga sekarang', 'Market (enter Total USDT) or Limit at the current price') : 'Limit'}.</div>
     </div>
     <div class="step">
-      <div class="step-h"><span class="step-n">2</span><b>Setelah terisi: pasang OCO Sell ${t.split === '50' ? '(A · 50% → TP1)' : '(100% → TP1)'}</b><span class="badge b-info">OCO</span></div>
+      <div class="step-h"><span class="step-n">2</span><b>${L('Setelah terisi: pasang OCO Sell', 'Once filled: place an OCO Sell')} ${t.split === '50' ? '(A · 50% → TP1)' : '(100% → TP1)'}</b><span class="badge b-info">OCO</span></div>
       <div class="fields">
         ${fld('Take profit (limit)', P(t.tp1), 'pos')}
         ${fld('Stop (trigger)', P(t.sl), 'neg')}
         ${fld('Stop-limit', P(t.stopLimit), 'neg')}
-        ${fld('Jumlah ' + coin, Q(t.qA))}
+        ${fld(`${Qn} ${coin}`, Q(t.qA))}
       </div>
     </div>
     ${t.split === '50' ? `<div class="step">
@@ -1634,26 +2055,26 @@ function renderTicket() {
         ${fld('Take profit (limit)', P(t.tp2), 'pos')}
         ${fld('Stop (trigger)', P(t.sl), 'neg')}
         ${fld('Stop-limit', P(t.stopLimit), 'neg')}
-        ${fld('Jumlah ' + coin, Q(t.qB))}
+        ${fld(`${Qn} ${coin}`, Q(t.qB))}
       </div>
-      <div class="hint" style="margin-top:6px">Saat TP1 tercapai, batalkan OCO B lalu pasang ulang dengan stop di harga entry (${P(t.entry)}) agar sisa posisi bebas risiko.</div>
+      <div class="hint" style="margin-top:6px">${L(`Saat TP1 tercapai, batalkan OCO B lalu pasang ulang dengan stop di harga entry (${P(t.entry)}) agar sisa posisi bebas risiko.`, `When TP1 is hit, cancel OCO B and re-place it with the stop at your entry price (${P(t.entry)}) so the rest of the position is risk-free.`)}</div>
     </div>` : ''}
     <div class="kv" style="margin-top:10px">
-      <span>Risiko jika kena SL</span><span class="num neg">−${usd(t.riskUsd)} USDT <span class="mut">(${t.cap ? (t.riskUsd / t.cap * 100).toFixed(2) : 0}% modal, termasuk fee)</span></span>
-      <span>Profit di TP1</span><span class="num pos">+${usd(t.profit1)} USDT${t.split === '50' ? ' <span class="mut">(50% posisi)</span>' : ''}</span>
-      ${t.split === '50' ? `<span>Profit jika TP1 + TP2</span><span class="num pos">+${usd(t.profit2)} USDT</span>` : ''}
-      <span>Nilai posisi</span><span class="num">${usd(t.notional)} USDT <span class="mut">(${t.cap ? (t.notional / t.cap * 100).toFixed(1) : 0}% modal)</span></span>
+      <span>${L('Risiko jika kena SL', 'Risk if SL is hit')}</span><span class="num neg">−${usd(t.riskUsd)} USDT <span class="mut">(${t.cap ? (t.riskUsd / t.cap * 100).toFixed(2) : 0}% ${L('modal, termasuk fee', 'of capital, incl. fees')})</span></span>
+      <span>${L('Profit di TP1', 'Profit at TP1')}</span><span class="num pos">+${usd(t.profit1)} USDT${t.split === '50' ? ` <span class="mut">(${L('50% posisi', '50% of position')})</span>` : ''}</span>
+      ${t.split === '50' ? `<span>${L('Profit jika TP1 + TP2', 'Profit if TP1 + TP2')}</span><span class="num pos">+${usd(t.profit2)} USDT</span>` : ''}
+      <span>${L('Nilai posisi', 'Position size')}</span><span class="num">${usd(t.notional)} USDT <span class="mut">(${t.cap ? (t.notional / t.cap * 100).toFixed(1) : 0}% ${L('modal', 'of capital')})</span></span>
     </div>
     ${t.warns.map(([c, m]) => `<div class="warn ${c}">⚠ ${m}</div>`).join('')}`;
 }
 function planText(r, t) {
   const b = r.best; t = t || computeTicket(r);
   const P = v => fx(v, t.f.tickDec), Q = v => fx(v, t.f.stepDec);
-  return `${CAT[category(r)].label} · ${base(r.sym)}/USDT ${r.tf.toUpperCase()} · Grade ${r.grade} (${r.score})
-Trend ${r.trend} · HTF ${r.htfTrend} · Demand ${zoneStatus(Math.max(0, b.priorTests))} ${b.zone.pattern}${b.conf ? ' · ' + b.conf : ''}
+  return `${catLabel(category(r))} · ${base(r.sym)}/USDT ${r.tf.toUpperCase()} · Grade ${r.grade} (${r.score})
+Trend ${r.trend} · HTF ${r.htfTrend} · Demand ${zst(b.priorTests)} ${b.zone.pattern}${b.conf ? ' · ' + b.conf : ''}
 1) BUY ${t.market ? 'MARKET ≈' : 'LIMIT'} ${P(t.entry)} · qty ${Q(t.qty)} · ${fx(t.notional, 2)} USDT
 2) OCO SELL qty ${Q(t.qA)} · TP ${P(t.tp1)} · Stop ${P(t.sl)} · Stop-limit ${P(t.stopLimit)}${t.split === '50' ? `\n3) OCO SELL qty ${Q(t.qB)} · TP ${P(t.tp2)} · Stop ${P(t.sl)} · Stop-limit ${P(t.stopLimit)}` : ''}
-Risiko −${usd(t.riskUsd)} USDT · RR TP1 ${b.rr.toFixed(2)}`;
+${L('Risiko', 'Risk')} −${usd(t.riskUsd)} USDT · RR TP1 ${b.rr.toFixed(2)}`;
 }
 
 /* =========================================================
@@ -1669,7 +2090,7 @@ function addToJournal() {
     entry: t.entry, sl: t.sl, tp1: t.tp1, tp2: t.tp2, qty: t.qty, notional: t.notional, split: t.split,
     tickDec: t.f.tickDec, stepDec: t.f.stepDec, exit: null, closed: null, note: ''
   });
-  saveJournal(); toast('Disimpan ke jurnal ✓'); renderJournal();
+  saveJournal(); toast(L('Disimpan ke jurnal ✓', 'Saved to journal ✓')); renderJournal();
 }
 function jR(j, px) { const risk = j.entry - j.sl; return risk > 0 ? (px - j.entry) / risk : 0; }
 function jPnl(j, px) { const fee = (+S.fee || 0) / 100; return j.qty * (px - j.entry) - j.notional * fee * 2; }
@@ -1680,10 +2101,10 @@ function renderJournal() {
   const totR = rs.reduce((a, b) => a + b, 0), totP = closed.reduce((a, j) => a + jPnl(j, j.exit), 0);
   const active = JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN').length;
   const st = [
-    ['Trade aktif', active, ''],
-    ['Trade selesai', closed.length, ''],
+    [L('Trade aktif', 'Active trades'), active, ''],
+    [L('Trade selesai', 'Closed trades'), closed.length, ''],
     ['Win rate', closed.length ? Math.round(wins / closed.length * 100) + '%' : '—', closed.length && wins / closed.length >= 0.5 ? 'pos' : ''],
-    ['Rata-rata R', closed.length ? (totR / closed.length).toFixed(2) + 'R' : '—', totR >= 0 ? 'pos' : 'neg'],
+    [L('Rata-rata R', 'Average R'), closed.length ? (totR / closed.length).toFixed(2) + 'R' : '—', totR >= 0 ? 'pos' : 'neg'],
     ['Total R', closed.length ? (totR >= 0 ? '+' : '') + totR.toFixed(2) + 'R' : '—', totR >= 0 ? 'pos' : 'neg'],
     ['Total P&L', closed.length ? (totP >= 0 ? '+' : '') + usd(totP) : '—', totP >= 0 ? 'pos' : 'neg']
   ];
@@ -1692,16 +2113,16 @@ function renderJournal() {
   if (JFILTER === 'active') list = JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN');
   if (JFILTER === 'closed') list = JOURNAL.filter(j => j.status !== 'PLAN' && j.status !== 'OPEN');
   const el = $('#jList');
-  if (!list.length) { el.innerHTML = `<div class="card empty">${JOURNAL.length ? 'Tidak ada trade di kategori ini.' : 'Jurnal masih kosong. Buka detail sebuah pair, lalu tekan <b>＋ Simpan ke jurnal</b> di Tiket Eksekusi.'}</div>`; return; }
-  const SL = { PLAN: 'MENUNGGU ENTRY', OPEN: 'POSISI TERBUKA', WIN: 'PROFIT', LOSS: 'LOSS', CANCEL: 'BATAL' };
+  if (!list.length) { el.innerHTML = `<div class="card empty">${JOURNAL.length ? L('Tidak ada trade di kategori ini.', 'No trades in this category.') : L('Jurnal masih kosong. Buka detail sebuah pair, lalu tekan <b>＋ Simpan ke jurnal</b> di Tiket Eksekusi.', 'Your journal is empty. Open a pair\'s details, then press <b>＋ Save to journal</b> in the Execution Ticket.')}</div>`; return; }
+  const SL = { PLAN: L('MENUNGGU ENTRY', 'AWAITING ENTRY'), OPEN: L('POSISI TERBUKA', 'POSITION OPEN'), WIN: 'PROFIT', LOSS: 'LOSS', CANCEL: L('BATAL', 'CANCELLED') };
   el.innerHTML = list.map(j => {
     const P = v => fx(v, j.tickDec ?? 6), px = JPRICES[j.sym];
     const live = (j.status === 'PLAN' || j.status === 'OPEN') && px;
     let alert = '';
     if (live) {
-      if (j.status === 'PLAN' && px <= j.entry) alert = '<span class="badge b-setup">Harga sudah di entry, cek order terisi?</span>';
-      if (j.status === 'OPEN' && px <= j.sl) alert = '<span class="badge" style="background:var(--red-bg);color:var(--red)">Harga ≤ SL</span>';
-      if (j.status === 'OPEN' && px >= j.tp1) alert = '<span class="badge b-buy">TP1 tercapai 🎯</span>';
+      if (j.status === 'PLAN' && px <= j.entry) alert = `<span class="badge b-setup">${L('Harga sudah di entry, cek order terisi?', 'Price reached entry, check if filled?')}</span>`;
+      if (j.status === 'OPEN' && px <= j.sl) alert = `<span class="badge" style="background:var(--red-bg);color:var(--red)">${L('Harga ≤ SL', 'Price ≤ SL')}</span>`;
+      if (j.status === 'OPEN' && px >= j.tp1) alert = `<span class="badge b-buy">${L('TP1 tercapai 🎯', 'TP1 reached 🎯')}</span>`;
     }
     const rNow = j.status === 'OPEN' && px ? jR(j, px) : null;
     const done = j.exit != null ? jR(j, j.exit) : null;
@@ -1712,7 +2133,7 @@ function renderJournal() {
         <div class="r">
           ${rNow != null ? `<div class="num ${rNow >= 0 ? 'pos' : 'neg'}"><b>${rNow >= 0 ? '+' : ''}${rNow.toFixed(2)}R</b> <span class="mut">· ${(jPnl(j, px) >= 0 ? '+' : '') + usd(jPnl(j, px))} USDT</span></div>` : ''}
           ${done != null ? `<div class="num ${done >= 0 ? 'pos' : 'neg'}"><b>${done >= 0 ? '+' : ''}${done.toFixed(2)}R</b> <span class="mut">· ${(jPnl(j, j.exit) >= 0 ? '+' : '') + usd(jPnl(j, j.exit))} USDT</span></div>` : ''}
-          <div class="hint">${new Date(j.created).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}${px && live ? ' · harga ' + fp(px) : ''}</div>
+          <div class="hint">${new Date(j.created).toLocaleString(LOC(), { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}${px && live ? ' · ' + L('harga', 'price') + ' ' + fp(px) : ''}</div>
         </div>
       </div>
       <div class="lv">
@@ -1721,20 +2142,20 @@ function renderJournal() {
         <div><small>TP1 / TP2</small><b class="pos">${P(j.tp1)}${j.split === '50' ? ' / ' + P(j.tp2) : ''}</b></div>
         <div><small>Qty</small><b>${fx(j.qty, j.stepDec ?? 6)}</b></div>
       </div>
-      ${j.exit != null ? `<div class="hint" style="margin-top:6px">Exit di ${P(j.exit)}</div>` : ''}
+      ${j.exit != null ? `<div class="hint" style="margin-top:6px">${L('Exit di', 'Exit at')} ${P(j.exit)}</div>` : ''}
       <div class="jc-act">
-        ${j.status === 'PLAN' ? `<button class="btn sm" data-jact="open">✓ Order terisi</button><button class="btn sm" data-jact="cancel">Batal</button>` : ''}
-        ${j.status === 'OPEN' ? `<input type="number" step="any" placeholder="Harga exit" data-jexit value="${px ? +px : ''}"><button class="btn sm green" data-jact="close">Tutup posisi</button><button class="btn sm" data-jact="closetp">Kena TP1</button><button class="btn sm danger" data-jact="closesl">Kena SL</button>` : ''}
-        <button class="btn sm ghost" data-jact="detail">Lihat chart</button>
-        <button class="btn sm ghost danger" data-jact="del" style="margin-left:auto">Hapus</button>
+        ${j.status === 'PLAN' ? `<button class="btn sm" data-jact="open">✓ ${L('Order terisi', 'Order filled')}</button><button class="btn sm" data-jact="cancel">${L('Batal', 'Cancel')}</button>` : ''}
+        ${j.status === 'OPEN' ? `<input type="number" step="any" placeholder="${L('Harga exit', 'Exit price')}" data-jexit value="${px ? +px : ''}"><button class="btn sm green" data-jact="close">${L('Tutup posisi', 'Close position')}</button><button class="btn sm" data-jact="closetp">${L('Kena TP1', 'Hit TP1')}</button><button class="btn sm danger" data-jact="closesl">${L('Kena SL', 'Hit SL')}</button>` : ''}
+        <button class="btn sm ghost" data-jact="detail">${L('Lihat chart', 'View chart')}</button>
+        <button class="btn sm ghost danger" data-jact="del" style="margin-left:auto">${L('Hapus', 'Delete')}</button>
       </div>
     </div>`;
   }).join('');
 }
 function closeTrade(j, exit) {
-  if (!(exit > 0)) { toast('Isi harga exit dulu'); return; }
+  if (!(exit > 0)) { toast(L('Isi harga exit dulu', 'Enter an exit price first')); return; }
   j.exit = exit; j.closed = Date.now(); j.status = exit >= j.entry ? 'WIN' : 'LOSS';
-  saveJournal(); renderJournal(); toast(`Trade ${base(j.sym)} ditutup: ${jR(j, exit).toFixed(2)}R`);
+  saveJournal(); renderJournal(); toast(L(`Trade ${base(j.sym)} ditutup: ${jR(j, exit).toFixed(2)}R`, `${base(j.sym)} trade closed: ${jR(j, exit).toFixed(2)}R`));
 }
 async function refreshJournalPrices() {
   const syms = [...new Set(JOURNAL.filter(j => j.status === 'PLAN' || j.status === 'OPEN').map(j => j.sym))];
@@ -1743,9 +2164,9 @@ async function refreshJournalPrices() {
   renderJournal();
 }
 function exportJournalCsv() {
-  const head = ['tanggal', 'pair', 'tf', 'grade', 'status', 'entry', 'sl', 'tp1', 'tp2', 'qty', 'nilai_usdt', 'exit', 'R', 'pnl_usdt'];
+  const head = isEN() ? ['date', 'pair', 'tf', 'grade', 'status', 'entry', 'sl', 'tp1', 'tp2', 'qty', 'value_usdt', 'exit', 'R', 'pnl_usdt'] : ['tanggal', 'pair', 'tf', 'grade', 'status', 'entry', 'sl', 'tp1', 'tp2', 'qty', 'nilai_usdt', 'exit', 'R', 'pnl_usdt'];
   const rows = JOURNAL.map(j => [new Date(j.created).toISOString(), j.sym, j.tf, j.grade, j.status, j.entry, j.sl, j.tp1, j.tp2, j.qty, j.notional.toFixed(2), j.exit ?? '', j.exit != null ? jR(j, j.exit).toFixed(2) : '', j.exit != null ? jPnl(j, j.exit).toFixed(2) : ''].join(','));
-  download(`jurnal-precision-zone-${new Date().toISOString().slice(0, 10)}.csv`, head.join(',') + '\n' + rows.join('\n'), 'text/csv');
+  download(`${L('jurnal', 'journal')}-precision-zone-${new Date().toISOString().slice(0, 10)}.csv`, head.join(',') + '\n' + rows.join('\n'), 'text/csv');
 }
 function download(name, text, type) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click();
@@ -1797,7 +2218,7 @@ function drawChart() {
     g.strokeStyle = dem ? 'rgba(34,197,94,.6)' : 'rgba(239,68,68,.6)';
     g.setLineDash(fresh ? [] : [3, 3]); g.strokeRect(x0, y1, cw - x0, Math.max(2, y2 - y1)); g.setLineDash([]);
     g.fillStyle = dem ? '#4ade80' : '#f87171'; g.font = '10px system-ui';
-    g.fillText(`${dem ? 'D' : 'S'} ${z.pattern} · ${zoneStatus(z.tests)}`, x0 + 3, dem ? y2 - 3 : y1 + 11);
+    g.fillText(`${dem ? 'D' : 'S'} ${z.pattern} · ${tr(zoneStatus(z.tests))}`, x0 + 3, dem ? y2 - 3 : y1 + 11);
   }
   // EMA
   const line = (arr, col) => { g.strokeStyle = col; g.lineWidth = 1.4; g.beginPath(); let st = false; for (let i = s0; i < N; i++) { if (!isFinite(arr[i])) continue; const yy = y(arr[i]); if (!st) { g.moveTo(x(i), yy); st = true; } else g.lineTo(x(i), yy); } g.stroke(); };
@@ -1831,6 +2252,7 @@ function drawChart() {
 }
 
 
+
 /* =========================================================
    NOTIFIKASI
    ========================================================= */
@@ -1849,7 +2271,7 @@ function notifyNew(list) {
   store.set('seen', [...SEEN].slice(-500));
   if (!fresh.length) return;
   if (S.notify && 'Notification' in window && Notification.permission === 'granted') {
-    try { new Notification(`Precision Zone: ${fresh.length} sinyal siap eksekusi`, { body: fresh.slice(0, 5).map(r => `${base(r.sym)} ${r.tf.toUpperCase()} (grade ${r.grade})`).join(' · ') }); } catch (e) {}
+    try { new Notification(L(`Precision Zone: ${fresh.length} sinyal siap eksekusi`, `Precision Zone: ${fresh.length} signal(s) ready to execute`), { body: fresh.slice(0, 5).map(r => `${base(r.sym)} ${r.tf.toUpperCase()} (grade ${r.grade})`).join(' · ') }); } catch (e) {}
   }
   if (S.tgToken && S.tgChat) fresh.slice(0, 10).forEach((r, i) => setTimeout(() => tgSend('🟢 ' + planText(r, computeTicketSimple(r))), i * 400));
 }
@@ -1868,13 +2290,14 @@ function computeTicketSimple(r) {
    PENGATURAN
    ========================================================= */
 const NUM_KEYS = ['impulseMult', 'maxBase', 'proxATR', 'slBuf', 'minRR', 'capital', 'riskPct', 'posPct', 'fee', 'stopOff'];
+function htfLabel() { $('#htfLbl').textContent = S.htf ? L('Aktif', 'On') : L('Mati', 'Off'); }
 function loadSettingsUI() {
   NUM_KEYS.forEach(k => $('#s_' + k).value = S[k]);
   $('#s_tgToken').value = S.tgToken; $('#s_tgChat').value = S.tgChat; $('#s_exclude').value = S.exclude;
   $('#s_sizeMode').value = S.sizeMode; $('#s_tpSplit').value = S.tpSplit;
   $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto;
   $('#scope').value = S.scope; $('#tf').value = S.tf; $('#topN').value = S.topN; $('#minVol').value = S.minVol; $('#auto').value = S.auto;
-  $('#pairs').value = S.pairs; $('#htf').checked = S.htf; $('#htfLbl').textContent = S.htf ? 'Aktif' : 'Mati';
+  $('#pairs').value = S.pairs; $('#htf').checked = S.htf; htfLabel();
   applyScopeUI();
 }
 function saveSettingsUI() {
@@ -1895,14 +2318,28 @@ function setAuto() {
   if (m > 0) autoTimer = setInterval(() => { if (!scanning) runScan(); }, m * 60000);
 }
 function exportCsv() {
-  const head = ['pair', 'tf', 'harga', 'ch24', 'trend', 'htf', 'status', 'skor', 'grade', 'demand', 'pola', 'entry', 'sl', 'tp1', 'tp2', 'rr', 'catatan'];
+  const head = isEN()
+    ? ['pair', 'tf', 'price', 'ch24', 'trend', 'htf', 'status', 'score', 'grade', 'demand', 'pattern', 'entry', 'sl', 'tp1', 'tp2', 'rr', 'note']
+    : ['pair', 'tf', 'harga', 'ch24', 'trend', 'htf', 'status', 'skor', 'grade', 'demand', 'pola', 'entry', 'sl', 'tp1', 'tp2', 'rr', 'catatan'];
   const rows = RESULTS.filter(passFilter).map(r => {
     const b = r.best;
-    return [r.sym, r.tf, r.price, r.ch24, r.trend, r.htfTrend, CAT[category(r)].label, r.score, r.grade,
-      b ? zoneStatus(Math.max(0, b.priorTests)) : '', b ? b.zone.pattern : '',
+    return [r.sym, r.tf, r.price, r.ch24, r.trend, r.htfTrend, catLabel(category(r)), r.score, r.grade,
+      b ? zst(b.priorTests) : '', b ? b.zone.pattern : '',
       b ? b.entry : '', b ? b.sl : '', b ? b.tp1 : '', b ? b.tp2 : '', b ? b.rr.toFixed(2) : '', '"' + oneLiner(r).replace(/"/g, "'") + '"'].join(',');
   });
   download(`precision-zone-${S.tf}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '')}.csv`, head.join(',') + '\n' + rows.join('\n'), 'text/csv');
+}
+
+/* =========================================================
+   GANTI BAHASA
+   ========================================================= */
+function setLang(lang) {
+  if (lang !== 'id' && lang !== 'en') return;
+  S.lang = lang; persist();
+  applyStaticLang();
+  htfLabel(); renderStatus();
+  renderScanner(); renderWatch(); renderJournal(); updateBadges();
+  if (DET) { renderDetail(); renderMTF(); }
 }
 
 /* =========================================================
@@ -1917,18 +2354,22 @@ function switchTab(tab) {
 }
 function init() {
   loadSettingsUI();
+  applyStaticLang();
   updateBadges();
   renderScanner();
   renderWatch();
+  renderJournal();
+  renderStatus();
+  $$('#langSeg button').forEach(b => b.onclick = () => setLang(b.dataset.l));
   $$('#nav button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
   // kontrol scan
   $('#scope').onchange = e => { S.scope = e.target.value; persist(); applyScopeUI(); };
   $('#tf').onchange = e => { S.tf = e.target.value; persist(); };
   $('#topN').onchange = e => { S.topN = e.target.value; persist(); };
   $('#minVol').onchange = e => { S.minVol = e.target.value; persist(); };
-  $('#auto').onchange = e => { S.auto = e.target.value; persist(); setAuto(); toast(+S.auto ? `Auto-scan tiap ${S.auto} menit (selama tab terbuka)` : 'Auto-scan dimatikan'); };
+  $('#auto').onchange = e => { S.auto = e.target.value; persist(); setAuto(); toast(+S.auto ? L(`Auto-scan tiap ${S.auto} menit (selama tab terbuka)`, `Auto-scan every ${S.auto} min (while the tab is open)`) : L('Auto-scan dimatikan', 'Auto-scan turned off')); };
   $('#pairs').onchange = e => { S.pairs = e.target.value; persist(); };
-  $('#htf').onchange = e => { S.htf = e.target.checked; $('#htfLbl').textContent = S.htf ? 'Aktif' : 'Mati'; persist(); };
+  $('#htf').onchange = e => { S.htf = e.target.checked; htfLabel(); persist(); };
   $('#btnScan').onclick = () => { S.pairs = $('#pairs').value; persist(); runScan(); };
   $('#search').oninput = () => renderScanner();
   $('#btnCsv').onclick = exportCsv;
@@ -1952,7 +2393,7 @@ function init() {
     if (card) openDetail(card.dataset.sym, card.dataset.tf);
   });
   // watchlist
-  const addWl = () => { const list = parsePairs($('#wlAdd').value); list.forEach(s => { if (!WATCH.includes(s)) WATCH.push(s); }); saveWatch(); $('#wlAdd').value = ''; renderWatch(); if (list.length) toast(list.length + ' pair ditambahkan'); };
+  const addWl = () => { const list = parsePairs($('#wlAdd').value); list.forEach(s => { if (!WATCH.includes(s)) WATCH.push(s); }); saveWatch(); $('#wlAdd').value = ''; renderWatch(); if (list.length) toast(L(`${list.length} pair ditambahkan`, `${list.length} pair(s) added`)); };
   $('#btnWlAdd').onclick = addWl;
   $('#wlAdd').onkeydown = e => { if (e.key === 'Enter') addWl(); };
   $('#btnWlScan').onclick = () => runScan('watch');
@@ -1970,7 +2411,7 @@ function init() {
     if (act === 'closetp') closeTrade(j, j.tp1);
     if (act === 'closesl') closeTrade(j, j.sl);
     if (act === 'detail') openDetail(j.sym, j.tf);
-    if (act === 'del') { if (b.dataset.sure) { JOURNAL = JOURNAL.filter(x => x.id !== j.id); saveJournal(); renderJournal(); } else { b.dataset.sure = '1'; b.textContent = 'Yakin hapus?'; } }
+    if (act === 'del') { if (b.dataset.sure) { JOURNAL = JOURNAL.filter(x => x.id !== j.id); saveJournal(); renderJournal(); } else { b.dataset.sure = '1'; b.textContent = L('Yakin hapus?', 'Delete for sure?'); } }
   };
   // detail
   $('#dClose').onclick = closeDetail;
@@ -1985,21 +2426,21 @@ function init() {
   window.addEventListener('resize', () => { if (!$('#detail').hidden) drawChart(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#detail').hidden) closeDetail(); });
   // pengaturan
-  $('#btnSave').onclick = () => { saveSettingsUI(); $('#saveMsg').textContent = 'Tersimpan ✓ Scan ulang untuk menerapkan parameter.'; setTimeout(() => $('#saveMsg').textContent = '', 3500); };
-  $('#btnReset').onclick = () => { Object.assign(S, PARAM_DEFAULTS); persist(); loadSettingsUI(); $('#saveMsg').textContent = 'Parameter sistem direset ke default.'; };
+  $('#btnSave').onclick = () => { saveSettingsUI(); $('#saveMsg').textContent = L('Tersimpan ✓ Scan ulang untuk menerapkan parameter.', 'Saved ✓ Rescan to apply the parameters.'); setTimeout(() => $('#saveMsg').textContent = '', 3500); };
+  $('#btnReset').onclick = () => { Object.assign(S, PARAM_DEFAULTS); persist(); loadSettingsUI(); $('#saveMsg').textContent = L('Parameter sistem direset ke default.', 'System parameters reset to default.'); };
   $('#s_notify').onchange = e => { if (e.target.checked && 'Notification' in window && Notification.permission !== 'granted') Notification.requestPermission(); };
-  $('#btnTgTest').onclick = async () => { saveSettingsUI(); $('#tgMsg').textContent = 'Mengirim…'; const ok = await tgSend('✅ Tes dari Precision Zone · Spot Long Scanner berhasil.'); $('#tgMsg').textContent = ok ? 'Terkirim. Cek Telegram Anda.' : 'Gagal. Periksa token & chat ID.'; };
+  $('#btnTgTest').onclick = async () => { saveSettingsUI(); $('#tgMsg').textContent = L('Mengirim…', 'Sending…'); const ok = await tgSend(L('✅ Tes dari Precision Zone · Spot Long Scanner berhasil.', '✅ Test from Precision Zone · Spot Long Scanner succeeded.')); $('#tgMsg').textContent = ok ? L('Terkirim. Cek Telegram Anda.', 'Sent. Check your Telegram.') : L('Gagal. Periksa token & chat ID.', 'Failed. Check your token & chat ID.'); };
   $('#btnBackup').onclick = () => download(`precision-zone-backup-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ app: 'precision-zone', version: APP_VERSION, settings: S, watch: WATCH, journal: JOURNAL }, null, 2), 'application/json');
   $('#fileRestore').onchange = async e => {
     const file = e.target.files[0]; if (!file) return;
     try {
       const d = JSON.parse(await file.text());
-      if (d.app !== 'precision-zone') throw new Error('bukan file backup aplikasi ini');
+      if (d.app !== 'precision-zone') throw new Error(L('bukan file backup aplikasi ini', 'not a backup file from this app'));
       if (d.settings) { S = Object.assign({}, DEFAULTS, d.settings); persist(); }
       if (Array.isArray(d.watch)) { WATCH = d.watch; saveWatch(); }
       if (Array.isArray(d.journal)) { JOURNAL = d.journal; saveJournal(); }
-      loadSettingsUI(); renderWatch(); renderJournal(); toast('Data berhasil dipulihkan ✓');
-    } catch (err) { toast('Gagal restore: ' + err.message); }
+      loadSettingsUI(); setLang(S.lang); toast(L('Data berhasil dipulihkan ✓', 'Data restored ✓'));
+    } catch (err) { toast(L('Gagal restore: ', 'Restore failed: ') + err.message); }
     e.target.value = '';
   };
   setAuto();

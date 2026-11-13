@@ -1,4 +1,6 @@
-# Precision Zone · Spot Long Scanner v2.0 (Web App Gratis)
+# Precision Zone · Spot Long Scanner v2.1 (Web App Gratis)
+
+> 🇬🇧 **English:** a free, single-file Binance Spot **long-only** scanner based on the Precision Zone System (EMA 50/200 + supply & demand zones), with Binance execution tickets (Limit + OCO), watchlist and trading journal. The app is bilingual: use the **ID | EN** switch in the top-right corner. Deploy by uploading `index.html` to GitHub Pages (see section 1). The full English guide is in the app's **Guide** tab.
 
 Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Precision Zone System**. Hanya sinyal BUY, supply zone dipakai sebagai target TP. Isinya: filter trend EMA 50/200, zona Supply & Demand, candle konfirmasi, konteks SMC (BOS/CHoCH/liquidity sweep), serta trading plan otomatis (Entry, SL, TP1, TP2, RR) dan kalkulator ukuran posisi.
 
@@ -41,6 +43,7 @@ Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Pr
 - **Rincian skor**, checklist, dan tabel **multi-timeframe** (15m/1H/4H/1D) di halaman detail.
 - **Watchlist** (☆) dan **Jurnal trading** (R, win rate, P&L), plus backup/restore JSON.
 - Tampilan responsif dengan navigasi bawah di HP.
+- **Dua bahasa (Indonesia / English)**: tombol **ID | EN** di kanan atas. Semua teks, termasuk panduan, tiket, dan notifikasi Telegram, ikut berganti. Pilihan bahasa tersimpan otomatis.
 
 ## 2. Cara pakai singkat
 1. Atur modal, metode ukuran posisi, dan pembagian TP di **Pengaturan**.
