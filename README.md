@@ -1,4 +1,4 @@
-# Precision Zone · Spot Long Scanner v2.2 (Web App Gratis)
+# Precision Zone · Spot Long Scanner v2.3 (Web App Gratis)
 
 > 🇬🇧 **English:** a free, single-file Binance Spot **long-only** scanner based on the Precision Zone System (EMA 50/200 + supply & demand zones), with Binance execution tickets (Limit + OCO), watchlist and trading journal. The app is bilingual: use the **ID | EN** switch in the top-right corner. Deploy by uploading `index.html` to GitHub Pages (see section 1). The full English guide is in the app's **Guide** tab.
 
@@ -35,6 +35,12 @@ Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Pr
 > Tanpa deploy pun, `index.html` bisa langsung dibuka di browser laptop.
 
 ---
+
+## Yang baru di v2.3
+- **Tab Backtest:** simulasi historis di browser (Web Worker) dengan mesin yang sama dengan scanner. Isinya status validasi (≥ 150 trade, ≥ +0,1R, positif di kedua paruh), kurva ekuitas, rincian per tipe sinyal, tren BTC, grade, dan pair, plus export CSV.
+- **Banner dinamis:** menampilkan status backtest terakhir untuk timeframe yang dipilih; kartu dan detail diberi label **BT +x R · n**.
+- **Opsi baru (default mati):** filter tren BTC harian, dan penyaring sinyal berbasis backtest (sembunyikan tipe sinyal yang negatif, min. 20 trade).
+- **Aturan default tidak berubah dari v2.2.** Usulan perbaikan (filter BTC, SL ≥ 2,5%, skor baru) gagal di uji holdout pada pair peringkat 71–105: +0,033R vs +0,056R untuk v2.2. Jadi tidak dijadikan default.
 
 ## Yang baru di v2.2 (hasil audit 16 Nov 2026)
 - **Gerbang risiko wajib:** sinyal ditolak bila jarak SL < 1,5% atau bila ada supply zone sebelum TP1. TP1 = Min RR × risiko (default 2R).

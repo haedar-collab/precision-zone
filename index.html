@@ -98,6 +98,8 @@ textarea{min-height:52px;resize:vertical}
 /* ---------- scan controls ---------- */
 .ctrl{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) auto;gap:10px;align-items:end}
 .ctrl .scanbtn{height:40px;padding:0 22px;font-size:14px}
+.ctrl-bt{grid-template-columns:repeat(3,minmax(0,1fr)) auto}
+@media (max-width:600px){.ctrl-bt{grid-template-columns:minmax(0,1fr)!important}}
 @media (max-width:1000px){.ctrl{grid-template-columns:repeat(2,minmax(0,1fr))}.ctrl .scanwrap{grid-column:1/-1}.ctrl .scanbtn{width:100%}}
 
 /* ---------- regime ---------- */
@@ -252,6 +254,8 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 .foot{color:var(--dim);font-size:11px;text-align:center;margin-top:24px}
 .valnote{display:flex;gap:10px;align-items:flex-start;background:var(--amber-bg);border:1px solid rgba(245,165,36,.35);color:#f8d08a;border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:12.5px}
 .valnote a{color:#ffd58a}
+.valnote.ok{background:var(--green-bg);border-color:rgba(22,199,132,.35);color:#8ee6bf}
+.valnote.ok a{color:#b6f3d6}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--s3);border:1px solid var(--line2);color:var(--text);padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:90;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
@@ -260,12 +264,13 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <header class="appbar"><div class="in">
   <div class="logo">
     <svg width="34" height="34" viewBox="0 0 34 34"><rect width="34" height="34" rx="9" fill="#151d2c"/><rect x="6" y="19" width="22" height="6" rx="1.5" fill="#16c784" opacity=".35"/><path d="M7 22 L13 15 L17 18 L27 8" stroke="#6d8cff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27" cy="8" r="2.4" fill="#16c784"/></svg>
-    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.2</small></div>
+    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.3</small></div>
   </div>
   <nav class="nav" id="nav">
     <button data-tab="scan" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Scanner</button>
     <button data-tab="watch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>Watchlist<span class="cnt" id="wlCnt" hidden></span></button>
     <button data-tab="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6M9 18h3"/></svg>Jurnal<span class="cnt" id="jCnt" hidden></span></button>
+    <button data-tab="backtest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></svg>Backtest</button>
     <button data-tab="guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>Panduan</button>
     <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Pengaturan</button>
   </nav>
@@ -275,7 +280,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <main>
 <!-- ================= SCANNER ================= -->
 <section id="tab-scan">
-  <div class="valnote" role="note"><span>⚠</span><span><b>Sinyal belum tervalidasi backtest.</b> Uji historis 500 hari (4H) masih belum menunjukkan edge positif. Gunakan paper trading atau ukuran posisi sangat kecil. <a href="#" data-goguide>Lihat panduan</a></span></div>
+  <div class="valnote" role="note" id="valNote"></div>
   <div class="card">
     <div class="ctrl">
       <label class="f">Cakupan
@@ -373,10 +378,35 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
   <div id="jList"></div>
 </section>
 
+<!-- ================= BACKTEST ================= -->
+<section id="tab-backtest" hidden>
+  <div class="card">
+    <h3>Backtest aturan sinyal <span class="sub">simulasi historis dengan mesin yang sama dengan scanner</span></h3>
+    <div class="ctrl ctrl-bt">
+      <label class="f">Timeframe
+        <select id="btTf"><option value="15m">15m</option><option value="1h">1H</option><option value="4h" selected>4H</option><option value="1d">1D</option></select>
+      </label>
+      <label class="f">Pair
+        <select id="btSrc"><option value="10">Top 10 volume</option><option value="20" selected>Top 20 volume</option><option value="30">Top 30 volume</option><option value="40">Top 40 volume</option><option value="watch">Watchlist saya</option><option value="pairs">Pair pilihan (Scanner)</option></select>
+      </label>
+      <label class="f">Periode (jumlah candle)
+        <select id="btBars"><option value="1000">1.000 candle</option><option value="1500" selected>1.500 candle</option><option value="2000">2.000 candle</option><option value="3000">3.000 candle</option></select>
+      </label>
+      <div class="scanwrap"><button class="btn primary scanbtn" id="btnBt">Jalankan backtest</button></div>
+    </div>
+    <div class="hint" style="margin-top:10px" id="btHint">Memakai parameter sistem dan filter HTF dari Pengaturan. Top 20 × 1.500 candle biasanya selesai dalam 1–3 menit; tab ini harus tetap terbuka.</div>
+    <div class="progress"><div id="btProg"></div></div>
+    <div class="hint" id="btStatus" style="margin-top:6px"></div>
+    <div class="err" id="btErr"></div>
+  </div>
+  <div id="btOut"></div>
+  <div class="card"><h3>Hasil tersimpan per timeframe <span class="sub">dipakai untuk banner, label BT di kartu, dan filter sinyal (opsional)</span></h3><div class="tbl-wrap" id="btSaved"></div></div>
+</section>
+
 <!-- ================= GUIDE ================= -->
 <section id="tab-guide" class="guide" hidden>
 <div data-lang-block="id">
-  <div class="callout blue"><b>Mulai di sini:</b> baca bagian 1–3 untuk memasang dan memakai aplikasi, bagian 4–7 untuk memahami dan mengeksekusi sinyal, lalu bagian 8–10 untuk manajemen risiko, checklist, dan jurnal. Bagian 14 berisi glosarium istilah. Ganti bahasa lewat tombol <b>ID | EN</b> di kanan atas.</div>
+  <div class="callout blue"><b>Mulai di sini:</b> baca bagian 1–3 untuk memasang dan memakai aplikasi, bagian 4–7 untuk memahami dan mengeksekusi sinyal, bagian 8–10 untuk manajemen risiko, checklist, dan jurnal, lalu bagian 11 untuk backtest. Bagian 15 berisi glosarium istilah. Ganti bahasa lewat tombol <b>ID | EN</b> di kanan atas.</div>
 
   <details open><summary>1. Apa yang dilakukan aplikasi ini</summary>
     <p>Aplikasi ini memindai pasar Spot Binance (pair USDT) dengan kerangka <b>Precision Zone System</b>, <b>khusus untuk Spot Long</b> (beli lalu jual lebih tinggi). Tidak ada sinyal short atau sell. Prosesnya:</p>
@@ -388,7 +418,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <li>Menyusun <b>tiket eksekusi Binance Spot</b>: Limit/Market Buy lalu OCO Sell (TP + SL). Harga dan jumlah koin sudah dibulatkan sesuai aturan pair di Binance.</li>
       <li>Menyimpan rencana ke <b>Jurnal</b> untuk melacak hasil (R, win rate, P&amp;L).</li>
     </ol>
-    <div class="callout"><b>Status validasi (v2.2):</b> audit 16 Nov 2026 menguji sinyal pada data historis. Aturan lama rugi rata-rata −0,13R per trade (4H, 500 hari). v2.2 menambahkan gerbang risiko (SL minimal 1,5%, TP1 = Min RR, supply penghalang ditolak) yang di uji memangkas kerugian, tetapi edge positif <b>belum terbukti</b>. Gunakan paper trading atau ukuran posisi sangat kecil.</div>
+    <div class="callout"><b>Status validasi (v2.3):</b> audit 16 Nov 2026 menguji sinyal pada data historis. Aturan lama rugi rata-rata −0,13R per trade (4H, 500 hari). v2.2 menambahkan gerbang risiko (SL minimal 1,5%, TP1 = Min RR, supply penghalang ditolak) yang di uji memangkas kerugian. Di pair holdout (belum pernah dipakai), aturan ini menghasilkan +0,056R per trade (163 trade): hampir impas, jadi edge positif <b>belum terbukti</b>. v2.3 menambahkan tab <b>Backtest</b> supaya Anda bisa memvalidasi sendiri. Gunakan paper trading atau ukuran posisi sangat kecil.</div>
     <div class="callout">Datanya dari API publik Binance, jadi <b>tidak perlu login atau API key, dan aplikasi tidak bisa menaruh order</b>. Semua perhitungan dilakukan di browser Anda. Aturan di sini adalah terjemahan algoritmik dari konsep Precision Zone (EMA 50/200 + S&D). Angka-angkanya bisa disesuaikan dengan cheat sheet Anda di tab Pengaturan.</div>
   </details>
 
@@ -587,7 +617,36 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <div class="callout">Data jurnal dan watchlist tersimpan di browser ini. Gunakan <b>Pengaturan → Backup data</b> secara berkala, lalu <b>Restore</b> di browser atau HP lain.</div>
   </details>
 
-  <details><summary>11. Notifikasi browser & Telegram</summary>
+  <details><summary>11. Backtest di aplikasi</summary>
+    <p>Tab <b>Backtest</b> menyimulasikan aturan sinyal pada data historis Binance dengan mesin yang sama persis dengan scanner, memakai parameter dari Pengaturan. Prosesnya berjalan di browser Anda dan gratis.</p>
+    <h3>Cara pakai</h3>
+    <ol>
+      <li>Pilih timeframe, sumber pair (Top 10–40 volume, Watchlist, atau pair pilihan), dan periode (1.000–3.000 candle).</li>
+      <li>Tekan <b>Jalankan backtest</b>, lalu biarkan tab tetap terbuka. Top 20 × 1.500 candle biasanya selesai dalam 1–3 menit.</li>
+      <li>Baca status di kotak hasil, lalu cek rinciannya per tipe sinyal, per tren BTC, per grade, dan per pair.</li>
+    </ol>
+    <table>
+      <tr><th>Status</th><th>Kriteria</th></tr>
+      <tr><td><span class="badge b-buy">TERVALIDASI</span></td><td>≥ 150 trade, rata-rata ≥ +0,1R, dan positif di kedua paruh periode</td></tr>
+      <tr><td><span class="badge b-setup">MENJANJIKAN</span></td><td>Positif di kedua paruh, tetapi sampel atau rata-ratanya belum memenuhi batas validasi</td></tr>
+      <tr><td><span class="badge b-setup">TIDAK KONSISTEN</span></td><td>Total positif, tetapi salah satu paruh negatif</td></tr>
+      <tr><td><span class="badge b-wait">NEGATIF</span></td><td>Rata-rata R ≤ 0</td></tr>
+    </table>
+    <h3>Asumsi simulasi</h3>
+    <ul>
+      <li>Entry market di open candle berikutnya; limit berlaku 12 candle.</li>
+      <li>50% ditutup di TP1, lalu SL sisanya dipindah ke break-even; sisanya menuju TP2. Maksimal 120 candle.</li>
+      <li>Fee dihitung 2 sisi. Kalau SL dan TP tersentuh di candle yang sama, SL dianggap lebih dulu (konservatif). Slippage tidak dimodelkan.</li>
+    </ul>
+    <h3>Hubungan dengan sinyal</h3>
+    <ul>
+      <li>Hasil terakhir per timeframe tersimpan dan ditampilkan di <b>banner</b> Scanner dan sebagai label <b>BT +x R · n</b> di kartu.</li>
+      <li>Opsi <b>Pakai hasil backtest untuk menyaring sinyal</b> (Pengaturan, default mati) menyembunyikan tipe sinyal (Siap eksekusi atau Siapkan limit) yang rata-ratanya negatif dengan minimal 20 trade di timeframe yang sama.</li>
+    </ul>
+    <div class="callout"><b>Hati-hati overfitting.</b> Jangan mengubah parameter berulang kali sampai backtest terlihat bagus. Setelah menemukan pengaturan yang menjanjikan, uji ulang di pair lain (Watchlist atau pair pilihan) atau periode lain. Di audit, perbaikan yang tampak bagus di data pengembangan (+0,28R) tidak lebih baik dari aturan lama di pair holdout.</div>
+  </details>
+
+  <details><summary>12. Notifikasi browser & Telegram</summary>
     <ul>
       <li><b>Auto-scan</b> menjalankan scan ulang tiap N menit <b>selama tab aplikasi terbuka</b>. Browser HP biasanya menghentikan tab di background.</li>
       <li><b>Notifikasi browser:</b> aktifkan di tab Pengaturan, lalu izinkan saat diminta. Notifikasi muncul untuk sinyal <i>Siap eksekusi</i> yang baru, berikut tiket ordernya (di Telegram).</li>
@@ -603,7 +662,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <div class="callout">Token bot disimpan hanya di browser Anda (localStorage) dan tidak ikut ter-upload ke GitHub. Jangan menulis token di dalam file <code>index.html</code>.</div>
   </details>
 
-  <details><summary>12. Penjelasan parameter (tab Pengaturan)</summary>
+  <details><summary>13. Penjelasan parameter (tab Pengaturan)</summary>
     <table>
       <tr><th>Parameter</th><th>Default</th><th>Efek</th></tr>
       <tr><td>Metode ukuran posisi</td><td>Risiko %</td><td>Risiko % = jumlah koin dihitung dari jarak ke SL. % modal = nilai posisi tetap.</td></tr>
@@ -617,25 +676,27 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <tr><td>Jarak setup (×ATR)</td><td>1,5</td><td>Seberapa dekat harga ke zona agar dianggap SETUP</td></tr>
       <tr><td>Buffer SL (×ATR)</td><td>0,2</td><td>Jarak SL di luar distal line untuk menghindari stop hunt</td></tr>
       <tr><td>Min RR</td><td>2</td><td>Target TP1 (Entry + Min RR × risiko) sekaligus syarat wajib sinyal</td></tr>
+      <tr><td>Filter tren BTC harian</td><td>Mati</td><td>Menolak sinyal saat BTC 1D downtrend. Membantu di 2 kelompok pair uji, tetapi tidak di holdout, jadi opsional.</td></tr>
+      <tr><td>Pakai hasil backtest untuk menyaring sinyal</td><td>Mati</td><td>Menyembunyikan tipe sinyal yang negatif di backtest TF yang sama (min. 20 trade)</td></tr>
       <tr><td>Kecualikan token saham &amp; emas</td><td>Ya</td><td>Binance Spot juga memperdagangkan token saham (NVDAB, TSLAB, dll.) dan emas (XAUT, PAXG). Filter ini memakai daftar nama, jadi bisa saja ada yang terlewat. Tambahkan sendiri di kolom "Kecualikan pair". Di mode Pair Pilihan filter ini tidak berlaku.</td></tr>
       <tr><td>Kecualikan pair tertentu</td><td>—</td><td>Pair yang tidak ingin ikut di-scan pada mode Semua Crypto</td></tr>
     </table>
   </details>
 
-  <details><summary>13. Troubleshooting</summary>
+  <details><summary>14. Troubleshooting</summary>
     <table>
       <tr><th>Masalah</th><th>Solusi</th></tr>
       <tr><td>"Gagal memuat data"</td><td>Cek koneksi. Kalau jaringan atau ISP memblokir domain Binance, coba jaringan lain atau DNS 1.1.1.1. Aplikasi otomatis mencoba 2 endpoint.</td></tr>
       <tr><td>"Rate limit" (429)</td><td>Terlalu banyak request. Tunggu 1 menit, kurangi Top pair, atau perpanjang interval auto-scan.</td></tr>
       <tr><td>Pair tidak muncul di Pair Pilihan</td><td>Pastikan pair ada di Spot Binance dengan quote USDT. Pair dengan data &lt; 220 candle (koin baru) dilewati karena EMA200 belum valid.</td></tr>
       <tr><td>Notifikasi tidak muncul di HP</td><td>Gunakan Telegram. Notifikasi browser di HP terbatas, terutama di iOS (harus dipasang ke Home Screen).</td></tr>
-      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. GitHub Pages menyimpan cache sekitar 10 menit, jadi update baru bisa terlambat muncul. Pastikan header bertuliskan <b>Spot Long Scanner · v2.2</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=22</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
+      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. GitHub Pages menyimpan cache sekitar 10 menit, jadi update baru bisa terlambat muncul. Pastikan header bertuliskan <b>Spot Long Scanner · v2.3</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=23</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
       <tr><td>Tiket menampilkan "aturan pair belum dimuat"</td><td>Koneksi ke exchangeInfo gagal. Tutup lalu buka lagi detail pair-nya. Tanpa aturan pair, angka tidak dibulatkan dan perlu disesuaikan manual di Binance.</td></tr>
       <tr><td>Pengaturan hilang</td><td>Pengaturan disimpan per browser. Mode incognito atau menghapus data browser akan meresetnya.</td></tr>
     </table>
   </details>
 
-  <details><summary>14. Glosarium</summary>
+  <details><summary>15. Glosarium</summary>
     <table>
       <tr><td><b>ATR</b></td><td>Average True Range: rata-rata jarak gerak harga per candle. Dipakai untuk mengukur jarak secara relatif terhadap volatilitas.</td></tr>
       <tr><td><b>Demand zone</b></td><td>Area harga tempat pembeli besar sebelumnya masuk (base sebelum harga naik kuat). Area beli.</td></tr>
@@ -652,12 +713,12 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     </table>
   </details>
 
-  <details><summary>15. Disclaimer</summary>
+  <details><summary>16. Disclaimer</summary>
     <p>Aplikasi ini adalah alat bantu analisis, <b>bukan nasihat keuangan</b>. Sinyal dihasilkan oleh aturan otomatis yang bisa salah, terutama saat volatilitas ekstrem atau likuiditas rendah. Lakukan backtest atau paper trading dulu, gunakan manajemen risiko, dan tanggung sendiri setiap keputusan trading.</p>
   </details>
 </div>
 <div data-lang-block="en" hidden>
-  <div class="callout blue"><b>Start here:</b> read sections 1–3 to set up and use the app, sections 4–7 to understand and execute signals, and sections 8–10 for risk management, the checklist and the journal. Section 14 is a glossary. Switch languages with the <b>ID | EN</b> button at the top right.</div>
+  <div class="callout blue"><b>Start here:</b> read sections 1–3 to set up and use the app, sections 4–7 to understand and execute signals, sections 8–10 for risk management, the checklist and the journal, and section 11 for backtesting. Section 15 is a glossary. Switch languages with the <b>ID | EN</b> button at the top right.</div>
 
   <details open><summary>1. What this app does</summary>
     <p>This app scans the Binance Spot market (USDT pairs) using the <b>Precision Zone System</b> framework, <b>for Spot Long trades only</b> (buy, then sell higher). It never gives short or sell signals. The process:</p>
@@ -669,7 +730,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <li>Build a <b>Binance Spot execution ticket</b>: Limit/Market Buy followed by an OCO Sell (TP + SL). Prices and quantities are already rounded to the pair's Binance rules.</li>
       <li>Save the plan to the <b>Journal</b> to track results (R, win rate, P&amp;L).</li>
     </ol>
-    <div class="callout"><b>Validation status (v2.2):</b> the 16 Nov 2026 audit tested the signals on historical data. The old rules lost an average of −0.13R per trade (4H, 500 days). v2.2 adds risk gates (minimum 1.5% SL, TP1 = Min RR, signals blocked by supply are rejected) that reduced losses in testing, but a positive edge is <b>not proven yet</b>. Paper trade, or use very small position sizes.</div>
+    <div class="callout"><b>Validation status (v2.3):</b> the 16 Nov 2026 audit tested the signals on historical data. The old rules lost an average of −0.13R per trade (4H, 500 days). v2.2 adds risk gates (minimum 1.5% SL, TP1 = Min RR, signals blocked by supply are rejected) that reduced losses in testing. On holdout pairs (never used before) these rules made +0.056R per trade (163 trades): close to break-even, so a positive edge is <b>not proven yet</b>. v2.3 adds a <b>Backtest</b> tab so you can validate it yourself. Paper trade, or use very small position sizes.</div>
     <div class="callout">Data comes from Binance's public API, so <b>no login or API key is needed, and the app cannot place orders</b>. All calculations run in your browser. The rules here are an algorithmic translation of the Precision Zone concept (EMA 50/200 + S&D). You can tune the numbers to match your cheat sheet in the Settings tab.</div>
   </details>
 
@@ -868,7 +929,36 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <div class="callout">Journal and watchlist data are stored in this browser. Use <b>Settings → Backup data</b> regularly, then <b>Restore</b> on another browser or phone.</div>
   </details>
 
-  <details><summary>11. Browser & Telegram notifications</summary>
+  <details><summary>11. In-app backtest</summary>
+    <p>The <b>Backtest</b> tab simulates the signal rules on Binance historical data with exactly the same engine as the scanner, using the parameters from Settings. It runs in your browser for free.</p>
+    <h3>How to use it</h3>
+    <ol>
+      <li>Choose a timeframe, a pair source (Top 10–40 by volume, Watchlist or selected pairs) and a period (1,000–3,000 candles).</li>
+      <li>Press <b>Run backtest</b> and keep the tab open. Top 20 × 1,500 candles usually finishes in 1–3 minutes.</li>
+      <li>Read the status in the result box, then check the breakdowns by signal type, BTC trend, grade and pair.</li>
+    </ol>
+    <table>
+      <tr><th>Status</th><th>Criteria</th></tr>
+      <tr><td><span class="badge b-buy">VALIDATED</span></td><td>≥ 150 trades, average ≥ +0.1R, and positive in both halves of the period</td></tr>
+      <tr><td><span class="badge b-setup">PROMISING</span></td><td>Positive in both halves, but the sample or average does not meet the validation bar yet</td></tr>
+      <tr><td><span class="badge b-setup">INCONSISTENT</span></td><td>Positive overall, but one half is negative</td></tr>
+      <tr><td><span class="badge b-wait">NEGATIVE</span></td><td>Average R ≤ 0</td></tr>
+    </table>
+    <h3>Simulation assumptions</h3>
+    <ul>
+      <li>Market entries at the next candle open; limits valid for 12 candles.</li>
+      <li>50% closed at TP1, then the remaining SL moves to break-even; the rest targets TP2. Maximum 120 candles.</li>
+      <li>Fees on both sides. When SL and TP are hit in the same candle, SL is assumed first (conservative). Slippage is not modelled.</li>
+    </ul>
+    <h3>How it connects to signals</h3>
+    <ul>
+      <li>The latest result per timeframe is saved and shown in the Scanner <b>banner</b> and as a <b>BT +x R · n</b> label on cards.</li>
+      <li>The <b>Use backtest results to filter signals</b> option (Settings, off by default) hides signal types (Ready to execute or Set limit order) whose average is negative with at least 20 trades on the same timeframe.</li>
+    </ul>
+    <div class="callout"><b>Beware of overfitting.</b> Don't keep changing parameters until the backtest looks good. Once you find promising settings, retest them on other pairs (Watchlist or selected pairs) or another period. In the audit, improvements that looked good on the development data (+0.28R) did no better than the old rules on holdout pairs.</div>
+  </details>
+
+  <details><summary>12. Browser & Telegram notifications</summary>
     <ul>
       <li><b>Auto-scan</b> rescans every N minutes <b>while the app tab is open</b>. Mobile browsers usually suspend background tabs.</li>
       <li><b>Browser notifications:</b> enable them in the Settings tab and allow them when prompted. They fire for new <i>Ready to execute</i> signals, including the order ticket (on Telegram).</li>
@@ -884,7 +974,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <div class="callout">The bot token is stored only in your browser (localStorage) and is never uploaded to GitHub. Do not write the token inside <code>index.html</code>.</div>
   </details>
 
-  <details><summary>12. Parameters explained (Settings tab)</summary>
+  <details><summary>13. Parameters explained (Settings tab)</summary>
     <table>
       <tr><th>Parameter</th><th>Default</th><th>Effect</th></tr>
       <tr><td>Position sizing method</td><td>Risk %</td><td>Risk % = quantity is calculated from the distance to the SL. % of capital = fixed position size.</td></tr>
@@ -898,25 +988,27 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <tr><td>Setup distance (×ATR)</td><td>1.5</td><td>How close price must be to a zone to count as SET LIMIT ORDER</td></tr>
       <tr><td>SL buffer (×ATR)</td><td>0.2</td><td>Extra room for the SL beyond the distal line to avoid stop hunts</td></tr>
       <tr><td>Min RR</td><td>2</td><td>The TP1 target (Entry + Min RR × risk) and a hard requirement for signals</td></tr>
+      <tr><td>Daily BTC trend filter</td><td>Off</td><td>Rejects signals while BTC 1D is in a downtrend. It helped on 2 test pair groups but not on the holdout, so it is optional.</td></tr>
+      <tr><td>Use backtest results to filter signals</td><td>Off</td><td>Hides signal types that are negative in the same-TF backtest (min. 20 trades)</td></tr>
       <tr><td>Exclude stock tokens &amp; gold</td><td>Yes</td><td>Binance Spot also lists stock tokens (NVDAB, TSLAB, etc.) and gold (XAUT, PAXG). This filter uses a name list, so some may slip through. Add them yourself under "Exclude specific pairs". The filter does not apply in Selected pairs mode.</td></tr>
       <tr><td>Exclude specific pairs</td><td>—</td><td>Pairs you don't want scanned in All crypto mode</td></tr>
     </table>
   </details>
 
-  <details><summary>13. Troubleshooting</summary>
+  <details><summary>14. Troubleshooting</summary>
     <table>
       <tr><th>Problem</th><th>Solution</th></tr>
       <tr><td>"Failed to load data"</td><td>Check your connection. If your network or ISP blocks Binance domains, try another network or DNS 1.1.1.1. The app automatically tries 2 endpoints.</td></tr>
       <tr><td>"Rate limit" (429)</td><td>Too many requests. Wait 1 minute, reduce the number of pairs, or lengthen the auto-scan interval.</td></tr>
       <tr><td>A pair doesn't show up in Selected pairs</td><td>Make sure it is listed on Binance Spot with a USDT quote. Pairs with fewer than 220 candles (new coins) are skipped because EMA200 isn't valid yet.</td></tr>
       <tr><td>Notifications don't appear on my phone</td><td>Use Telegram. Browser notifications on phones are limited, especially on iOS (the app must be added to the Home Screen).</td></tr>
-      <tr><td>SELL signals or an old layout still appear</td><td>That's an old cached version. GitHub Pages caches pages for about 10 minutes, so a new update can take a while to appear. Make sure the header reads <b>Spot Long Scanner · v2.2</b>. If not: re-upload <code>index.html</code> to GitHub, wait 1–3 minutes, then open the URL with <code>?v=22</code> appended, or hard refresh (laptop: Ctrl+Shift+R; phone: clear site data or open it in an incognito tab).</td></tr>
+      <tr><td>SELL signals or an old layout still appear</td><td>That's an old cached version. GitHub Pages caches pages for about 10 minutes, so a new update can take a while to appear. Make sure the header reads <b>Spot Long Scanner · v2.3</b>. If not: re-upload <code>index.html</code> to GitHub, wait 1–3 minutes, then open the URL with <code>?v=23</code> appended, or hard refresh (laptop: Ctrl+Shift+R; phone: clear site data or open it in an incognito tab).</td></tr>
       <tr><td>The ticket says "pair rules not loaded"</td><td>The exchangeInfo request failed. Close and reopen the pair's details. Without pair rules, numbers aren't rounded and may need manual adjustment in Binance.</td></tr>
       <tr><td>Settings disappeared</td><td>Settings are stored per browser. Incognito mode or clearing browser data resets them.</td></tr>
     </table>
   </details>
 
-  <details><summary>14. Glossary</summary>
+  <details><summary>15. Glossary</summary>
     <table>
       <tr><td><b>ATR</b></td><td>Average True Range: the average distance price moves per candle. Used to measure distances relative to volatility.</td></tr>
       <tr><td><b>Demand zone</b></td><td>A price area where large buyers previously stepped in (the base before a strong rally). A buy area.</td></tr>
@@ -933,7 +1025,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     </table>
   </details>
 
-  <details><summary>15. Disclaimer</summary>
+  <details><summary>16. Disclaimer</summary>
     <p>This app is an analysis tool, <b>not financial advice</b>. Signals come from automated rules that can be wrong, especially during extreme volatility or low liquidity. Backtest or paper trade first, use risk management, and take responsibility for every trading decision you make.</p>
   </details>
 </div>
@@ -969,7 +1061,9 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <label class="f">Jarak SL minimal (%)<input type="number" step="0.1" min="0" id="s_minRiskPct"></label>
       <label class="f">Jarak SL minimal (×ATR, 0 = mati)<input type="number" step="0.1" min="0" id="s_minRiskATR"></label>
     </div>
-    <div style="margin-top:12px"><label class="switch"><input type="checkbox" id="s_exclNonCrypto"> Kecualikan token saham (NVDAB, TSLAB, …) &amp; emas (XAUT, PAXG)</label></div>
+    <div style="margin-top:12px"><label class="switch"><input type="checkbox" id="s_btcFilter"> Filter tren BTC harian: jangan beli saat BTC 1D downtrend</label></div>
+    <div style="margin-top:8px"><label class="switch"><input type="checkbox" id="s_btPolicy"> Pakai hasil backtest untuk menyaring sinyal (sembunyikan tipe sinyal yang negatif di backtest TF yang sama, min. 20 trade)</label></div>
+    <div style="margin-top:8px"><label class="switch"><input type="checkbox" id="s_exclNonCrypto"> Kecualikan token saham (NVDAB, TSLAB, …) &amp; emas (XAUT, PAXG)</label></div>
     <label class="f" style="margin-top:12px">Kecualikan pair tertentu (pisahkan koma)<input id="s_exclude" placeholder="contoh: TRX, FDUSD"></label>
   </div>
   <div class="card">
@@ -1067,10 +1161,10 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <script>
 'use strict';
 /* =========================================================
-   PRECISION ZONE · SPOT LONG SCANNER v2.2
+   PRECISION ZONE · SPOT LONG SCANNER v2.3
    Konfigurasi & penyimpanan
    ========================================================= */
-const APP_VERSION = '2.2';
+const APP_VERSION = '2.3';
 const API_BASES = ['https://data-api.binance.vision', 'https://api.binance.com'];
 const HTF_MAP = { '15m': '1h', '1h': '4h', '4h': '1d', '1d': '1w' };
 const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR','EURI','AEUR','GBP','USDE','USD1','XUSD','BFUSD','RLUSD','PYUSD','UST','USTC','PAX','SUSD','FRAX','LUSD','GUSD','TRY','BRL','ZAR','IDRT','BIDR','U','USDEB','RWUSD','USDS','USDQ','EURC']);
@@ -1078,11 +1172,11 @@ const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR',
 const CRYPTO_B = new Set(['ARB','BB','BNB','CKB','DGB','PHB','SHIB','TRB','VIB','MOB','AMB','YB']);
 const NONCRYPTO = new Set(['XAUT','PAXG']);
 const isNonCrypto = base => NONCRYPTO.has(base) || (base.length >= 3 && base.endsWith('B') && !CRYPTO_B.has(base));
-const PARAM_DEFAULTS = { impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2, minRiskPct: 1.5, minRiskATR: 0 };
+const PARAM_DEFAULTS = { impulseMult: 1.2, maxBase: 3, proxATR: 1.5, slBuf: 0.2, minRR: 2, minRiskPct: 1.5, minRiskATR: 0, btcFilter: false };
 const DEFAULTS = Object.assign({
   scope: 'all', pairs: 'BTC, ETH, SOL, BNB, XRP, DOGE, ADA, LINK, AVAX, SUI',
   topN: '80', minVol: '5000000', tf: '4h', htf: true, auto: '0',
-  capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, tpSplit: '50', fee: 0.1, stopOffR: 10,
+  capital: 1000, riskPct: 1, sizeMode: 'risk', posPct: 25, tpSplit: '50', fee: 0.1, stopOffR: 10, btPolicy: false,
   notify: false, tgToken: '', tgChat: '', exclNonCrypto: true, exclude: '', view: 'cards',
   lang: 'id'
 }, PARAM_DEFAULTS);
@@ -1102,7 +1196,16 @@ const L = (id, en) => isEN() ? en : id;                 // teks dinamis bilingua
 const LOC = () => isEN() ? 'en-US' : 'id-ID';
 // Kamus teks statis HTML + teks dari mesin analisis (ID → EN)
 const DICT = {
-  'Spot Long Scanner · v2.2': 'Spot Long Scanner · v2.2',
+  'Spot Long Scanner · v2.3': 'Spot Long Scanner · v2.3',
+  'Backtest aturan sinyal': 'Signal rules backtest', 'simulasi historis dengan mesin yang sama dengan scanner': 'historical simulation using the same engine as the scanner',
+  'Top 10 volume': 'Top 10 by volume', 'Top 20 volume': 'Top 20 by volume', 'Top 30 volume': 'Top 30 by volume', 'Top 40 volume': 'Top 40 by volume',
+  'Pair pilihan (Scanner)': 'Selected pairs (Scanner)', 'Periode (jumlah candle)': 'Period (number of candles)',
+  '1.000 candle': '1,000 candles', '1.500 candle': '1,500 candles', '2.000 candle': '2,000 candles', '3.000 candle': '3,000 candles',
+  'Memakai parameter sistem dan filter HTF dari Pengaturan. Top 20 × 1.500 candle biasanya selesai dalam 1–3 menit; tab ini harus tetap terbuka.': 'Uses the system parameters and HTF filter from Settings. Top 20 × 1,500 candles usually finishes in 1–3 minutes; keep this tab open.',
+  'Hasil tersimpan per timeframe': 'Saved results per timeframe', 'dipakai untuk banner, label BT di kartu, dan filter sinyal (opsional)': 'used for the banner, the BT label on cards, and the optional signal filter',
+  'Filter tren BTC harian: jangan beli saat BTC 1D downtrend': 'Daily BTC trend filter: do not buy while BTC 1D is in a downtrend',
+  'Pakai hasil backtest untuk menyaring sinyal (sembunyikan tipe sinyal yang negatif di backtest TF yang sama, min. 20 trade)': 'Use backtest results to filter signals (hide signal types that are negative in the same-TF backtest, min. 20 trades)',
+  'BTC harian DOWN, hindari beli': 'Daily BTC DOWN, avoid buying',
   'Sinyal belum tervalidasi backtest.': 'Signals not validated by backtest yet.',
   'Uji historis 500 hari (4H) masih belum menunjukkan edge positif. Gunakan paper trading atau ukuran posisi sangat kecil.': 'A 500-day historical test (4H) has not shown a positive edge yet. Paper trade, or use very small position sizes.',
   'Lihat panduan': 'See the guide',
@@ -1163,7 +1266,7 @@ function tr(s) {
   return k;
 }
 // Elemen yang isinya dirender ulang oleh JS (tidak diterjemahkan oleh walker)
-const DYN_IDS = new Set(['viewCards', 'tbody', 'kpis', 'regimeBox', 'wlCards', 'wlChips', 'jList', 'jStats', 'ticket', 'dVerdict', 'dScore', 'dCheck', 'dMtf', 'dCtx', 'dZones', 'dSub', 'dGrade', 'dTitle', 'status', 'scanErr', 'toast', 'tkFilters', 'dScoreTxt', 'wlInfo', 'saveMsg', 'tgMsg', 'htfLbl', 'wlCnt', 'jCnt']);
+const DYN_IDS = new Set(['valNote', 'btOut', 'btSaved', 'btStatus', 'btErr', 'btnBt', 'viewCards', 'tbody', 'kpis', 'regimeBox', 'wlCards', 'wlChips', 'jList', 'jStats', 'ticket', 'dVerdict', 'dScore', 'dCheck', 'dMtf', 'dCtx', 'dZones', 'dSub', 'dGrade', 'dTitle', 'status', 'scanErr', 'toast', 'tkFilters', 'dScoreTxt', 'wlInfo', 'saveMsg', 'tgMsg', 'htfLbl', 'wlCnt', 'jCnt']);
 function applyStaticLang() {
   document.documentElement.lang = S.lang;
   document.title = L('Precision Zone · Spot Long Scanner', 'Precision Zone · Spot Long Scanner');
@@ -1382,7 +1485,9 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
     const dist = inside ? 0 : (price - z.proximal) / A;
     const touchedNow = z.lastTouch >= n - 3;
     const priorTests = touchedNow ? z.tests - 1 : z.tests;
-    const conf = cp1.bull || cp2.bull;
+    // v2.3 (opsional): candle konfirmasi wajib menyentuh zona (low ≤ proximal + 0,25 ATR)
+    const touchOK = i => c[i].l <= z.proximal + 0.25 * A;
+    const conf = P.confTouch ? ((cp1.bull && touchOK(n - 1)) ? cp1.bull : (cp2.bull && touchOK(n - 2)) ? cp2.bull : null) : (cp1.bull || cp2.bull);
     const holds = c[n - 1].c > z.distal;
     const trendOk = trend === 'UP';
     const htfOk = !P.htf || htfTrend === 'N/A' || htfTrend !== 'DOWN';
@@ -1417,6 +1522,10 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
     // Gerbang risiko (wajib untuk sinyal aktif)
     const minRiskOk = risk > 0 && riskPct >= P.minRiskPct && risk >= P.minRiskATR * A;
     const rrOk = !blocked && rr >= P.minRR - 1e-9;
+    // v2.3: filter tren BTC harian (BTC DOWN → hindari beli). P.btcTrend diisi dari luar (scanner / backtest).
+    const btcT = P.btcTrend || 'N/A';
+    const btcOk = !P.btcFilter || btcT !== 'DOWN';
+    if (state && !btcOk) { reasons.unshift('BTC harian DOWN, hindari beli'); state = ''; }
     if (state) {
       if (!minRiskOk) { reasons.unshift(`SL terlalu ketat (${riskPct.toFixed(2)}% < ${P.minRiskPct}%)`); state = ''; }
       else if (!rrOk) { reasons.unshift(`Supply menghalangi, RR ${rr.toFixed(2)} < ${P.minRR}`); state = ''; }
@@ -1448,7 +1557,7 @@ function analyze(raw, htfRaw, P, now = Date.now()) {
     ];
     const supAbove = zones.filter(o => o.type === 'supply' && o.proximal > price).sort((a, b) => a.proximal - b.proximal)[0];
     const nearSupply = supAbove ? (supAbove.proximal - price) / A : Infinity;
-    return { side: 'BUY', state, market, reasons, nearSupply, zone: z, dist, inside, touchedNow, priorTests, conf, entry, sl, tp1, tp2, tp1Src, rr, risk, riskPct, minRiskOk, rrOk, blocked, score, sc, checks };
+    return { side: 'BUY', state, market, btcT, btcOk, reasons, nearSupply, zone: z, dist, inside, touchedNow, priorTests, conf, entry, sl, tp1, tp2, tp1Src, rr, risk, riskPct, minRiskOk, rrOk, blocked, score, sc, checks };
   };
 
   const best = evalLong();
@@ -1524,6 +1633,17 @@ async function getFilters(sym) {
   FILTER_CACHE[sym] = out;
   return out;
 }
+// v2.3: tren BTC harian (cache 15 menit) untuk filter & skor
+let BTC_D = { trend: 'N/A', at: 0 };
+async function btcDailyTrend() {
+  if (Date.now() - BTC_D.at < 15 * 60000) return BTC_D.trend;
+  try {
+    const k = await klines('BTCUSDT', '1d', 300), now = Date.now();
+    const cl = k.filter(x => x.ct < now).map(x => x.c), e50 = ema(cl, 50), e200 = ema(cl, 200);
+    BTC_D = { trend: trendOf(cl[cl.length - 1], e50[cl.length - 1], e200[cl.length - 1]), at: now };
+  } catch (e) {}
+  return BTC_D.trend;
+}
 async function tickerPrices(syms) {
   if (!syms.length) return {};
   const d = await api('/api/v3/ticker/price?symbols=' + encodeURIComponent(JSON.stringify(syms)));
@@ -1574,7 +1694,8 @@ function category(r) {
   if (r.state === 'CONFIRMED') return 'exec';
   if (r.state === 'SETUP') return 'limit';
   const b = r.best;
-  if (b && (!b.minRiskOk || !b.rrOk)) return 'other';        // v2.2: ditolak gerbang risiko → bukan kandidat
+  if (r._policyOrig) return 'other';                         // disembunyikan kebijakan backtest
+  if (b && (!b.minRiskOk || !b.rrOk || !b.btcOk)) return 'other';        // v2.2: ditolak gerbang risiko → bukan kandidat
   if (b && b.priorTests <= 1 && r.score >= 45 && (r.trend === 'UP' || (r.trend === 'SIDEWAYS' && r.htfTrend === 'UP')) && b.dist <= 4) return 'watch';
   return 'other';
 }
@@ -1591,7 +1712,11 @@ function catLabel(k) {
   })[k];
 }
 function statusBadge(r) { const k = category(r); return `<span class="badge ${CAT[k].cls}">${catLabel(k)}</span>`; }
-const reasonText = r => tr(r.reason) || L('Belum memenuhi syarat.', 'Conditions not met yet.');
+function reasonText(r) {
+  const m = /^BT:(\w+):(-?[\d.]+):(\d+)$/.exec(r.reason || '');
+  if (m) return L(`Tipe sinyal ${catLabel(m[1] === 'CONFIRMED' ? 'exec' : 'limit')} negatif di backtest ${r.tf.toUpperCase()} (${m[2]}R, ${m[3]} trade)`, `${catLabel(m[1] === 'CONFIRMED' ? 'exec' : 'limit')} signals are negative in the ${r.tf.toUpperCase()} backtest (${m[2]}R, ${m[3]} trades)`);
+  return tr(r.reason) || L('Belum memenuhi syarat.', 'Conditions not met yet.');
+}
 function oneLiner(r) {
   const b = r.best;
   if (!b) return L('Belum ada demand zone valid di bawah harga.', 'No valid demand zone below price yet.');
@@ -1657,9 +1782,10 @@ async function runScan(scope) {
   btn.onclick = () => { abort = true; };
   $('#scanErr').textContent = '';
   const prog = $('#prog'); prog.style.width = '0%';
-  const P = Object.assign({}, S, { tf: S.tf });
+  let P = Object.assign({}, S, { tf: S.tf });
   try {
     setStatus(L('Memuat daftar pair…', 'Loading pair list…'));
+    P.btcTrend = await btcDailyTrend();
     const { list, map, missing } = await universe(scope);
     if (missing.length) $('#scanErr').textContent = L('Tidak ditemukan / tidak aktif di Spot Binance: ', 'Not found / not active on Binance Spot: ') + missing.map(base).join(', ');
     if (!list.length) throw new Error(L('Tidak ada pair untuk di-scan.', 'No pairs to scan.'));
@@ -1675,7 +1801,7 @@ async function runScan(scope) {
           if (a) {
             const t = map.get(sym);
             a.sym = sym; a.tf = S.tf; a.ch24 = t ? +t.priceChangePercent : 0; a.vol = t ? +t.quoteVolume : 0;
-            out.push(a);
+            out.push(applyPolicy(a));
           }
         } catch (e) { errs++; if (e.rate) { abort = true; $('#scanErr').textContent = e.message; } }
         done++;
@@ -1790,6 +1916,7 @@ function cardHTML(r) {
       <span>HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b></span>
       ${b ? `<span>Demand <b>${zst(b.priorTests)}</b></span>` : ''}
       <span>${L('Skor', 'Score')} <b>${r.score}</b></span>
+      ${edgeChip(r)}
     </div>
     <div class="oc-act">
       <button class="btn ${cat === 'exec' ? 'green' : cat === 'limit' ? 'primary' : ''}" data-open>${cat === 'exec' || cat === 'limit' ? L('Lihat & eksekusi →', 'View & execute →') : L('Lihat detail', 'View details')}</button>
@@ -1922,10 +2049,10 @@ async function openDetail(sym, tf) {
     try {
       const raw = await klines(sym, tf, 500);
       const hraw = S.htf ? await klines(sym, HTF_MAP[tf], 300) : null;
-      r = analyze(raw, hraw, Object.assign({}, S, { tf }));
+      r = analyze(raw, hraw, Object.assign({}, S, { tf, btcTrend: await btcDailyTrend() }));
       if (!r) { $('#dSub').textContent = L('Data kurang dari 220 candle untuk timeframe ini.', 'Fewer than 220 candles available on this timeframe.'); return; }
       const prev = findResult(sym, S.tf) || RESULTS.find(x => x.sym === sym) || WRESULTS.find(x => x.sym === sym);
-      r.sym = sym; r.tf = tf; r.ch24 = prev ? prev.ch24 : 0;
+      r.sym = sym; r.tf = tf; r.ch24 = prev ? prev.ch24 : 0; applyPolicy(r);
     } catch (e) { $('#dSub').textContent = e.message; return; }
   }
   DET = r; TK = null; renderDetail();
@@ -1946,7 +2073,8 @@ function checksHTML(r) {
     [L(`Impulse kuat (${b.zone.impulse.toFixed(2)}×ATR)`, `Strong impulse (${b.zone.impulse.toFixed(2)}×ATR)`), b.zone.impulse >= 1.5],
     [b.conf ? L(`Konfirmasi: ${b.conf}`, `Confirmation: ${b.conf}`) : L('Candle konfirmasi bullish di zona', 'Bullish confirmation candle at the zone'), !!(b.conf && b.touchedNow)],
     [ev ? L(`Struktur: ${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'}`, `Structure: ${ev.type} ${ev.dir === 'bull' ? '↑' : '↓'}`) : L('Struktur BOS/CHoCH ↑', 'BOS/CHoCH structure ↑'), bullEv],
-    [L('Liquidity sweep swing low', 'Swing-low liquidity sweep'), r.st.sweep.bull],
+    [L(`Tren BTC harian: ${b.btcT}${S.btcFilter ? '' : ' (filter mati)'}`, `Daily BTC trend: ${b.btcT}${S.btcFilter ? '' : ' (filter off)'}`), b.btcT === 'N/A' ? null : b.btcT !== 'DOWN'],
+    [L('Liquidity sweep swing low (info: di backtest tidak konsisten)', 'Swing-low liquidity sweep (info: inconsistent in backtests)'), null],
     [L(`Jarak SL ≥ ${S.minRiskPct}% (${b.riskPct.toFixed(2)}%)`, `SL distance ≥ ${S.minRiskPct}% (${b.riskPct.toFixed(2)}%)`), b.minRiskOk],
     [b.blocked ? L(`Supply menghalangi sebelum TP1 (RR ${b.rr.toFixed(2)})`, `Supply blocks the way before TP1 (RR ${b.rr.toFixed(2)})`) : `RR TP1 ≥ ${S.minRR} (${b.rr.toFixed(2)})`, b.rrOk],
     [L(`Ruang naik ke supply terdekat ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(tidak ada supply di atas)'}`, `Room to the nearest supply ${isFinite(b.nearSupply) ? b.nearSupply.toFixed(1) + ' ATR' : '(no supply above)'}`), b.nearSupply >= 1]
@@ -1956,7 +2084,7 @@ function checksHTML(r) {
 function renderDetail() {
   const r = DET, b = r.best;
   const g = r.grade === '–' ? '-' : r.grade;
-  $('#dGrade').innerHTML = `${statusBadge(r)} <span class="grade g${g}">${r.grade}</span>`;
+  $('#dGrade').innerHTML = `${statusBadge(r)} <span class="grade g${g}">${r.grade}</span> ${edgeChip(r)}`;
   $('#dSub').innerHTML = `<span class="num">${fp(r.price)}</span> <span class="${r.ch24 >= 0 ? 'pos' : 'neg'}">${pct(r.ch24)}</span> · ${r.tf.toUpperCase()} · Trend <b class="${trendCls(r.trend)}">${r.trend}</b> · HTF <b class="${trendCls(r.htfTrend)}">${r.htfTrend}</b> · ${L('Skor', 'Score')} <b>${r.score}</b>/100`;
   $('#dVerdict').innerHTML = verdictHTML(r);
   drawChart();
@@ -1964,7 +2092,7 @@ function renderDetail() {
     const parts = [[L('Trend TF utama', 'Main TF trend'), b.sc.trend, 20], [L('Trend HTF', 'HTF trend'), b.sc.htf, 15], [L('Kesegaran zona', 'Zone freshness'), b.sc.fresh, 15], [L('Kekuatan zona', 'Zone strength'), b.sc.strength, 15], [L('Kedekatan ke zona', 'Proximity to zone'), b.sc.prox, 10], [L('Candle konfirmasi', 'Confirmation candle'), b.sc.conf, 10], [L('SMC (BOS/sweep)', 'SMC (BOS/sweep)'), b.sc.smc, 15]];
     $('#dScore').innerHTML = parts.map(([l, v, m]) => `<div class="sbar"><span>${l}</span><div class="t"><div class="${v >= m ? 'full' : v <= 0 ? 'zero' : ''}" style="width:${Math.max(0, v / m * 100)}%"></div></div><span class="num mut">${v}/${m}</span></div>`).join('') +
       (b.sc.rrPen ? `<div class="sbar"><span class="neg">${L('Penalti RR', 'RR penalty')}</span><div></div><span class="num neg">${b.sc.rrPen}</span></div>` : '');
-    $('#dScoreTxt').textContent = `${r.score}/100 · grade ${r.grade}`;
+    $('#dScoreTxt').textContent = `${r.score}/100 · grade ${r.grade} · ${L('indikatif, belum prediktif', 'indicative, not predictive')}`;
     $('#dCheck').innerHTML = checksHTML(r);
   } else {
     $('#dScore').innerHTML = `<div class="hint">${L('Tidak ada demand zone valid.', 'No valid demand zone.')}</div>`; $('#dScoreTxt').textContent = '';
@@ -1992,7 +2120,8 @@ async function loadMTF(sym) {
   try {
     const rows = await Promise.all(tfs.map(async tf => {
       const raw = await klines(sym, tf, 300);
-      const a = analyze(raw, null, Object.assign({}, S, { tf, htf: false }));
+      const a = analyze(raw, null, Object.assign({}, S, { tf, htf: false, btcTrend: BTC_D.trend }));
+      if (a) { a.tf = tf; a.sym = sym; applyPolicy(a); }
       return { tf, a };
     }));
     if (!DET || DET.sym !== sym) return;
@@ -2311,6 +2440,277 @@ function drawChart() {
 
 
 /* =========================================================
+   BACKTEST DI APLIKASI (v2.3)
+   - Simulasi walk-forward memakai fungsi mesin yang SAMA dengan scanner
+   - Berjalan di Web Worker agar tampilan tidak membeku
+   ========================================================= */
+const BT_RULES = { limitValid: 12, maxHold: 120 };
+let BT_STATS = store.get('btstats', {});          // { tf: {date, n, avgR, verdict, buckets:{CONFIRMED:{n,avgR,win}, SETUP:{…}}} }
+let BT_RUN = null, BT_LAST = null;
+
+// Simulasi satu pair — dijalankan DI DALAM worker (fungsi ini ikut diserialisasi)
+function btSimulatePair(sym, c, h, P, btcTrend, rules) {
+  const trades = [], seen = new Set();
+  let busyUntil = -1, hp = 0;
+  const FEE = (P.fee || 0.1) / 100;
+  for (let t = 499; t < c.length - 2; t++) {
+    if (t <= busyUntil) continue;
+    const now = c[t].ct + 1;
+    while (hp < h.length && h[hp].ct < now) hp++;
+    const hw = h.slice(Math.max(0, hp - 300), hp);
+    let btcNow = 'N/A';
+    for (let k = btcTrend.length - 1; k >= 0; k--) if (btcTrend[k][0] < now) { btcNow = btcTrend[k][1]; break; }
+    const a = analyze(c.slice(t - 499, t + 1), hw, Object.assign({}, P, { btcTrend: btcNow }), now);
+    if (!a || !a.state) continue;
+    const b = a.best;
+    if (a.state === 'CONFIRMED' && seen.has(b.zone.t + '|C')) continue;
+    const key = b.zone.t + '|' + a.state;
+    if (seen.has(key)) continue;
+    seen.add(key); if (a.state === 'CONFIRMED') seen.add(b.zone.t + '|C');
+    let entry, fillBar = -1;
+    if (b.market) { entry = c[t + 1].o; fillBar = t + 1; }
+    else {
+      entry = b.entry;
+      for (let j = t + 1; j <= Math.min(c.length - 1, t + rules.limitValid); j++) if (c[j].l <= entry) { fillBar = j; break; }
+      if (fillBar < 0) continue;
+    }
+    const sl = b.sl, risk = entry - sl;
+    if (!(risk > 0)) continue;
+    // TP dari entry aktual (sama seperti tiket)
+    const tp1 = b.market ? entry + P.minRR * risk : b.tp1;
+    const tp2 = b.market ? Math.max(entry + Math.max(3, P.minRR + 1) * risk, tp1 + risk) : b.tp2;
+    let rem = 1, pnl = 0, stop = sl, hit1 = false, exitBar = null;
+    for (let j = fillBar; j < c.length; j++) {
+      const q = c[j];
+      if (q.l <= stop) { pnl += rem * (stop - entry); rem = 0; exitBar = j; break; }   // konservatif: SL dulu
+      if (!hit1 && q.h >= tp1) { pnl += 0.5 * (tp1 - entry); rem = 0.5; hit1 = true; stop = entry; }
+      if (hit1 && q.h >= tp2) { pnl += 0.5 * (tp2 - entry); rem = 0; exitBar = j; break; }
+      if (j - fillBar >= rules.maxHold) { pnl += rem * (q.c - entry); rem = 0; exitBar = j; break; }
+    }
+    if (rem > 0) continue;                                    // masih terbuka di akhir data
+    const R = (pnl - entry * FEE * 2) / risk;
+    trades.push({ sym, t: c[fillBar].t, state: a.state, grade: a.grade, score: a.score, R, hit1, bars: exitBar - fillBar, riskPct: risk / entry * 100, btc: btcNow });
+    busyUntil = exitBar;
+  }
+  return trades;
+}
+function btWorkerSource() {
+  const fns = [ema, atr, trendOf, findZones, zoneStatus, structure, candlePattern, analyze, btSimulatePair];
+  return fns.map(f => f.toString()).join('\n') + `
+self.onmessage = e => {
+  const d = e.data;
+  try { self.postMessage({ id: d.id, trades: btSimulatePair(d.sym, d.c, d.h, d.P, d.btc, d.rules) }); }
+  catch (err) { self.postMessage({ id: d.id, error: String(err) }); }
+};`;
+}
+async function klLong(sym, tf, total) {
+  let out = [], end;
+  while (out.length < total) {
+    const d = await api(`/api/v3/klines?symbol=${sym}&interval=${tf}&limit=1000` + (end ? `&endTime=${end}` : ''));
+    const k = d.map(r => ({ t: r[0], o: +r[1], h: +r[2], l: +r[3], c: +r[4], v: +r[5], ct: r[6] }));
+    if (!k.length) break;
+    out = k.concat(out); end = k[0].t - 1;
+    if (k.length < 1000) break;
+    await sleep(60);
+  }
+  return out.slice(-total);
+}
+
+/* ---------- statistik ---------- */
+function btStats(trades) {
+  const n = trades.length;
+  if (!n) return { n: 0 };
+  const sorted = trades.slice().sort((a, b) => a.t - b.t);
+  let cum = 0, peak = 0, dd = 0; const curve = [];
+  for (const x of sorted) { cum += x.R; peak = Math.max(peak, cum); dd = Math.max(dd, peak - cum); curve.push([x.t, cum]); }
+  const wins = trades.filter(x => x.R > 0), loss = trades.filter(x => x.R <= 0);
+  const gw = wins.reduce((a, x) => a + x.R, 0), gl = -loss.reduce((a, x) => a + x.R, 0);
+  const half = Math.floor(n / 2);
+  const avg = arr => arr.length ? arr.reduce((a, x) => a + x.R, 0) / arr.length : 0;
+  return {
+    n, win: wins.length / n, avgR: cum / n, totR: cum, dd, pf: gl > 0 ? gw / gl : Infinity,
+    hold: trades.reduce((a, x) => a + x.bars, 0) / n, curve,
+    h1: avg(sorted.slice(0, half)), h2: avg(sorted.slice(half)), from: sorted[0].t, to: sorted[n - 1].t
+  };
+}
+// Kriteria validasi (sama dengan laporan audit): ≥150 trade, rata-rata ≥ +0,1R, kedua paruh periode positif
+function btVerdict(st) {
+  if (!st || !st.n) return 'none';
+  if (st.n >= 150 && st.avgR >= 0.1 && st.h1 > 0 && st.h2 > 0) return 'valid';
+  if (st.avgR > 0 && st.h1 > 0 && st.h2 > 0) return 'promising';
+  if (st.avgR > 0) return 'mixed';
+  return 'negative';
+}
+function verdictInfo(v) {
+  return ({
+    valid: { cls: 'conf', icon: '✓', t: L('TERVALIDASI', 'VALIDATED'), d: L('Memenuhi semua kriteria: ≥ 150 trade, rata-rata ≥ +0,1R, dan positif di kedua paruh periode.', 'Meets every criterion: ≥ 150 trades, average ≥ +0.1R, and positive in both halves of the period.') },
+    promising: { cls: 'setup', icon: '◐', t: L('MENJANJIKAN', 'PROMISING'), d: L('Positif di kedua paruh periode, tetapi sampel atau rata-ratanya belum memenuhi batas validasi (≥ 150 trade, ≥ +0,1R). Tambah pair atau periode.', 'Positive in both halves, but the sample or average does not meet the validation bar yet (≥ 150 trades, ≥ +0.1R). Add pairs or a longer period.') },
+    mixed: { cls: 'setup', icon: '!', t: L('TIDAK KONSISTEN', 'INCONSISTENT'), d: L('Total positif, tetapi salah satu paruh periode negatif. Hasilnya bergantung pada kondisi pasar tertentu.', 'Positive overall, but one half of the period is negative. Results depend on specific market conditions.') },
+    negative: { cls: 'wait', icon: '✕', t: L('NEGATIF', 'NEGATIVE'), d: L('Aturan saat ini merugi di periode dan pair ini. Jangan dipakai dengan uang nyata.', 'The current rules lose money on this period and these pairs. Do not trade them with real money.') },
+    none: { cls: 'wait', icon: '–', t: L('BELUM ADA DATA', 'NO DATA'), d: L('Tidak ada trade yang tersimulasi.', 'No trades were simulated.') }
+  })[v];
+}
+
+/* ---------- menjalankan ---------- */
+async function runBacktest() {
+  if (BT_RUN) { BT_RUN.abort = true; return; }
+  const tf = $('#btTf').value, src = $('#btSrc').value, bars = +$('#btBars').value;
+  const htfTf = HTF_MAP[tf];
+  const run = BT_RUN = { abort: false };
+  const btn = $('#btnBt'); btn.textContent = 'Stop';
+  $('#btErr').textContent = ''; $('#btOut').innerHTML = '';
+  const prog = $('#btProg'), stat = $('#btStatus');
+  const setP = (p, txt) => { prog.style.width = (p * 100).toFixed(1) + '%'; stat.textContent = txt; };
+  const P = Object.assign({}, S, { tf, htf: S.htf });
+  const workers = [];
+  try {
+    setP(0, L('Menyiapkan daftar pair…', 'Preparing pair list…'));
+    let list;
+    if (src === 'watch') list = WATCH.slice();
+    else if (src === 'pairs') list = parsePairs(S.pairs);
+    else { const u = await universe('all'); list = u.list.slice(0, +src); }
+    if (!list.length) throw new Error(L('Tidak ada pair.', 'No pairs.'));
+    // tren BTC harian untuk analisis regime
+    const bd = await klLong('BTCUSDT', '1d', 1000);
+    const bcl = bd.map(x => x.c), b50 = ema(bcl, 50), b200 = ema(bcl, 200);
+    const btc = bd.map((x, i) => [x.ct, i >= 199 ? trendOf(x.c, b50[i], b200[i]) : 'N/A']);
+    // worker pool
+    const nW = Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 2) - 1));
+    const url = URL.createObjectURL(new Blob([btWorkerSource()], { type: 'text/javascript' }));
+    for (let i = 0; i < nW; i++) workers.push(new Worker(url));
+    URL.revokeObjectURL(url);
+    const all = []; let done = 0, fetched = 0, skipped = 0, id = 0;
+    const pending = new Map();
+    workers.forEach(w => w.onmessage = e => { const cb = pending.get(e.data.id); pending.delete(e.data.id); cb && cb(e.data); });
+    let wi = 0;
+    const simulate = (sym, c, h) => new Promise(res => { const myId = ++id; pending.set(myId, res); workers[wi++ % nW].postMessage({ id: myId, sym, c, h, P, btc, rules: BT_RULES }); });
+    const jobs = [];
+    for (const sym of list) {
+      if (run.abort) break;
+      setP((fetched + done) / (list.length * 2), L(`Mengunduh ${base(sym)} (${fetched + 1}/${list.length})…`, `Downloading ${base(sym)} (${fetched + 1}/${list.length})…`));
+      let c, h;
+      try { c = await klLong(sym, tf, bars); h = S.htf ? await klLong(sym, htfTf, Math.min(1000, Math.ceil(bars / 4) + 320)) : []; }
+      catch (e) { if (e.rate) throw e; skipped++; fetched++; continue; }
+      fetched++;
+      if (c.length < 700) { skipped++; continue; }
+      jobs.push(simulate(sym, c, h).then(r => { done++; if (r.trades) all.push(...r.trades); setP((fetched + done) / (list.length * 2), L(`Simulasi ${done}/${jobs.length} pair · ${all.length} trade`, `Simulated ${done}/${jobs.length} pairs · ${all.length} trades`)); }));
+    }
+    await Promise.all(jobs);
+    const st = btStats(all);
+    const bucket = k => { const x = all.filter(t => t.state === k); return x.length ? { n: x.length, avgR: x.reduce((a, t) => a + t.R, 0) / x.length, win: x.filter(t => t.R > 0).length / x.length } : { n: 0 }; };
+    BT_LAST = { tf, src, bars, pairs: list.length - skipped, date: Date.now(), trades: all, st, aborted: run.abort };
+    if (!run.abort && st.n) {
+      BT_STATS[tf] = { date: Date.now(), pairs: BT_LAST.pairs, bars, n: st.n, avgR: st.avgR, win: st.win, dd: st.dd, verdict: btVerdict(st), buckets: { CONFIRMED: bucket('CONFIRMED'), SETUP: bucket('SETUP') }, ver: APP_VERSION };
+      store.set('btstats', BT_STATS);
+    }
+    setP(1, (run.abort ? L('Dihentikan', 'Stopped') : L('Selesai', 'Done')) + ` · ${BT_LAST.pairs} pair · ${st.n || 0} trade`);
+    renderBacktest(); renderValNote(); if (RESULTS.length) { RESULTS.forEach(applyPolicy); renderScanner(); }
+  } catch (e) {
+    $('#btErr').textContent = e.message; setP(0, '');
+  } finally {
+    workers.forEach(w => w.terminate());
+    BT_RUN = null; btn.textContent = L('Jalankan backtest', 'Run backtest');
+  }
+}
+
+/* ---------- tampilan hasil ---------- */
+function btGroupRows(trades, keyFn, order) {
+  const g = {};
+  for (const t of trades) { const k = keyFn(t); (g[k] = g[k] || []).push(t); }
+  return (order || Object.keys(g)).filter(k => g[k]).map(k => {
+    const x = g[k], s = x.reduce((a, t) => a + t.R, 0);
+    return `<tr><td>${k}</td><td class="num">${x.length}</td><td class="num">${(x.filter(t => t.R > 0).length / x.length * 100).toFixed(0)}%</td><td class="num ${s >= 0 ? 'pos' : 'neg'}">${(s / x.length >= 0 ? '+' : '') + (s / x.length).toFixed(3)}</td><td class="num ${s >= 0 ? 'pos' : 'neg'}">${(s >= 0 ? '+' : '') + s.toFixed(1)}</td></tr>`;
+  }).join('');
+}
+function renderBacktest() {
+  const el = $('#btOut');
+  const B = BT_LAST;
+  // ringkasan tersimpan per TF
+  const saved = Object.entries(BT_STATS);
+  $('#btSaved').innerHTML = saved.length ? `<table><tr><th>TF</th><th>${L('Tanggal', 'Date')}</th><th>Pair</th><th>Trade</th><th>${L('Rata-rata R', 'Avg R')}</th><th>CONFIRMED</th><th>SETUP</th><th>Status</th></tr>${saved.map(([tf, s]) => { const v = verdictInfo(s.verdict); const bk = x => x && x.n ? `${(x.avgR >= 0 ? '+' : '') + x.avgR.toFixed(2)}R · ${x.n}` : '—'; return `<tr><td><b>${tf.toUpperCase()}</b></td><td>${new Date(s.date).toLocaleDateString(LOC(), { day: '2-digit', month: 'short' })}</td><td class="num">${s.pairs}</td><td class="num">${s.n}</td><td class="num ${s.avgR >= 0 ? 'pos' : 'neg'}">${(s.avgR >= 0 ? '+' : '') + s.avgR.toFixed(3)}</td><td class="num">${bk(s.buckets.CONFIRMED)}</td><td class="num">${bk(s.buckets.SETUP)}</td><td><span class="badge ${v.cls === 'conf' ? 'b-buy' : v.cls === 'setup' ? 'b-setup' : 'b-wait'}">${v.t}</span></td></tr>`; }).join('')}</table>` : `<div class="hint">${L('Belum ada hasil tersimpan.', 'No saved results yet.')}</div>`;
+  if (!B) { el.innerHTML = ''; return; }
+  const st = B.st;
+  if (!st.n) { el.innerHTML = `<div class="card empty">${L('Tidak ada trade yang tersimulasi. Coba periode lebih panjang atau pair lebih banyak.', 'No trades were simulated. Try a longer period or more pairs.')}</div>`; return; }
+  const v = verdictInfo(btVerdict(st));
+  const days = (st.to - st.from) / 864e5;
+  const k = (l, val, cls = '') => `<div class="kpi" style="cursor:default"><small>${l}</small><b class="${cls}" style="font-size:20px">${val}</b></div>`;
+  el.innerHTML = `
+    <div class="verdict ${v.cls}"><div class="vi">${v.icon}</div><div><h4>${v.t} · ${B.tf.toUpperCase()} · ${B.pairs} pair · ${st.n} trade · ${Math.round(days)} ${L('hari', 'days')}</h4><p>${v.d} ${L('Paruh pertama', 'First half')}: <b class="${st.h1 >= 0 ? 'pos' : 'neg'}">${(st.h1 >= 0 ? '+' : '') + st.h1.toFixed(3)}R</b> · ${L('paruh kedua', 'second half')}: <b class="${st.h2 >= 0 ? 'pos' : 'neg'}">${(st.h2 >= 0 ? '+' : '') + st.h2.toFixed(3)}R</b>.${B.aborted ? ' ' + L('(Dihentikan sebelum selesai: hasil tidak disimpan.)', '(Stopped early: results not saved.)') : ''}</p></div></div>
+    <div class="jstats">
+      ${k('Trade', st.n)}${k('Win rate', (st.win * 100).toFixed(1) + '%')}${k(L('Rata-rata R', 'Average R'), (st.avgR >= 0 ? '+' : '') + st.avgR.toFixed(3), st.avgR >= 0 ? 'pos' : 'neg')}
+      ${k('Total R', (st.totR >= 0 ? '+' : '') + st.totR.toFixed(1), st.totR >= 0 ? 'pos' : 'neg')}${k(L('Drawdown maks', 'Max drawdown'), st.dd.toFixed(1) + 'R', 'neg')}${k('Profit factor', isFinite(st.pf) ? st.pf.toFixed(2) : '∞', st.pf >= 1 ? 'pos' : 'neg')}
+    </div>
+    <div class="card"><h3>${L('Kurva ekuitas', 'Equity curve')} <span class="sub">${L('total R kumulatif, urut waktu entry', 'cumulative R, by entry time')}</span></h3><canvas id="btCurve" height="220" role="img" aria-label="${L('Kurva ekuitas backtest', 'Backtest equity curve')}"></canvas></div>
+    <div class="dcols" style="margin-top:0">
+      <div class="card"><h3>${L('Per tipe sinyal', 'By signal type')}</h3><table><tr><th>${L('Tipe', 'Type')}</th><th>Trade</th><th>Win</th><th>${L('Rata-rata R', 'Avg R')}</th><th>Total R</th></tr>${btGroupRows(st.n ? B.trades : [], t => t.state === 'CONFIRMED' ? L('Siap eksekusi (market)', 'Ready to execute (market)') : L('Siapkan limit', 'Set limit order'))}</table>
+        <h3 style="margin-top:14px">${L('Per tren BTC harian saat entry', 'By daily BTC trend at entry')}</h3><table><tr><th>BTC</th><th>Trade</th><th>Win</th><th>${L('Rata-rata R', 'Avg R')}</th><th>Total R</th></tr>${btGroupRows(B.trades, t => t.btc, ['UP', 'SIDEWAYS', 'DOWN', 'N/A'])}</table></div>
+      <div class="card"><h3>${L('Per grade', 'By grade')}</h3><table><tr><th>Grade</th><th>Trade</th><th>Win</th><th>${L('Rata-rata R', 'Avg R')}</th><th>Total R</th></tr>${btGroupRows(B.trades, t => t.grade, ['A', 'B', 'C', 'D'])}</table>
+        <h3 style="margin-top:14px">${L('Per pair (10 teratas & terbawah)', 'By pair (top & bottom 10)')}</h3>${btPairTable(B.trades)}</div>
+    </div>
+    <div class="row"><button class="btn sm" id="btnBtCsv">${L('Export trade (CSV)', 'Export trades (CSV)')}</button><span class="hint">${L('Asumsi: entry market di open candle berikutnya; limit berlaku 12 candle; 50% di TP1 lalu SL ke break-even; maks 120 candle; fee 2 sisi; bila SL dan TP di candle yang sama, SL dianggap lebih dulu.', 'Assumptions: market entries at the next candle open; limits valid for 12 candles; 50% at TP1 then SL to break-even; max 120 candles; fees on both sides; when SL and TP hit in the same candle, SL is assumed first.')}</span></div>`;
+  drawCurve(st.curve);
+  $('#btnBtCsv').onclick = () => download(`backtest-${B.tf}-${new Date().toISOString().slice(0, 10)}.csv`, 'time,pair,type,grade,score,btc,R,riskPct,bars\n' + B.trades.map(t => [new Date(t.t).toISOString(), t.sym, t.state, t.grade, t.score, t.btc, t.R.toFixed(3), t.riskPct.toFixed(2), t.bars].join(',')).join('\n'), 'text/csv');
+}
+function btPairTable(trades) {
+  const g = {};
+  for (const t of trades) { (g[t.sym] = g[t.sym] || []).push(t.R); }
+  const rows = Object.entries(g).map(([s, r]) => [s, r.length, r.reduce((a, b) => a + b, 0)]).sort((a, b) => b[2] - a[2]);
+  const pick = rows.length > 20 ? rows.slice(0, 10).concat([null]).concat(rows.slice(-10)) : rows;
+  return `<table><tr><th>Pair</th><th>Trade</th><th>Total R</th></tr>${pick.map(x => x ? `<tr><td>${base(x[0])}</td><td class="num">${x[1]}</td><td class="num ${x[2] >= 0 ? 'pos' : 'neg'}">${(x[2] >= 0 ? '+' : '') + x[2].toFixed(1)}</td></tr>` : '<tr><td colspan="3" class="mut">…</td></tr>').join('')}</table>`;
+}
+function drawCurve(curve) {
+  const cv = $('#btCurve'); if (!cv || !curve.length) return;
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = 220;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + 'px';
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const vals = [0].concat(curve.map(x => x[1]));
+  let lo = Math.min(...vals), hi = Math.max(...vals); if (hi - lo < 1) { hi += 0.5; lo -= 0.5; }
+  const padL = 44, padR = 10, padT = 10, padB = 22, cw = W - padL - padR, ch = H - padT - padB;
+  const x = i => padL + i / (vals.length - 1 || 1) * cw, y = v => padT + (hi - v) / (hi - lo) * ch;
+  g.font = '10px system-ui'; g.fillStyle = '#7c879e'; g.strokeStyle = '#1b2438'; g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4; g.beginPath(); g.moveTo(padL, y(v)); g.lineTo(W - padR, y(v)); g.stroke(); g.fillText((v >= 0 ? '+' : '') + v.toFixed(1) + 'R', 2, y(v) + 3); }
+  g.strokeStyle = '#5d6880'; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(padL, y(0)); g.lineTo(W - padR, y(0)); g.stroke(); g.setLineDash([]);
+  const fmt = t => new Date(t).toLocaleDateString(LOC(), { month: 'short', year: '2-digit' });
+  g.fillStyle = '#7c879e'; g.fillText(fmt(curve[0][0]), padL, H - 6); const lt = fmt(curve[curve.length - 1][0]); g.fillText(lt, W - padR - g.measureText(lt).width, H - 6);
+  const last = vals[vals.length - 1];
+  g.strokeStyle = last >= 0 ? '#16c784' : '#ea3943'; g.lineWidth = 2; g.beginPath();
+  vals.forEach((v, i) => i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v))); g.stroke();
+}
+
+/* =========================================================
+   KEBIJAKAN SINYAL BERBASIS BACKTEST (opsional, default mati)
+   ========================================================= */
+const POLICY_MIN_N = 20;
+function btBucket(tf, state) { const s = BT_STATS[tf]; return s && s.buckets ? s.buckets[state] : null; }
+function applyPolicy(r) {
+  if (r._policyOrig) { r.state = r._policyOrig.state; r.signal = r._policyOrig.signal; r.grade = r._policyOrig.grade; r.reason = r._policyOrig.reason; delete r._policyOrig; }
+  if (!S.btPolicy || !r.state) return r;
+  const bk = btBucket(r.tf, r.state);
+  if (bk && bk.n >= POLICY_MIN_N && bk.avgR < 0) {
+    r._policyOrig = { state: r.state, signal: r.signal, grade: r.grade, reason: r.reason };
+    r.reason = `BT:${r.state}:${bk.avgR.toFixed(2)}:${bk.n}`;
+    r.state = ''; r.signal = 'WAIT'; r.grade = '–';
+  }
+  return r;
+}
+function edgeChip(r, st) {
+  const bk = btBucket(r.tf, st || r.state || (r._policyOrig && r._policyOrig.state));
+  if (!bk || !bk.n) return '';
+  const pos = bk.avgR >= 0;
+  return `<span class="badge ${pos ? 'b-buy' : 'b-wait'}" title="${L('Hasil backtest tipe sinyal ini di timeframe yang sama', 'Backtest result for this signal type on the same timeframe')}" style="${pos ? '' : 'color:var(--red)'}">BT ${(pos ? '+' : '') + bk.avgR.toFixed(2)}R · ${bk.n}</span>`;
+}
+function renderValNote() {
+  const el = $('#valNote'); if (!el) return;
+  const s = BT_STATS[S.tf];
+  if (!s) { el.className = 'valnote'; el.innerHTML = `<span>⚠</span><span><b>${L(`Belum ada backtest untuk ${S.tf.toUpperCase()}.`, `No backtest for ${S.tf.toUpperCase()} yet.`)}</b> ${L('Audit 500 hari (4H) belum menunjukkan edge positif yang stabil. Jalankan backtest sebelum memakai uang nyata.', 'The 500-day audit (4H) has not shown a stable positive edge. Run a backtest before using real money.')} <a href="#" data-gotab="backtest">${L('Buka Backtest', 'Open Backtest')}</a></span>`; return; }
+  const v = verdictInfo(s.verdict);
+  const good = s.verdict === 'valid';
+  el.className = 'valnote' + (good ? ' ok' : '');
+  el.innerHTML = `<span>${good ? '✓' : '⚠'}</span><span><b>${L('Backtest', 'Backtest')} ${S.tf.toUpperCase()}: ${v.t}</b> · ${s.n} trade · ${(s.avgR >= 0 ? '+' : '') + s.avgR.toFixed(3)}R/trade · ${new Date(s.date).toLocaleDateString(LOC(), { day: '2-digit', month: 'short' })}. ${good ? L('Tetap gunakan manajemen risiko.', 'Keep using risk management.') : L('Gunakan paper trading atau ukuran posisi sangat kecil.', 'Paper trade, or use very small position sizes.')} <a href="#" data-gotab="backtest">${L('Lihat detail', 'View details')}</a></span>`;
+}
+
+
+/* =========================================================
    NOTIFIKASI
    ========================================================= */
 function tgSend(text) {
@@ -2356,7 +2756,7 @@ function loadSettingsUI() {
   NUM_KEYS.forEach(k => $('#s_' + k).value = S[k]);
   $('#s_tgToken').value = S.tgToken; $('#s_tgChat').value = S.tgChat; $('#s_exclude').value = S.exclude;
   $('#s_sizeMode').value = S.sizeMode; $('#s_tpSplit').value = S.tpSplit;
-  $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto;
+  $('#s_notify').checked = S.notify; $('#s_exclNonCrypto').checked = S.exclNonCrypto; $('#s_btcFilter').checked = S.btcFilter; $('#s_btPolicy').checked = S.btPolicy;
   $('#scope').value = S.scope; $('#tf').value = S.tf; $('#topN').value = S.topN; $('#minVol').value = S.minVol; $('#auto').value = S.auto;
   $('#pairs').value = S.pairs; $('#htf').checked = S.htf; htfLabel();
   applyScopeUI();
@@ -2367,7 +2767,8 @@ function saveSettingsUI() {
   S.posPct = Math.max(1, Math.min(100, S.posPct));
   S.tgToken = $('#s_tgToken').value.trim(); S.tgChat = $('#s_tgChat').value.trim(); S.exclude = $('#s_exclude').value.trim();
   S.sizeMode = $('#s_sizeMode').value; S.tpSplit = $('#s_tpSplit').value;
-  S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked;
+  S.notify = $('#s_notify').checked; S.exclNonCrypto = $('#s_exclNonCrypto').checked; S.btcFilter = $('#s_btcFilter').checked; S.btPolicy = $('#s_btPolicy').checked;
+  [...RESULTS, ...WRESULTS].forEach(applyPolicy); renderScanner(); renderWatch();
   persist();
   delete $('#cCap').dataset.init;
 }
@@ -2434,7 +2835,8 @@ function setLang(lang) {
   S.lang = lang; persist();
   applyStaticLang();
   htfLabel(); renderStatus();
-  renderScanner(); renderWatch(); renderJournal(); updateBadges();
+  renderScanner(); renderWatch(); renderJournal(); updateBadges(); renderValNote(); renderBacktest();
+  if (!BT_RUN) $('#btnBt').textContent = L('Jalankan backtest', 'Run backtest');
   if (DET) { renderDetail(); renderMTF(); }
 }
 
@@ -2443,7 +2845,8 @@ function setLang(lang) {
    ========================================================= */
 function switchTab(tab) {
   $$('#nav button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
-  ['scan', 'watch', 'journal', 'guide', 'settings'].forEach(t => $('#tab-' + t).hidden = t !== tab);
+  ['scan', 'watch', 'journal', 'backtest', 'guide', 'settings'].forEach(t => $('#tab-' + t).hidden = t !== tab);
+  if (tab === 'backtest') { if (!BT_RUN) $('#btTf').value = S.tf; renderBacktest(); }
   if (tab === 'journal') refreshJournalPrices();
   if (tab === 'watch') renderWatch();
   window.scrollTo(0, 0);
@@ -2456,11 +2859,13 @@ function init() {
   renderWatch();
   renderJournal();
   renderStatus();
+  renderValNote();
+  $('#btnBt').onclick = runBacktest;
   $$('#langSeg button').forEach(b => b.onclick = () => setLang(b.dataset.l));
   $$('#nav button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
   // kontrol scan
   $('#scope').onchange = e => { S.scope = e.target.value; persist(); applyScopeUI(); };
-  $('#tf').onchange = e => { S.tf = e.target.value; persist(); };
+  $('#tf').onchange = e => { S.tf = e.target.value; persist(); renderValNote(); };
   $('#topN').onchange = e => { S.topN = e.target.value; persist(); };
   $('#minVol').onchange = e => { S.minVol = e.target.value; persist(); };
   $('#auto').onchange = e => { S.auto = e.target.value; persist(); setAuto(); toast(+S.auto ? L(`Auto-scan tiap ${S.auto} menit (selama tab terbuka)`, `Auto-scan every ${S.auto} min (while the tab is open)`) : L('Auto-scan dimatikan', 'Auto-scan turned off')); };
@@ -2484,6 +2889,7 @@ function init() {
     const cp = e.target.closest('[data-copy]'); if (cp) { e.stopPropagation(); copyText(cp.dataset.copy); return; }
     const st = e.target.closest('[data-star]'); if (st) { e.stopPropagation(); toggleWatch(st.closest('[data-sym]').dataset.sym); return; }
     const gg = e.target.closest('[data-goguide]'); if (gg) { e.preventDefault(); switchTab('guide'); return; }
+    const gtb = e.target.closest('[data-gotab]'); if (gtb) { e.preventDefault(); switchTab(gtb.dataset.gotab); return; }
     const gt = e.target.closest('[data-gotable]'); if (gt) { e.preventDefault(); S.view = 'table'; persist(); renderScanner(); return; }
     const rm = e.target.closest('[data-wlrm]'); if (rm) { toggleWatch(rm.dataset.wlrm); renderWatch(); return; }
     const card = e.target.closest('.oc[data-sym], tr.click[data-sym]');
