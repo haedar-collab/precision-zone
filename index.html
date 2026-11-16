@@ -256,6 +256,10 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 .valnote a{color:#ffd58a}
 .valnote.ok{background:var(--green-bg);border-color:rgba(22,199,132,.35);color:#8ee6bf}
 .valnote.ok a{color:#b6f3d6}
+.valnote>span:nth-child(2){flex:1}
+.valnote[hidden]{display:none}
+.vn-x{background:none;border:0;color:inherit;opacity:.7;cursor:pointer;font-size:14px;line-height:1;padding:2px 4px;border-radius:6px;flex:none}
+.vn-x:hover{opacity:1;background:rgba(255,255,255,.08)}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--s3);border:1px solid var(--line2);color:var(--text);padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:90;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
@@ -264,7 +268,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
 <header class="appbar"><div class="in">
   <div class="logo">
     <svg width="34" height="34" viewBox="0 0 34 34"><rect width="34" height="34" rx="9" fill="#151d2c"/><rect x="6" y="19" width="22" height="6" rx="1.5" fill="#16c784" opacity=".35"/><path d="M7 22 L13 15 L17 18 L27 8" stroke="#6d8cff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27" cy="8" r="2.4" fill="#16c784"/></svg>
-    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.3</small></div>
+    <div><b>Precision Zone</b><small>Spot Long Scanner · v2.3.1</small></div>
   </div>
   <nav class="nav" id="nav">
     <button data-tab="scan" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Scanner</button>
@@ -640,7 +644,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     </ul>
     <h3>Hubungan dengan sinyal</h3>
     <ul>
-      <li>Hasil terakhir per timeframe tersimpan dan ditampilkan di <b>banner</b> Scanner dan sebagai label <b>BT +x R · n</b> di kartu.</li>
+      <li>Hasil terakhir per timeframe tersimpan dan ditampilkan di <b>banner</b> Scanner dan sebagai label <b>BT +x R · n</b> di kartu. Banner bisa ditutup dengan tombol ✕; ia muncul lagi setelah ada backtest baru untuk timeframe itu, atau lewat <b>Pengaturan → Tampilkan lagi banner backtest</b>.</li>
       <li>Opsi <b>Pakai hasil backtest untuk menyaring sinyal</b> (Pengaturan, default mati) menyembunyikan tipe sinyal (Siap eksekusi atau Siapkan limit) yang rata-ratanya negatif dengan minimal 20 trade di timeframe yang sama.</li>
     </ul>
     <div class="callout"><b>Hati-hati overfitting.</b> Jangan mengubah parameter berulang kali sampai backtest terlihat bagus. Setelah menemukan pengaturan yang menjanjikan, uji ulang di pair lain (Watchlist atau pair pilihan) atau periode lain. Di audit, perbaikan yang tampak bagus di data pengembangan (+0,28R) tidak lebih baik dari aturan lama di pair holdout.</div>
@@ -690,7 +694,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <tr><td>"Rate limit" (429)</td><td>Terlalu banyak request. Tunggu 1 menit, kurangi Top pair, atau perpanjang interval auto-scan.</td></tr>
       <tr><td>Pair tidak muncul di Pair Pilihan</td><td>Pastikan pair ada di Spot Binance dengan quote USDT. Pair dengan data &lt; 220 candle (koin baru) dilewati karena EMA200 belum valid.</td></tr>
       <tr><td>Notifikasi tidak muncul di HP</td><td>Gunakan Telegram. Notifikasi browser di HP terbatas, terutama di iOS (harus dipasang ke Home Screen).</td></tr>
-      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. GitHub Pages menyimpan cache sekitar 10 menit, jadi update baru bisa terlambat muncul. Pastikan header bertuliskan <b>Spot Long Scanner · v2.3</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=23</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
+      <tr><td>Masih muncul sinyal SELL / tampilan lama</td><td>Itu versi lama dari cache. GitHub Pages menyimpan cache sekitar 10 menit, jadi update baru bisa terlambat muncul. Pastikan header bertuliskan <b>Spot Long Scanner · v2.3.1</b>. Kalau belum: upload ulang <code>index.html</code> ke GitHub, tunggu 1–3 menit, lalu buka URL dengan tambahan <code>?v=23</code> di belakangnya, atau hard refresh (laptop: Ctrl+Shift+R; HP: hapus cache situs atau buka di tab incognito).</td></tr>
       <tr><td>Tiket menampilkan "aturan pair belum dimuat"</td><td>Koneksi ke exchangeInfo gagal. Tutup lalu buka lagi detail pair-nya. Tanpa aturan pair, angka tidak dibulatkan dan perlu disesuaikan manual di Binance.</td></tr>
       <tr><td>Pengaturan hilang</td><td>Pengaturan disimpan per browser. Mode incognito atau menghapus data browser akan meresetnya.</td></tr>
     </table>
@@ -952,7 +956,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     </ul>
     <h3>How it connects to signals</h3>
     <ul>
-      <li>The latest result per timeframe is saved and shown in the Scanner <b>banner</b> and as a <b>BT +x R · n</b> label on cards.</li>
+      <li>The latest result per timeframe is saved and shown in the Scanner <b>banner</b> and as a <b>BT +x R · n</b> label on cards. You can close the banner with ✕; it returns after a new backtest for that timeframe, or via <b>Settings → Show the backtest banner again</b>.</li>
       <li>The <b>Use backtest results to filter signals</b> option (Settings, off by default) hides signal types (Ready to execute or Set limit order) whose average is negative with at least 20 trades on the same timeframe.</li>
     </ul>
     <div class="callout"><b>Beware of overfitting.</b> Don't keep changing parameters until the backtest looks good. Once you find promising settings, retest them on other pairs (Watchlist or selected pairs) or another period. In the audit, improvements that looked good on the development data (+0.28R) did no better than the old rules on holdout pairs.</div>
@@ -1002,7 +1006,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
       <tr><td>"Rate limit" (429)</td><td>Too many requests. Wait 1 minute, reduce the number of pairs, or lengthen the auto-scan interval.</td></tr>
       <tr><td>A pair doesn't show up in Selected pairs</td><td>Make sure it is listed on Binance Spot with a USDT quote. Pairs with fewer than 220 candles (new coins) are skipped because EMA200 isn't valid yet.</td></tr>
       <tr><td>Notifications don't appear on my phone</td><td>Use Telegram. Browser notifications on phones are limited, especially on iOS (the app must be added to the Home Screen).</td></tr>
-      <tr><td>SELL signals or an old layout still appear</td><td>That's an old cached version. GitHub Pages caches pages for about 10 minutes, so a new update can take a while to appear. Make sure the header reads <b>Spot Long Scanner · v2.3</b>. If not: re-upload <code>index.html</code> to GitHub, wait 1–3 minutes, then open the URL with <code>?v=23</code> appended, or hard refresh (laptop: Ctrl+Shift+R; phone: clear site data or open it in an incognito tab).</td></tr>
+      <tr><td>SELL signals or an old layout still appear</td><td>That's an old cached version. GitHub Pages caches pages for about 10 minutes, so a new update can take a while to appear. Make sure the header reads <b>Spot Long Scanner · v2.3.1</b>. If not: re-upload <code>index.html</code> to GitHub, wait 1–3 minutes, then open the URL with <code>?v=23</code> appended, or hard refresh (laptop: Ctrl+Shift+R; phone: clear site data or open it in an incognito tab).</td></tr>
       <tr><td>The ticket says "pair rules not loaded"</td><td>The exchangeInfo request failed. Close and reopen the pair's details. Without pair rules, numbers aren't rounded and may need manual adjustment in Binance.</td></tr>
       <tr><td>Settings disappeared</td><td>Settings are stored per browser. Incognito mode or clearing browser data resets them.</td></tr>
     </table>
@@ -1080,6 +1084,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
     <div class="row">
       <button class="btn" id="btnBackup">Backup data (JSON)</button>
       <label class="btn" style="cursor:pointer">Restore data<input type="file" id="fileRestore" accept="application/json" hidden></label>
+      <button class="btn" id="btnVnReset">Tampilkan lagi banner backtest</button>
       <span class="hint">Backup berisi pengaturan, watchlist, dan jurnal. Berguna untuk pindah browser atau perangkat.</span>
     </div>
   </div>
@@ -1164,7 +1169,7 @@ canvas{width:100%;display:block;background:#0c111b;border:1px solid var(--line);
    PRECISION ZONE · SPOT LONG SCANNER v2.3
    Konfigurasi & penyimpanan
    ========================================================= */
-const APP_VERSION = '2.3';
+const APP_VERSION = '2.3.1';
 const API_BASES = ['https://data-api.binance.vision', 'https://api.binance.com'];
 const HTF_MAP = { '15m': '1h', '1h': '4h', '4h': '1d', '1d': '1w' };
 const STABLES = new Set(['USDC','FDUSD','TUSD','BUSD','DAI','USDP','USDD','EUR','EURI','AEUR','GBP','USDE','USD1','XUSD','BFUSD','RLUSD','PYUSD','UST','USTC','PAX','SUSD','FRAX','LUSD','GUSD','TRY','BRL','ZAR','IDRT','BIDR','U','USDEB','RWUSD','USDS','USDQ','EURC']);
@@ -1196,7 +1201,7 @@ const L = (id, en) => isEN() ? en : id;                 // teks dinamis bilingua
 const LOC = () => isEN() ? 'en-US' : 'id-ID';
 // Kamus teks statis HTML + teks dari mesin analisis (ID → EN)
 const DICT = {
-  'Spot Long Scanner · v2.3': 'Spot Long Scanner · v2.3',
+  'Spot Long Scanner · v2.3.1': 'Spot Long Scanner · v2.3.1', 'Tampilkan lagi banner backtest': 'Show the backtest banner again',
   'Backtest aturan sinyal': 'Signal rules backtest', 'simulasi historis dengan mesin yang sama dengan scanner': 'historical simulation using the same engine as the scanner',
   'Top 10 volume': 'Top 10 by volume', 'Top 20 volume': 'Top 20 by volume', 'Top 30 volume': 'Top 30 by volume', 'Top 40 volume': 'Top 40 by volume',
   'Pair pilihan (Scanner)': 'Selected pairs (Scanner)', 'Periode (jumlah candle)': 'Period (number of candles)',
@@ -2699,14 +2704,25 @@ function edgeChip(r, st) {
   const pos = bk.avgR >= 0;
   return `<span class="badge ${pos ? 'b-buy' : 'b-wait'}" title="${L('Hasil backtest tipe sinyal ini di timeframe yang sama', 'Backtest result for this signal type on the same timeframe')}" style="${pos ? '' : 'color:var(--red)'}">BT ${(pos ? '+' : '') + bk.avgR.toFixed(2)}R · ${bk.n}</span>`;
 }
+// v2.3.1: banner bisa ditutup. Penanda = TF + tanggal backtest, jadi banner muncul lagi setelah ada backtest baru untuk TF itu.
+const valNoteSig = () => { const s = BT_STATS[S.tf]; return S.tf + '|' + (s ? s.date : 'none'); };
+function closeBtnHTML() { return `<button class="vn-x" data-vnclose title="${L('Tutup', 'Close')}" aria-label="${L('Tutup notifikasi', 'Close notification')}">✕</button>`; }
+function dismissValNote() {
+  const list = store.get('vnHidden', []).filter(x => x !== valNoteSig());
+  list.push(valNoteSig()); store.set('vnHidden', list.slice(-50));
+  renderValNote();
+  toast(L('Banner ditutup. Muncul lagi setelah backtest baru untuk timeframe ini.', 'Banner closed. It will return after a new backtest for this timeframe.'));
+}
 function renderValNote() {
   const el = $('#valNote'); if (!el) return;
+  el.hidden = store.get('vnHidden', []).includes(valNoteSig());
+  if (el.hidden) return;
   const s = BT_STATS[S.tf];
-  if (!s) { el.className = 'valnote'; el.innerHTML = `<span>⚠</span><span><b>${L(`Belum ada backtest untuk ${S.tf.toUpperCase()}.`, `No backtest for ${S.tf.toUpperCase()} yet.`)}</b> ${L('Audit 500 hari (4H) belum menunjukkan edge positif yang stabil. Jalankan backtest sebelum memakai uang nyata.', 'The 500-day audit (4H) has not shown a stable positive edge. Run a backtest before using real money.')} <a href="#" data-gotab="backtest">${L('Buka Backtest', 'Open Backtest')}</a></span>`; return; }
+  if (!s) { el.className = 'valnote'; el.innerHTML = `<span>⚠</span><span><b>${L(`Belum ada backtest untuk ${S.tf.toUpperCase()}.`, `No backtest for ${S.tf.toUpperCase()} yet.`)}</b> ${L('Audit 500 hari (4H) belum menunjukkan edge positif yang stabil. Jalankan backtest sebelum memakai uang nyata.', 'The 500-day audit (4H) has not shown a stable positive edge. Run a backtest before using real money.')} <a href="#" data-gotab="backtest">${L('Buka Backtest', 'Open Backtest')}</a></span>${closeBtnHTML()}`; return; }
   const v = verdictInfo(s.verdict);
   const good = s.verdict === 'valid';
   el.className = 'valnote' + (good ? ' ok' : '');
-  el.innerHTML = `<span>${good ? '✓' : '⚠'}</span><span><b>${L('Backtest', 'Backtest')} ${S.tf.toUpperCase()}: ${v.t}</b> · ${s.n} trade · ${(s.avgR >= 0 ? '+' : '') + s.avgR.toFixed(3)}R/trade · ${new Date(s.date).toLocaleDateString(LOC(), { day: '2-digit', month: 'short' })}. ${good ? L('Tetap gunakan manajemen risiko.', 'Keep using risk management.') : L('Gunakan paper trading atau ukuran posisi sangat kecil.', 'Paper trade, or use very small position sizes.')} <a href="#" data-gotab="backtest">${L('Lihat detail', 'View details')}</a></span>`;
+  el.innerHTML = `<span>${good ? '✓' : '⚠'}</span><span><b>${L('Backtest', 'Backtest')} ${S.tf.toUpperCase()}: ${v.t}</b> · ${s.n} trade · ${(s.avgR >= 0 ? '+' : '') + s.avgR.toFixed(3)}R/trade · ${new Date(s.date).toLocaleDateString(LOC(), { day: '2-digit', month: 'short' })}. ${good ? L('Tetap gunakan manajemen risiko.', 'Keep using risk management.') : L('Gunakan paper trading atau ukuran posisi sangat kecil.', 'Paper trade, or use very small position sizes.')} <a href="#" data-gotab="backtest">${L('Lihat detail', 'View details')}</a></span>${closeBtnHTML()}`;
 }
 
 
@@ -2861,6 +2877,7 @@ function init() {
   renderStatus();
   renderValNote();
   $('#btnBt').onclick = runBacktest;
+  $('#btnVnReset').onclick = () => { store.set('vnHidden', []); renderValNote(); toast(L('Banner backtest ditampilkan lagi', 'Backtest banner shown again')); };
   $$('#langSeg button').forEach(b => b.onclick = () => setLang(b.dataset.l));
   $$('#nav button').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
   // kontrol scan
@@ -2889,6 +2906,7 @@ function init() {
     const cp = e.target.closest('[data-copy]'); if (cp) { e.stopPropagation(); copyText(cp.dataset.copy); return; }
     const st = e.target.closest('[data-star]'); if (st) { e.stopPropagation(); toggleWatch(st.closest('[data-sym]').dataset.sym); return; }
     const gg = e.target.closest('[data-goguide]'); if (gg) { e.preventDefault(); switchTab('guide'); return; }
+    const vx = e.target.closest('[data-vnclose]'); if (vx) { e.preventDefault(); dismissValNote(); return; }
     const gtb = e.target.closest('[data-gotab]'); if (gtb) { e.preventDefault(); switchTab(gtb.dataset.gotab); return; }
     const gt = e.target.closest('[data-gotable]'); if (gt) { e.preventDefault(); S.view = 'table'; persist(); renderScanner(); return; }
     const rm = e.target.closest('[data-wlrm]'); if (rm) { toggleWatch(rm.dataset.wlrm); renderWatch(); return; }
