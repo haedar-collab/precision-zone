@@ -1,4 +1,4 @@
-# Precision Zone · Spot Long Scanner v2.1 (Web App Gratis)
+# Precision Zone · Spot Long Scanner v2.2 (Web App Gratis)
 
 > 🇬🇧 **English:** a free, single-file Binance Spot **long-only** scanner based on the Precision Zone System (EMA 50/200 + supply & demand zones), with Binance execution tickets (Limit + OCO), watchlist and trading journal. The app is bilingual: use the **ID | EN** switch in the top-right corner. Deploy by uploading `index.html` to GitHub Pages (see section 1). The full English guide is in the app's **Guide** tab.
 
@@ -36,6 +36,12 @@ Scanner **khusus Spot Long** untuk Binance Spot (pair USDT) dengan kerangka **Pr
 
 ---
 
+## Yang baru di v2.2 (hasil audit 16 Nov 2026)
+- **Gerbang risiko wajib:** sinyal ditolak bila jarak SL < 1,5% atau bila ada supply zone sebelum TP1. TP1 = Min RR × risiko (default 2R).
+- **Tiket lebih jujur:** entry market memakai harga live; stop-limit = 10% dari jarak SL di bawah stop; ukuran posisi dan risiko dihitung sampai harga stop-limit, termasuk fee; peringatan kalau fee > 25% risiko atau stop-limit melanggar filter PERCENT_PRICE.
+- **Keamanan & ketahanan:** data restore divalidasi (celah XSS ditutup); request ke Binance punya timeout 10 detik.
+- **Transparansi:** banner "Sinyal belum tervalidasi backtest". Backtest 4H 500 hari: v2.2 +0,135R/trade di data pengembangan, −0,03R di pair out-of-sample. Edge positif belum terbukti, jadi pakai paper trading dulu.
+
 ## Fitur v2.0
 - **Kartu peluang** dikelompokkan: Siap eksekusi → Siapkan limit → Pantau, masing-masing dengan ringkasan bahasa sederhana.
 - **Banner kondisi pasar** (BTC trend + % pair uptrend) dengan saran sikap.
@@ -62,10 +68,10 @@ Panduan lengkap (aturan sistem, arti sinyal, komponen skor, manajemen posisi, Te
 | Trend | UP: EMA50 > EMA200 dan harga > EMA200 (cari BUY) · DOWN: hindari beli · selain itu SIDEWAYS (tunggu) |
 | Zona | Base 1–3 candle kecil, diikuti impulse dengan body ≥ 1,2×ATR. Proximal = body base, distal = ekstrem base |
 | Status zona | Fresh → Tested 1× → Lemah (≥ 2×). Zona Broken (close melewati distal) dihapus |
-| Siap eksekusi | Trend UP, HTF tidak DOWN, demand disentuh ≤ 3 candle terakhir, pin bar/engulfing bullish, harga ≤ 1 ATR dari zona |
+| Siap eksekusi | Trend UP, HTF tidak DOWN, demand disentuh ≤ 3 candle terakhir, pin bar/engulfing bullish, harga ≤ 1 ATR dari zona, SL ≥ 1,5%, tanpa supply sebelum TP1 |
 | Siapkan limit | Trend UP, demand Fresh/Tested 1× dalam jarak ≤ 1,5 ATR |
-| SL | Distal − 0,2×ATR |
-| TP1 / TP2 | Supply zone terdekat di atas entry (kalau ≥ 1R), atau 2R · TP2 ≥ 3R |
+| SL | Distal − 0,2×ATR, jarak minimal 1,5% |
+| TP1 / TP2 | TP1 = Min RR × risiko (2R); supply sebelum TP1 = sinyal ditolak · TP2 ≥ 3R |
 | Eksekusi | Limit buy + OCO (TP & SL) di Binance Spot |
 
 Semua angka bisa diubah di tab **Pengaturan**.
